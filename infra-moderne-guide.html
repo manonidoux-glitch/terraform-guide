@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L'infrastructure moderne — Guide visuel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=Inter+Tight:wght@300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f1e8;
+  --bg-paper: #faf7f0;
+  --ink: #1a1d29;
+  --ink-soft: #4a4d59;
+  --ink-muted: #8b8e98;
+  --accent: #c2410c;
+  --accent-2: #7c2d12;
+  --accent-soft: #fef3c7;
+  --accent-line: #f59e0b;
+  --teal: #0d766e;
+  --teal-soft: #d1f0ed;
+  --orange-brand: #ff7900;
+  --rule: #d6d0c2;
+  --rule-soft: #e8e2d2;
+  --code-bg: #1a1d29;
+  --code-text: #f5f1e8;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter Tight', -apple-system, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+  font-feature-settings: 'ss01', 'cv11';
+  -webkit-font-smoothing: antialiased;
+}
+
+.container { max-width: 880px; margin: 0 auto; padding: 0 32px; }
+
+/* === HERO === */
+.hero {
+  padding: 88px 32px 72px;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 800px 400px at 80% 0%, rgba(245, 158, 11, 0.12), transparent 60%),
+    radial-gradient(ellipse 600px 300px at 0% 100%, rgba(13, 118, 110, 0.08), transparent 60%);
+  pointer-events: none;
+}
+.hero-inner { max-width: 880px; margin: 0 auto; position: relative; }
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: clamp(44px, 6.5vw, 80px);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  font-variation-settings: 'opsz' 144, 'SOFT' 50;
+  margin-bottom: 28px;
+}
+h1 em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--accent);
+  font-variation-settings: 'opsz' 144, 'SOFT' 100;
+}
+.lede {
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 660px;
+  font-weight: 300;
+}
+.meta {
+  margin-top: 48px;
+  display: flex;
+  gap: 32px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  flex-wrap: wrap;
+}
+.meta span strong {
+  display: block;
+  color: var(--ink);
+  font-weight: 500;
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+/* === Source banner === */
+.source-banner {
+  background: var(--teal-soft);
+  border-top: 1px solid var(--teal);
+  border-bottom: 1px solid var(--teal);
+  padding: 20px 32px;
+  font-size: 14px;
+  color: var(--teal);
+}
+.source-banner-inner { max-width: 880px; margin: 0 auto; display: flex; gap: 16px; align-items: flex-start; }
+.source-banner-icon {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  line-height: 1;
+  font-style: italic;
+  font-weight: 300;
+}
+.source-banner strong { font-weight: 600; }
+
+/* === TOC === */
+.toc { padding: 48px 32px; border-bottom: 1px solid var(--rule); background: var(--bg-paper); }
+.toc-inner { max-width: 880px; margin: 0 auto; }
+.toc-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 20px;
+}
+.toc-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px 32px;
+}
+.toc-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 8px 0;
+  border-bottom: 1px dotted var(--rule);
+}
+.toc-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); min-width: 24px; }
+.toc-list a {
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 15px;
+  flex: 1;
+  transition: color 0.2s;
+}
+.toc-list a:hover { color: var(--accent); }
+.toc-list li.focus .toc-num { color: var(--orange-brand); }
+.toc-list li.focus a { color: var(--orange-brand); font-weight: 500; }
+
+/* === SECTIONS === */
+section { padding: 80px 32px; border-bottom: 1px solid var(--rule); }
+.section-inner { max-width: 880px; margin: 0 auto; }
+.section-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-num::before {
+  content: '§';
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 16px;
+}
+section.orange-focus { background: linear-gradient(180deg, #fff5eb 0%, var(--bg) 100%); }
+section.orange-focus .section-num { color: var(--orange-brand); }
+
+h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: clamp(34px, 5vw, 52px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-variation-settings: 'opsz' 96;
+  margin-bottom: 32px;
+  max-width: 720px;
+}
+h2 em { font-style: italic; color: var(--accent); font-weight: 300; }
+section.orange-focus h2 em { color: var(--orange-brand); }
+
+h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  margin: 40px 0 16px;
+}
+h4 {
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  margin: 28px 0 10px;
+  color: var(--ink);
+}
+p { margin-bottom: 18px; max-width: 720px; }
+p strong { color: var(--ink); font-weight: 600; }
+em { font-style: italic; }
+ul, ol { margin: 12px 0 20px; padding-left: 24px; max-width: 700px; }
+li { margin-bottom: 6px; }
+
+a.inline {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-line);
+  transition: background 0.2s;
+}
+a.inline:hover { background: var(--accent-soft); }
+
+.dropcap::first-letter {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-size: 5.5em;
+  line-height: 0.85;
+  float: left;
+  margin: 6px 12px -8px 0;
+  color: var(--accent);
+  font-variation-settings: 'opsz' 144;
+}
+
+/* === CALLOUT === */
+.callout {
+  margin: 32px 0;
+  padding: 24px 28px;
+  background: var(--bg-paper);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 4px 4px 0;
+}
+.callout.teal { border-left-color: var(--teal); background: var(--teal-soft); }
+.callout.orange { border-left-color: var(--orange-brand); background: #fff5eb; }
+.callout-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+  display: block;
+}
+.callout.teal .callout-label { color: var(--teal); }
+.callout.orange .callout-label { color: var(--orange-brand); }
+.callout p { margin-bottom: 0; font-size: 15px; }
+
+/* === DIAGRAM CARD === */
+.diagram {
+  margin: 40px -16px;
+  padding: 40px 32px 28px;
+  background: var(--bg-paper);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+}
+.diagram.dark { background: var(--code-bg); border-color: #2d3040; }
+.diagram svg { width: 100%; height: auto; display: block; max-width: 100%; }
+.diagram-caption {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px dotted var(--rule);
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-family: 'Inter Tight', sans-serif;
+  text-align: center;
+  font-style: italic;
+}
+.diagram.dark .diagram-caption { color: #d4d0c2; border-color: #4a4d59; }
+.diagram-caption strong {
+  font-style: normal;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 4px;
+}
+
+code.inline {
+  background: var(--accent-soft);
+  color: var(--accent-2);
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.88em;
+}
+
+/* === DEFINITION GRID === */
+.defs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  margin: 32px 0;
+}
+.def { padding: 22px 0 0; border-top: 2px solid var(--ink); }
+.def.teal { border-top-color: var(--teal); }
+.def.orange { border-top-color: var(--orange-brand); }
+.def-name {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 20px;
+  font-style: italic;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.def.teal .def-name { color: var(--teal); }
+.def.orange .def-name { color: var(--orange-brand); }
+.def-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 10px;
+}
+.def-body { font-size: 14px; line-height: 1.55; color: var(--ink-soft); }
+.def-body code.inline { font-size: 0.85em; }
+
+/* === COMPARISON TABLE === */
+.compare { margin: 32px 0; width: 100%; border-collapse: collapse; font-size: 14px; }
+.compare th {
+  text-align: left;
+  padding: 14px 12px;
+  border-bottom: 2px solid var(--ink);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.compare td { padding: 16px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.compare td:first-child {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--accent);
+  font-weight: 500;
+  width: 25%;
+}
+
+/* === CARDS === */
+.eco { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin: 32px 0; }
+.eco-card {
+  padding: 24px;
+  background: var(--bg-paper);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+}
+.eco-card .cat {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.eco-card .name {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+.eco-card .desc { font-size: 13px; color: var(--ink-soft); line-height: 1.55; }
+
+/* === GLOSSARY === */
+.glossary { margin: 32px 0; }
+.glossary dl { display: grid; grid-template-columns: auto 1fr; gap: 0 24px; }
+.glossary dt {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  color: var(--accent);
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  min-width: 110px;
+}
+.glossary dd {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.glossary dd strong { color: var(--ink); font-weight: 500; }
+
+/* === FOOTER === */
+footer {
+  padding: 48px 32px 64px;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+footer span { color: var(--accent); }
+
+@media (max-width: 640px) {
+  .toc-list { grid-template-columns: 1fr; }
+  .meta { flex-direction: column; gap: 16px; }
+  .diagram { margin: 32px 0; padding: 24px 16px 20px; }
+  body { font-size: 16px; }
+  .glossary dl { grid-template-columns: 1fr; gap: 0; }
+  .glossary dt { border-bottom: none; padding-bottom: 2px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ======================= HERO ======================= -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Guide débutant — Volume 4 · 2026</div>
+    <h1>L'infrastructure<br><em>moderne</em>.</h1>
+    <p class="lede">Un guide visuel de ce qui tourne <em>en dessous</em> de tes applications&nbsp;: compute, stockage, réseau cloud, bases de données, messaging, platform engineering, multi-cloud, FinOps. Le prolongement naturel du Volume 2, avec un focus spécifique sur ce qu'on sait publiquement de l'infrastructure d'Orange France.</p>
+    <div class="meta">
+      <span>Niveau<strong>Débutant +</strong></span>
+      <span>Temps de lecture<strong>≈ 45 minutes</strong></span>
+      <span>Prérequis<strong>Volume 2 — Cloud & DevOps</strong></span>
+    </div>
+  </div>
+</header>
+
+<div class="source-banner">
+  <div class="source-banner-inner">
+    <span class="source-banner-icon">⚐</span>
+    <div>
+      <strong>Sur quoi la partie Orange est basée.</strong> Documentation publique Orange (opensource.orange.com, Orange Business), articles de presse spécialisée (LeMagIT sur la modernisation OINIS, Clubic/Siècle Digital sur Branded Calling), contributions publiques Orange à OpenStack et à la Fondation OpenInfra. <strong>Pas</strong> sur ta configuration interne, à laquelle je n'ai pas accès. Les détails réels peuvent différer.
+    </div>
+  </div>
+</div>
+
+<nav class="toc">
+  <div class="toc-inner">
+    <div class="toc-title">Sommaire</div>
+    <ol class="toc-list">
+      <li><span class="toc-num">01</span><a href="#paysage">Les quatre piliers</a></li>
+      <li><span class="toc-num">02</span><a href="#compute">Le compute en profondeur</a></li>
+      <li><span class="toc-num">03</span><a href="#storage">Le stockage — 3 familles</a></li>
+      <li><span class="toc-num">04</span><a href="#network">Le réseau cloud</a></li>
+      <li><span class="toc-num">05</span><a href="#databases">Les bases de données</a></li>
+      <li><span class="toc-num">06</span><a href="#messaging">Messaging &amp; streaming</a></li>
+      <li><span class="toc-num">07</span><a href="#models">Les modèles de cloud</a></li>
+      <li><span class="toc-num">08</span><a href="#platform">Platform Engineering</a></li>
+      <li><span class="toc-num">09</span><a href="#finops">FinOps &amp; Green IT</a></li>
+      <li class="focus"><span class="toc-num">10</span><a href="#orange">Focus Orange France</a></li>
+      <li><span class="toc-num">11</span><a href="#glossary">Glossaire express</a></li>
+    </ol>
+  </div>
+</nav>
+
+<!-- ======================= 01 PAYSAGE ======================= -->
+<section id="paysage">
+  <div class="section-inner">
+    <div class="section-num">Section 01 — Le modèle mental</div>
+    <h2>Les quatre <em>piliers</em></h2>
+
+    <p class="dropcap">Quand on parle d'«&nbsp;infrastructure&nbsp;», on mélange souvent des choses très différentes&nbsp;: des serveurs physiques, des machines virtuelles, des bases de données, du réseau, du stockage, des services managés, des plateformes internes… Pour ne pas s'y perdre, il est utile de retenir qu'on peut ramener l'essentiel à <strong>quatre familles de ressources</strong> qui se combinent sans cesse&nbsp;: <em>compute, storage, network, runtime</em>.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg">
+        <text x="400" y="28" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#8b8e98" letter-spacing="2">LES QUATRE PILIERS DE L'INFRASTRUCTURE</text>
+
+        <!-- Compute -->
+        <g>
+          <rect x="50" y="70" width="160" height="180" fill="#faf7f0" stroke="#c2410c" stroke-width="1.5" rx="4"/>
+          <text x="130" y="100" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#c2410c" letter-spacing="1.5">COMPUTE</text>
+          <text x="130" y="128" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="22" fill="#1a1d29">Calculer</text>
+          <line x1="80" y1="140" x2="180" y2="140" stroke="#d6d0c2"/>
+          <text x="130" y="160" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">CPU · RAM · GPU</text>
+          <text x="130" y="180" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#8b8e98">bare metal</text>
+          <text x="130" y="196" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#8b8e98">machines virtuelles</text>
+          <text x="130" y="212" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#8b8e98">containers</text>
+          <text x="130" y="228" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#8b8e98">fonctions serverless</text>
+        </g>
+
+        <!-- Storage -->
+        <g>
+          <rect x="230" y="70" width="160" height="180" fill="#faf7f0" stroke="#c2410c" stroke-width="1.5" rx="4"/>
+          <text x="310" y="100" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#c2410c" letter-spacing="1.5">STORAGE</text>
+          <text x="310" y="128" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="22" fill="#1a1d29">Stocker</text>
+          <line x1="260" y1="140" x2="360" y2="140" stroke="#d6d0c2"/>
+          <text x="310" y="160" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">Disques · objets · fichiers</text>
+          <text x="310" y="180" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#8b8e98">block (EBS, Cinder)</text>
+          <text x="310" y="196" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#8b8e98">objet (S3, Swift)</text>
+          <text x="310" y="212" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#8b8e98">fichiers (NFS, EFS)</text>
+          <text x="310" y="228" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#8b8e98">bases de données</text>
+        </g>
+
+        <!-- Network -->
+        <g>
+          <rect x="410" y="70" width="160" height="180" fill="#faf7f0" stroke="#c2410c" stroke-width="1.5" rx="4"/>
+          <text x="490" y="100" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#c2410c" letter-spacing="1.5">NETWORK</text>
+          <text x="490" y="128" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="22" fill="#1a1d29">Connecter</text>
+          <line x1="440" y1="140" x2="540" y2="140" stroke="#d6d0c2"/>
+          <text x="490" y="160" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">VPC · LB · DNS · CDN</text>
+          <text x="490" y="180" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#8b8e98">subnets, firewalls</text>
+          <text x="490" y="196" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#8b8e98">load balancers</text>
+          <text x="490" y="212" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#8b8e98">API gateways</text>
+          <text x="490" y="228" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#8b8e98">service mesh</text>
+        </g>
+
+        <!-- Runtime / Platform -->
+        <g>
+          <rect x="590" y="70" width="160" height="180" fill="#faf7f0" stroke="#0d766e" stroke-width="1.5" rx="4"/>
+          <text x="670" y="100" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#0d766e" letter-spacing="1.5">RUNTIME</text>
+          <text x="670" y="128" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="22" fill="#1a1d29">Exécuter</text>
+          <line x1="620" y1="140" x2="720" y2="140" stroke="#d6d0c2"/>
+          <text x="670" y="160" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">Orchestration &amp; glue</text>
+          <text x="670" y="180" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#8b8e98">OpenStack, K8s</text>
+          <text x="670" y="196" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#8b8e98">bases managées</text>
+          <text x="670" y="212" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#8b8e98">messaging, caching</text>
+          <text x="670" y="228" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#8b8e98">platform engineering</text>
+        </g>
+
+        <!-- Base layer -->
+        <rect x="50" y="265" width="700" height="30" fill="#1a1d29" rx="3"/>
+        <text x="400" y="285" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="12" fill="#f59e0b">Hardware · datacenters · fibre · énergie</text>
+      </svg>
+      <div class="diagram-caption"><strong>Figure 1</strong>Les quatre piliers — tout service cloud se ramène à une combinaison de compute, storage, network et runtime</div>
+    </div>
+
+    <p>Tout ce qui vient après — conteneurs, Kubernetes, bases de données, plateformes internes — n'est au fond qu'une <em>orchestration</em> de ces quatre piliers à différents niveaux d'abstraction. Un cluster Kubernetes consomme du compute (les nœuds), du stockage (persistent volumes), du réseau (CNI, services), et offre un runtime (les pods). Une base PostgreSQL managée consomme elle aussi compute+stockage+réseau, mais te l'expose comme un simple endpoint.</p>
+
+    <p>Les sections suivantes entrent dans chacun de ces piliers, et terminent par la couche d'orchestration et les disciplines transversales — platform engineering, FinOps, Green IT.</p>
+  </div>
+</section>
+
+<!-- ======================= 02 COMPUTE ======================= -->
+<section id="compute">
+  <div class="section-inner">
+    <div class="section-num">Section 02 — Calcul</div>
+    <h2>Le compute <em>en profondeur</em></h2>
+
+    <p>Quand tu veux faire tourner du code, quatre modèles principaux s'offrent à toi aujourd'hui. Ils diffèrent dans ce que tu gères, la rapidité de démarrage, la granularité de facturation, et l'isolation.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+        <text x="400" y="28" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#8b8e98" letter-spacing="2">SPECTRE DU COMPUTE — DU MÉTAL NU AU SERVERLESS</text>
+
+        <!-- Headers -->
+        <text x="100" y="65" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#c2410c" letter-spacing="1.5">BARE METAL</text>
+        <text x="280" y="65" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#c2410c" letter-spacing="1.5">MACHINE VIRTUELLE</text>
+        <text x="460" y="65" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#c2410c" letter-spacing="1.5">CONTAINER</text>
+        <text x="640" y="65" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#0d766e" letter-spacing="1.5">SERVERLESS / FAAS</text>
+
+        <!-- Examples -->
+        <text x="100" y="82" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98" font-style="italic">serveur physique dédié</text>
+        <text x="280" y="82" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98" font-style="italic">EC2, OpenStack Nova</text>
+        <text x="460" y="82" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98" font-style="italic">Docker, ECS, K8s pods</text>
+        <text x="640" y="82" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98" font-style="italic">Lambda, Cloud Run</text>
+
+        <!-- Stack visualization -->
+        <!-- Bare metal column -->
+        <g>
+          <rect x="40" y="100" width="120" height="22" fill="#1a1d29"/>
+          <text x="100" y="116" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f59e0b">Application</text>
+          <rect x="40" y="124" width="120" height="22" fill="#1a1d29"/>
+          <text x="100" y="140" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f59e0b">Runtime</text>
+          <rect x="40" y="148" width="120" height="22" fill="#1a1d29"/>
+          <text x="100" y="164" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f59e0b">OS</text>
+          <rect x="40" y="172" width="120" height="22" fill="#4a4d59"/>
+          <text x="100" y="188" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f5f1e8">Drivers / BIOS</text>
+          <rect x="40" y="196" width="120" height="22" fill="#8b8e98"/>
+          <text x="100" y="212" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#1a1d29">Hardware</text>
+        </g>
+
+        <!-- VM column -->
+        <g>
+          <rect x="220" y="100" width="120" height="22" fill="#1a1d29"/>
+          <text x="280" y="116" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f59e0b">Application</text>
+          <rect x="220" y="124" width="120" height="22" fill="#1a1d29"/>
+          <text x="280" y="140" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f59e0b">Runtime</text>
+          <rect x="220" y="148" width="120" height="22" fill="#1a1d29"/>
+          <text x="280" y="164" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f59e0b">OS invité</text>
+          <rect x="220" y="172" width="120" height="22" fill="#c2410c"/>
+          <text x="280" y="188" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f5f1e8">Hyperviseur</text>
+          <rect x="220" y="196" width="120" height="22" fill="#4a4d59"/>
+          <text x="280" y="212" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f5f1e8">OS hôte / BIOS</text>
+          <rect x="220" y="220" width="120" height="22" fill="#8b8e98"/>
+          <text x="280" y="236" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#1a1d29">Hardware</text>
+        </g>
+
+        <!-- Container column -->
+        <g>
+          <rect x="400" y="100" width="120" height="22" fill="#1a1d29"/>
+          <text x="460" y="116" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f59e0b">Application</text>
+          <rect x="400" y="124" width="120" height="22" fill="#1a1d29"/>
+          <text x="460" y="140" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f59e0b">Runtime + libs</text>
+          <rect x="400" y="148" width="120" height="22" fill="#c2410c"/>
+          <text x="460" y="164" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f5f1e8">Container engine</text>
+          <rect x="400" y="172" width="120" height="22" fill="#4a4d59"/>
+          <text x="460" y="188" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f5f1e8">OS hôte partagé</text>
+          <rect x="400" y="196" width="120" height="22" fill="#8b8e98"/>
+          <text x="460" y="212" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#1a1d29">Hardware</text>
+        </g>
+
+        <!-- Serverless column -->
+        <g>
+          <rect x="580" y="100" width="120" height="22" fill="#1a1d29"/>
+          <text x="640" y="116" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f59e0b">Fonction</text>
+          <rect x="580" y="124" width="120" height="94" fill="#0d766e" opacity="0.9"/>
+          <text x="640" y="154" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#f5f1e8" font-weight="500">tout géré</text>
+          <text x="640" y="170" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#d1f0ed">runtime · OS · hôte</text>
+          <text x="640" y="184" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#d1f0ed">par le provider</text>
+        </g>
+
+        <!-- Bottom axis -->
+        <line x1="40" y1="290" x2="760" y2="290" stroke="#8b8e98" stroke-width="1"/>
+
+        <!-- Axis labels -->
+        <g font-family="JetBrains Mono, monospace" font-size="9" fill="#4a4d59">
+          <text x="100" y="310" text-anchor="middle">Démarrage : minutes</text>
+          <text x="280" y="310" text-anchor="middle">Démarrage : secondes</text>
+          <text x="460" y="310" text-anchor="middle">Démarrage : ms</text>
+          <text x="640" y="310" text-anchor="middle">Démarrage : à la demande</text>
+
+          <text x="100" y="330" text-anchor="middle">Facturation : au serveur</text>
+          <text x="280" y="330" text-anchor="middle">Facturation : à l'heure</text>
+          <text x="460" y="330" text-anchor="middle">Facturation : à la seconde</text>
+          <text x="640" y="330" text-anchor="middle">Facturation : à la ms</text>
+
+          <text x="100" y="350" text-anchor="middle">Isolation : physique</text>
+          <text x="280" y="350" text-anchor="middle">Isolation : forte (OS)</text>
+          <text x="460" y="350" text-anchor="middle">Isolation : process</text>
+          <text x="640" y="350" text-anchor="middle">Isolation : sandbox</text>
+        </g>
+
+        <!-- Arrow showing direction -->
+        <g transform="translate(40, 375)">
+          <line x1="0" y1="0" x2="720" y2="0" stroke="#c2410c" stroke-width="1"/>
+          <polygon points="720,0 713,-4 713,4" fill="#c2410c"/>
+          <text x="360" y="-5" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#c2410c" letter-spacing="1.5">ABSTRACTION CROISSANTE</text>
+        </g>
+      </svg>
+      <div class="diagram-caption"><strong>Figure 2</strong>Les 4 modèles de compute — de la maîtrise totale à la pure abstraction</div>
+    </div>
+
+    <h3>Bare metal</h3>
+
+    <p>Un serveur physique dédié. Tu as toute la machine pour toi, avec ses CPU, sa RAM, ses disques. Aucune couche de virtualisation. C'est le modèle le plus performant (pas de surcoût d'hyperviseur) et le plus rigide. On l'utilise aujourd'hui surtout pour des charges très spécifiques&nbsp;: bases de données à latence critique, calcul scientifique, entraînement de gros modèles d'IA (les GPU y sont alors directement accessibles), ou conformité règlementaire imposant une isolation physique.</p>
+
+    <p>Fournisseurs cloud&nbsp;: <em>AWS Bare Metal, OVH Dedicated Server, Equinix Metal, Scaleway Elastic Metal</em>.</p>
+
+    <h3>Machines virtuelles</h3>
+
+    <p>La VM est historiquement le socle du cloud. Un logiciel appelé <strong>hyperviseur</strong> partage un serveur physique en plusieurs machines virtuelles isolées, chacune avec son propre OS. Les hyperviseurs les plus répandus sont <strong>KVM</strong> (open source, coeur de la plupart des clouds publics et d'OpenStack), <strong>VMware ESXi</strong> (historique en entreprise), <strong>Microsoft Hyper-V</strong> et <strong>Xen</strong>. On distingue parfois les hyperviseurs <em>de type 1</em> (installés directement sur le matériel) et <em>de type 2</em> (tournant sur un OS hôte classique).</p>
+
+    <p>Chez les hyperscalers, chaque VM a un nom commercial (AWS EC2, Azure VMs, Google Compute Engine). Dans OpenStack, c'est le service <strong>Nova</strong> qui orchestre les VMs — et Orange est historiquement un gros utilisateur et contributeur OpenStack.</p>
+
+    <h3>Containers</h3>
+
+    <p>Le container, abordé au Volume 2, est un package applicatif qui <em>partage le noyau de l'hôte</em> plutôt qu'embarquer son propre OS. C'est cette différence qui rend les containers beaucoup plus légers et rapides à démarrer que les VM. Sous le capot, trois composants&nbsp;:</p>
+
+    <div class="defs">
+      <div class="def">
+        <div class="def-tag">Le format</div>
+        <div class="def-name">OCI Image</div>
+        <div class="def-body">Spécification ouverte (<em>Open Container Initiative</em>) qui définit le format d'image d'un container. Docker l'implémente, mais Podman, Buildah, Kaniko aussi. On y trouve le système de fichiers figé de l'application et ses métadonnées.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Le moteur d'exécution</div>
+        <div class="def-name">Container runtime</div>
+        <div class="def-body"><strong>containerd</strong> et <strong>CRI-O</strong> sont les deux runtimes standards aujourd'hui (Docker utilise containerd en interne depuis 2020). Ils pilotent <strong>runc</strong>, l'exécuteur bas niveau qui utilise les primitives Linux (namespaces, cgroups) pour isoler le container.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">L'orchestrateur</div>
+        <div class="def-name">Kubernetes &amp; alternatives</div>
+        <div class="def-body">K8s domine. En alternative&nbsp;: <em>Nomad</em> (HashiCorp, plus simple, polyvalent VM/container), <em>Docker Swarm</em> (en déclin), et les services managés <em>ECS/Fargate</em> d'AWS. En télécom, <em>OpenShift</em> (Red Hat) est très présent — notamment chez Orange pour leurs fonctions réseau.</div>
+      </div>
+    </div>
+
+    <h3>Serverless / FaaS</h3>
+
+    <p>Le niveau d'abstraction maximal. Tu fournis une fonction — quelques dizaines ou centaines de lignes de code — et le provider la fait tourner à la demande. Pas de serveur à gérer, pas d'OS, pas de scaling. Tu es facturé à la milliseconde d'exécution. Les leaders&nbsp;: <strong>AWS Lambda</strong>, <strong>Azure Functions</strong>, <strong>Google Cloud Functions</strong>, <strong>Cloudflare Workers</strong> (edge serverless), <strong>Vercel Functions</strong>.</p>
+
+    <p>Variante importante&nbsp;: les <strong>conteneurs serverless</strong> comme <strong>AWS Fargate</strong>, <strong>Google Cloud Run</strong>, <strong>Azure Container Apps</strong>. Tu fournis une image Docker, le provider gère tout le reste avec une facturation à l'usage. C'est un modèle hybride très populaire pour les APIs et microservices.</p>
+
+    <h3>Le cas du GPU compute</h3>
+
+    <p>Avec l'explosion de l'IA générative, le GPU est devenu un pilier à part entière de l'infrastructure. Les workloads d'entraînement et d'inférence réclament des cartes spécialisées (NVIDIA H100, H200, B200 en 2026, ou plus accessibles A100, L40S pour l'inférence). Les clouds publics exposent ces cartes via des instances dédiées (AWS P5, Azure ND-series, GCP A3). Côté Kubernetes, le <strong>NVIDIA GPU Operator</strong> et le <strong>Kubeflow</strong> stack rendent l'orchestration GPU gérable.</p>
+
+    <div class="callout">
+      <span class="callout-label">Règle pratique</span>
+      <p>Le bon modèle de compute dépend du trafic et de l'état de ton application. <em>Trafic constant et prévisible</em>&nbsp;? VM ou container sur Kubernetes. <em>Trafic en pics ponctuels</em>&nbsp;? Serverless. <em>Stateful, latence critique, conformité</em>&nbsp;? Bare metal ou VM. Le piège classique est d'utiliser le serverless pour tout — le coût au repos est nul, mais sous forte charge continue, ça coûte plus cher qu'une VM bien dimensionnée.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 03 STORAGE ======================= -->
+<section id="storage">
+  <div class="section-inner">
+    <div class="section-num">Section 03 — Données au repos</div>
+    <h2>Le stockage — <em>trois familles</em></h2>
+
+    <p>Le stockage dans le cloud se décline en trois grandes familles, qui répondent à des besoins très différents. Les confondre est l'une des erreurs les plus coûteuses qu'on puisse faire en concevant une architecture.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg">
+        <text x="400" y="28" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#8b8e98" letter-spacing="2">LES TROIS FAMILLES DE STOCKAGE</text>
+
+        <!-- Block storage -->
+        <g>
+          <rect x="50" y="65" width="220" height="230" fill="#faf7f0" stroke="#c2410c" stroke-width="1.5" rx="4"/>
+          <text x="160" y="92" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#c2410c" letter-spacing="1.5">BLOCK</text>
+          <text x="160" y="118" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="22" fill="#1a1d29">Bloc</text>
+
+          <!-- Visual -->
+          <g transform="translate(65, 140)">
+            <rect x="0" y="0" width="18" height="18" fill="#c2410c" opacity="0.3" stroke="#c2410c"/>
+            <rect x="22" y="0" width="18" height="18" fill="#c2410c" opacity="0.6" stroke="#c2410c"/>
+            <rect x="44" y="0" width="18" height="18" fill="#c2410c" opacity="0.3" stroke="#c2410c"/>
+            <rect x="66" y="0" width="18" height="18" fill="#c2410c" opacity="0.6" stroke="#c2410c"/>
+            <rect x="88" y="0" width="18" height="18" fill="#c2410c" opacity="0.3" stroke="#c2410c"/>
+            <rect x="110" y="0" width="18" height="18" fill="#c2410c" opacity="0.6" stroke="#c2410c"/>
+            <rect x="132" y="0" width="18" height="18" fill="#c2410c" opacity="0.3" stroke="#c2410c"/>
+            <rect x="154" y="0" width="18" height="18" fill="#c2410c" opacity="0.6" stroke="#c2410c"/>
+
+            <rect x="0" y="22" width="18" height="18" fill="#c2410c" opacity="0.6" stroke="#c2410c"/>
+            <rect x="22" y="22" width="18" height="18" fill="#c2410c" opacity="0.3" stroke="#c2410c"/>
+            <rect x="44" y="22" width="18" height="18" fill="#c2410c" opacity="0.6" stroke="#c2410c"/>
+            <rect x="66" y="22" width="18" height="18" fill="#c2410c" opacity="0.3" stroke="#c2410c"/>
+            <rect x="88" y="22" width="18" height="18" fill="#c2410c" opacity="0.6" stroke="#c2410c"/>
+            <rect x="110" y="22" width="18" height="18" fill="#c2410c" opacity="0.3" stroke="#c2410c"/>
+            <rect x="132" y="22" width="18" height="18" fill="#c2410c" opacity="0.6" stroke="#c2410c"/>
+            <rect x="154" y="22" width="18" height="18" fill="#c2410c" opacity="0.3" stroke="#c2410c"/>
+          </g>
+
+          <text x="160" y="215" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">Blocs bruts numérotés</text>
+          <text x="160" y="232" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">attachés à une VM</text>
+
+          <line x1="75" y1="250" x2="245" y2="250" stroke="#d6d0c2"/>
+          <text x="160" y="268" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#c2410c">EBS · Cinder · disque dur</text>
+          <text x="160" y="283" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98">latence ms · IOPS élevé</text>
+        </g>
+
+        <!-- File storage -->
+        <g>
+          <rect x="290" y="65" width="220" height="230" fill="#faf7f0" stroke="#c2410c" stroke-width="1.5" rx="4"/>
+          <text x="400" y="92" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#c2410c" letter-spacing="1.5">FILE</text>
+          <text x="400" y="118" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="22" fill="#1a1d29">Fichiers</text>
+
+          <!-- Visual: tree structure -->
+          <g transform="translate(320, 140)">
+            <rect x="50" y="0" width="60" height="18" fill="#f59e0b" stroke="#c2410c"/>
+            <text x="80" y="13" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#1a1d29">/share</text>
+
+            <line x1="80" y1="18" x2="80" y2="30" stroke="#8b8e98"/>
+            <line x1="40" y1="30" x2="120" y2="30" stroke="#8b8e98"/>
+            <line x1="40" y1="30" x2="40" y2="40" stroke="#8b8e98"/>
+            <line x1="80" y1="30" x2="80" y2="40" stroke="#8b8e98"/>
+            <line x1="120" y1="30" x2="120" y2="40" stroke="#8b8e98"/>
+
+            <rect x="15" y="40" width="50" height="18" fill="#faf7f0" stroke="#8b8e98"/>
+            <text x="40" y="53" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#1a1d29">/docs</text>
+
+            <rect x="55" y="40" width="50" height="18" fill="#faf7f0" stroke="#8b8e98"/>
+            <text x="80" y="53" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#1a1d29">/data</text>
+
+            <rect x="95" y="40" width="50" height="18" fill="#faf7f0" stroke="#8b8e98"/>
+            <text x="120" y="53" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#1a1d29">/logs</text>
+          </g>
+
+          <text x="400" y="215" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">Hiérarchie de fichiers</text>
+          <text x="400" y="232" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">partagée entre VMs</text>
+
+          <line x1="315" y1="250" x2="485" y2="250" stroke="#d6d0c2"/>
+          <text x="400" y="268" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#c2410c">NFS · EFS · Manila</text>
+          <text x="400" y="283" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98">partage multi-nœuds · POSIX</text>
+        </g>
+
+        <!-- Object storage -->
+        <g>
+          <rect x="530" y="65" width="220" height="230" fill="#faf7f0" stroke="#c2410c" stroke-width="1.5" rx="4"/>
+          <text x="640" y="92" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#c2410c" letter-spacing="1.5">OBJECT</text>
+          <text x="640" y="118" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="22" fill="#1a1d29">Objet</text>
+
+          <!-- Visual: buckets with objects -->
+          <g transform="translate(545, 140)">
+            <circle cx="20" cy="20" r="18" fill="#c2410c" opacity="0.3" stroke="#c2410c"/>
+            <text x="20" y="24" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#1a1d29">obj1</text>
+
+            <circle cx="60" cy="20" r="18" fill="#c2410c" opacity="0.3" stroke="#c2410c"/>
+            <text x="60" y="24" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#1a1d29">obj2</text>
+
+            <circle cx="100" cy="20" r="18" fill="#c2410c" opacity="0.3" stroke="#c2410c"/>
+            <text x="100" y="24" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#1a1d29">obj3</text>
+
+            <circle cx="140" cy="20" r="18" fill="#c2410c" opacity="0.3" stroke="#c2410c"/>
+            <text x="140" y="24" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#1a1d29">obj4</text>
+
+            <circle cx="40" cy="55" r="18" fill="#c2410c" opacity="0.3" stroke="#c2410c"/>
+            <text x="40" y="59" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#1a1d29">obj5</text>
+
+            <circle cx="80" cy="55" r="18" fill="#c2410c" opacity="0.3" stroke="#c2410c"/>
+            <text x="80" y="59" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#1a1d29">obj6</text>
+
+            <circle cx="120" cy="55" r="18" fill="#c2410c" opacity="0.3" stroke="#c2410c"/>
+            <text x="120" y="59" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#1a1d29">obj7</text>
+          </g>
+
+          <text x="640" y="215" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">Objets dans des buckets,</text>
+          <text x="640" y="232" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">accédés par HTTP(S)</text>
+
+          <line x1="555" y1="250" x2="725" y2="250" stroke="#d6d0c2"/>
+          <text x="640" y="268" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#c2410c">S3 · Swift · Blob · MinIO</text>
+          <text x="640" y="283" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98">scalabilité infinie · moins cher</text>
+        </g>
+
+        <!-- Bottom note -->
+        <text x="400" y="335" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="12" fill="#4a4d59" font-style="italic">Le choix dépend de l'usage&nbsp;: bloc pour les VMs, fichier pour le partage, objet pour les gros volumes.</text>
+      </svg>
+      <div class="diagram-caption"><strong>Figure 3</strong>Les trois familles de stockage — chacune avec son cas d'usage canonique</div>
+    </div>
+
+    <h3>Stockage bloc</h3>
+
+    <p>Un volume de stockage <em>bloc</em> se comporte comme un disque dur&nbsp;: une séquence de blocs bruts numérotés, que tu formates avec un système de fichiers (ext4, xfs, NTFS) et attaches à une seule VM à la fois. C'est le stockage de choix pour les disques système et les bases de données.</p>
+
+    <p>Caractéristiques clés&nbsp;: <strong>latence très basse</strong> (de l'ordre de la milliseconde sur du SSD), <strong>IOPS élevés</strong>, <strong>attachement 1:1</strong> à une instance, <strong>prix relativement élevé</strong> au Go. Les exemples canoniques&nbsp;: <em>AWS EBS, Azure Managed Disks, GCP Persistent Disk, OpenStack Cinder</em>.</p>
+
+    <h3>Stockage fichier</h3>
+
+    <p>Un système de fichiers partagé, accessible simultanément par plusieurs machines via des protocoles standards (<strong>NFS</strong> pour Linux, <strong>SMB/CIFS</strong> pour Windows). Organisation hiérarchique classique (dossiers, fichiers, permissions POSIX), ce qui permet à des applications legacy de travailler sans modification.</p>
+
+    <p>On l'utilise pour&nbsp;: partage de fichiers entre équipes, répertoires utilisateurs, workflows de traitement d'images ou de médias, environnements de rendu. Exemples&nbsp;: <em>AWS EFS, Azure Files, GCP Filestore, OpenStack Manila, NetApp ONTAP, Dell PowerScale</em>.</p>
+
+    <h3>Stockage objet</h3>
+
+    <p>Le plus récent des trois paradigmes, popularisé par S3 en 2006. Tu stockes des <em>objets</em> (des fichiers avec des métadonnées) dans des <em>buckets</em>, adressables par une URL HTTP. Pas de hiérarchie native, pas de modification in-place&nbsp;: pour changer un objet, tu remplaces sa version complète.</p>
+
+    <p>C'est le stockage qui monte à l'échelle <em>infiniment</em> (exabytes), avec une <em>durabilité très élevée</em> (11 neufs chez AWS), pour un <em>coût dérisoire</em> au Go — en contrepartie d'une latence plus élevée qu'en bloc. L'usage typique&nbsp;: backups, data lakes, images et vidéos, logs archivés, contenus statiques d'un site web, artefacts CI/CD.</p>
+
+    <p>Les grands de la famille&nbsp;: <strong>AWS S3</strong> (le standard de fait, dont l'API est imitée partout), <em>Azure Blob Storage, GCP Cloud Storage, OpenStack Swift, MinIO</em> (implémentation S3-compatible open source), <em>Backblaze B2, Wasabi</em> (alternatives low-cost).</p>
+
+    <h3>Les classes de stockage</h3>
+
+    <p>Sur l'objet, chaque fournisseur propose plusieurs classes de stockage selon la fréquence d'accès&nbsp;:</p>
+
+    <table class="compare">
+      <thead>
+        <tr><th>Classe</th><th>Latence</th><th>Coût</th><th>Cas d'usage</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Hot / Standard</td>
+          <td>ms</td>
+          <td>Élevé</td>
+          <td>Contenu actif, site web, pipeline actif</td>
+        </tr>
+        <tr>
+          <td>Infrequent Access</td>
+          <td>ms</td>
+          <td>Moyen</td>
+          <td>Backups récents, logs des 90 derniers jours</td>
+        </tr>
+        <tr>
+          <td>Archive / Glacier</td>
+          <td>minutes à heures</td>
+          <td>Très bas</td>
+          <td>Archives légales, backups anciens</td>
+        </tr>
+        <tr>
+          <td>Deep Archive</td>
+          <td>jusqu'à 12 h</td>
+          <td>Dérisoire</td>
+          <td>Conformité 7-10 ans, médias rarement sollicités</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ======================= 04 NETWORK ======================= -->
+<section id="network">
+  <div class="section-inner">
+    <div class="section-num">Section 04 — Connectivité</div>
+    <h2>Le réseau <em>cloud</em></h2>
+
+    <p>Le réseau est le pilier le plus sous-estimé des quatre. Dans le cloud, il est presque entièrement <em>logiciel</em> (software-defined) — ce qui permet de définir tout un réseau d'entreprise complexe avec quelques lignes de Terraform, mais aussi de tout casser très efficacement si on ne maîtrise pas les concepts.</p>
+
+    <h3>Les concepts fondamentaux</h3>
+
+    <div class="defs">
+      <div class="def">
+        <div class="def-tag">Le réseau privé virtuel</div>
+        <div class="def-name">VPC</div>
+        <div class="def-body"><strong>Virtual Private Cloud.</strong> Un espace réseau logiquement isolé chez un fournisseur cloud. Tu y définis des plages d'adresses IP (ex&nbsp;: <code class="inline">10.0.0.0/16</code>), des sous-réseaux, des règles de routage. Chez OpenStack, c'est le service <em>Neutron</em> qui fournit cette couche.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Segmentation</div>
+        <div class="def-name">Subnet</div>
+        <div class="def-body">Un sous-ensemble d'un VPC, typiquement lié à une zone de disponibilité. On sépare classiquement en subnets <em>publics</em> (accessibles depuis Internet) et <em>privés</em> (isolés, pour les bases de données et backends).</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Pare-feu logiciel</div>
+        <div class="def-name">Security Group / NACL</div>
+        <div class="def-body">Filtres statefull (Security Group) ou stateless (NACL) qui contrôlent le trafic entrant et sortant des ressources. Tu autorises explicitement&nbsp;: «&nbsp;cette VM accepte du port 443 depuis ce security group&nbsp;».</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Répartition de charge</div>
+        <div class="def-name">Load Balancer</div>
+        <div class="def-body">Distribue le trafic entrant sur plusieurs instances. <strong>L4</strong> (TCP/UDP, rapide, simple) vs <strong>L7</strong> (HTTP, plus riche, routage par URL). Exemples&nbsp;: AWS ELB/ALB/NLB, HAProxy, Nginx, Traefik, Envoy.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Résolution de noms</div>
+        <div class="def-name">DNS</div>
+        <div class="def-body">Transforme les noms de domaines en IPs. Dans le cloud&nbsp;: Route 53, Azure DNS, Cloud DNS. Plus que de la simple résolution, le DNS moderne fait du <em>health check</em>, du <em>failover</em>, et du <em>geo-routing</em>.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Cache edge</div>
+        <div class="def-name">CDN</div>
+        <div class="def-body"><strong>Content Delivery Network.</strong> Réseau de caches distribués géographiquement près des utilisateurs. Servent des copies statiques pour réduire latence et charge origine. Cloudflare, AWS CloudFront, Akamai, Fastly.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Porte d'entrée API</div>
+        <div class="def-name">API Gateway</div>
+        <div class="def-body">Point d'entrée unique pour les APIs. Gère l'authentification, le rate limiting, la journalisation, la transformation des requêtes. Exemples&nbsp;: AWS API Gateway, Kong, Tyk, Apigee, Azure API Management.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Communication inter-services</div>
+        <div class="def-name">Service Mesh</div>
+        <div class="def-body">Couche de gestion de trafic, sécurité (mTLS), et observabilité entre microservices. Déploie un sidecar (ex&nbsp;: Envoy) à côté de chaque service. Standards du marché&nbsp;: <em>Istio, Linkerd, Consul Connect</em>.</div>
+      </div>
+    </div>
+
+    <div class="diagram">
+      <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+        <text x="400" y="28" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#8b8e98" letter-spacing="2">ARCHITECTURE TYPE D'UN VPC CLOUD</text>
+
+        <!-- Internet -->
+        <g>
+          <path d="M 350 60 Q 360 50 380 55 Q 400 45 420 55 Q 440 50 450 60 Q 460 70 450 80 Q 440 90 420 85 Q 400 95 380 85 Q 360 90 350 80 Q 340 70 350 60 Z"
+                fill="#e8e2d2" stroke="#8b8e98" stroke-width="1"/>
+          <text x="400" y="75" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="13" fill="#4a4d59">Internet</text>
+        </g>
+
+        <line x1="400" y1="95" x2="400" y2="120" stroke="#1a1d29" stroke-width="1.5"/>
+        <polygon points="400,120 396,113 404,113" fill="#1a1d29"/>
+
+        <!-- CDN layer -->
+        <rect x="290" y="120" width="220" height="35" fill="#fef3c7" stroke="#c2410c" stroke-width="1" rx="3"/>
+        <text x="400" y="143" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="12" fill="#7c2d12" font-weight="500">CDN — cache géo-distribué</text>
+
+        <line x1="400" y1="155" x2="400" y2="180" stroke="#1a1d29" stroke-width="1.5"/>
+        <polygon points="400,180 396,173 404,173" fill="#1a1d29"/>
+
+        <!-- VPC container -->
+        <rect x="60" y="190" width="680" height="280" fill="#faf7f0" stroke="#c2410c" stroke-width="2" rx="4"/>
+        <text x="75" y="212" font-family="JetBrains Mono, monospace" font-size="10" fill="#c2410c" letter-spacing="1.5">VPC 10.0.0.0/16</text>
+
+        <!-- Public subnet -->
+        <rect x="80" y="230" width="640" height="90" fill="#fff5eb" stroke="#c2410c" stroke-width="1" stroke-dasharray="3,3" rx="3"/>
+        <text x="95" y="250" font-family="JetBrains Mono, monospace" font-size="10" fill="#c2410c" letter-spacing="1.5">PUBLIC SUBNET 10.0.1.0/24</text>
+
+        <!-- ALB (L7) -->
+        <g>
+          <rect x="120" y="260" width="150" height="45" fill="#c2410c" rx="3"/>
+          <text x="195" y="280" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="13" fill="#f5f1e8">Load Balancer L7</text>
+          <text x="195" y="295" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#fef3c7">HTTPS · path routing</text>
+        </g>
+
+        <!-- API Gateway -->
+        <g>
+          <rect x="300" y="260" width="140" height="45" fill="#faf7f0" stroke="#c2410c" stroke-width="1.5" rx="3"/>
+          <text x="370" y="280" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="13" fill="#c2410c">API Gateway</text>
+          <text x="370" y="295" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#4a4d59">auth · rate limit</text>
+        </g>
+
+        <!-- NAT Gateway -->
+        <g>
+          <rect x="470" y="260" width="140" height="45" fill="#faf7f0" stroke="#c2410c" stroke-width="1.5" rx="3"/>
+          <text x="540" y="280" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="13" fill="#c2410c">NAT Gateway</text>
+          <text x="540" y="295" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#4a4d59">sortie privée</text>
+        </g>
+
+        <!-- Private subnet -->
+        <rect x="80" y="335" width="640" height="120" fill="#f5f1e8" stroke="#8b8e98" stroke-width="1" stroke-dasharray="3,3" rx="3"/>
+        <text x="95" y="355" font-family="JetBrains Mono, monospace" font-size="10" fill="#4a4d59" letter-spacing="1.5">PRIVATE SUBNET 10.0.2.0/24</text>
+
+        <!-- Services -->
+        <g>
+          <rect x="110" y="370" width="130" height="70" fill="#faf7f0" stroke="#1a1d29" rx="3"/>
+          <text x="175" y="395" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="13" fill="#1a1d29">Cluster K8s</text>
+          <text x="175" y="415" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#4a4d59">pods + service mesh</text>
+          <text x="175" y="430" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98">Envoy sidecars</text>
+        </g>
+
+        <g>
+          <rect x="260" y="370" width="130" height="70" fill="#faf7f0" stroke="#1a1d29" rx="3"/>
+          <text x="325" y="395" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="13" fill="#1a1d29">Base SQL</text>
+          <text x="325" y="415" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#4a4d59">PostgreSQL</text>
+          <text x="325" y="430" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98">3306 TCP · SG strict</text>
+        </g>
+
+        <g>
+          <rect x="410" y="370" width="130" height="70" fill="#faf7f0" stroke="#1a1d29" rx="3"/>
+          <text x="475" y="395" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="13" fill="#1a1d29">Cache</text>
+          <text x="475" y="415" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#4a4d59">Redis cluster</text>
+          <text x="475" y="430" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98">6379 TCP</text>
+        </g>
+
+        <g>
+          <rect x="560" y="370" width="130" height="70" fill="#faf7f0" stroke="#1a1d29" rx="3"/>
+          <text x="625" y="395" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="13" fill="#1a1d29">Queue</text>
+          <text x="625" y="415" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#4a4d59">Kafka / RabbitMQ</text>
+          <text x="625" y="430" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98">async</text>
+        </g>
+
+        <!-- Arrows internal -->
+        <g stroke="#c2410c" stroke-width="1" fill="none" opacity="0.6">
+          <line x1="195" y1="305" x2="175" y2="370"/>
+          <line x1="370" y1="305" x2="175" y2="370"/>
+          <line x1="175" y1="440" x2="325" y2="440"/>
+          <line x1="325" y1="440" x2="475" y2="440"/>
+          <line x1="475" y1="440" x2="625" y2="440"/>
+        </g>
+
+        <!-- SG notation -->
+        <text x="750" y="212" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="9" fill="#8b8e98" font-style="italic">Security Groups appliqués à chaque couche</text>
+      </svg>
+      <div class="diagram-caption"><strong>Figure 4</strong>L'architecture type d'un VPC — subnets publics/privés, LB, NAT, et services backend</div>
+    </div>
+
+    <h3>Régions, zones, edge</h3>
+
+    <p>Une <strong>région</strong> est une zone géographique avec plusieurs datacenters (ex&nbsp;: <em>eu-west-3</em> = Paris chez AWS). Une <strong>zone de disponibilité (AZ)</strong> est un datacenter (ou groupe de datacenters proches) à l'intérieur d'une région. Pour la <em>haute disponibilité</em>, on répartit les services sur plusieurs AZs&nbsp;: si l'une tombe, les autres prennent le relais.</p>
+
+    <p>L'<strong>edge computing</strong> pousse la logique encore plus près des utilisateurs&nbsp;: Cloudflare Workers, Fastly Compute@Edge, AWS Lambda@Edge exécutent du code dans des centaines de PoPs (Points of Presence) mondiaux. Latence de l'ordre de quelques ms pour l'utilisateur final, au prix de contraintes d'exécution plus strictes.</p>
+
+    <div class="callout">
+      <span class="callout-label">L'ordre de grandeur</span>
+      <p>Une bonne heuristique pour dimensionner la résilience&nbsp;: <strong>un seul datacenter</strong> tombe quelques heures par an, <strong>toute une région</strong> tombe quelques fois par décennie (mais ça arrive — <em>us-east-1</em> d'AWS a déjà eu des incidents majeurs). Pour une app critique, multi-AZ est la base. Pour une app vitale (banque, urgence, télécom), il faut du multi-région.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 05 DATABASES ======================= -->
+<section id="databases">
+  <div class="section-inner">
+    <div class="section-num">Section 05 — Données structurées</div>
+    <h2>Les bases de <em>données</em></h2>
+
+    <p>L'écosystème des bases de données s'est spectaculairement diversifié depuis 2005. Là où on utilisait autrefois «&nbsp;la base SQL&nbsp;» pour tout faire, on choisit aujourd'hui la bonne technologie pour chaque cas d'usage. On parle de <strong>polyglot persistence</strong>. Voici la taxonomie à avoir en tête.</p>
+
+    <h3>SQL vs NoSQL — le vrai clivage</h3>
+
+    <p>Contrairement à la caricature, la différence n'est pas «&nbsp;avec ou sans SQL&nbsp;». C'est une histoire de <em>modèle de données</em> et de <em>garanties</em>. Les bases SQL (relationnelles) offrent de fortes garanties transactionnelles (ACID&nbsp;: atomicité, cohérence, isolation, durabilité) et un modèle tabulaire rigide. Les bases NoSQL sacrifient une partie de ces garanties pour gagner en flexibilité de modèle et en scalabilité horizontale.</p>
+
+    <h3>Les bases SQL / relationnelles</h3>
+
+    <div class="eco">
+      <div class="eco-card">
+        <div class="cat">Open source · le défaut</div>
+        <div class="name">PostgreSQL</div>
+        <div class="desc">Le couteau suisse moderne. Extensible (PostGIS pour le géospatial, pgvector pour l'IA), ACID strict, JSONB pour du semi-structuré. Choix par défaut pour la majorité des nouveaux projets depuis 2020.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Open source · historique</div>
+        <div class="name">MySQL / MariaDB</div>
+        <div class="desc">Omniprésent dans le web (historiquement PHP/LAMP). MariaDB est un fork communautaire de MySQL. Excellent pour les workloads standards de lecture/écriture.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Commercial · entreprise</div>
+        <div class="name">Oracle Database</div>
+        <div class="desc">Historique, très présent dans la banque, le secteur public, les grandes entreprises. Performances élevées, prix à l'avenant. En déclin d'adoption dans les nouveaux projets.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Commercial · Microsoft</div>
+        <div class="name">SQL Server</div>
+        <div class="desc">L'équivalent Microsoft. Très répandu dans les écosystèmes .NET, les entreprises historiquement Windows. Disponible sur Linux depuis 2017.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Distribuée moderne</div>
+        <div class="name">NewSQL (CockroachDB, Yugabyte)</div>
+        <div class="desc">SQL traditionnel mais avec scaling horizontal natif et multi-région. Garanties ACID conservées. Alternatives récentes pour les besoins de scalabilité globale.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Managé par hyperscaler</div>
+        <div class="name">Aurora / Cloud SQL / Azure SQL</div>
+        <div class="desc">Versions cloud-native de PostgreSQL/MySQL par AWS, GCP, Azure. Backup auto, replication, scaling simplifié. Beaucoup plus cher mais beaucoup moins d'opérationnel à gérer.</div>
+      </div>
+    </div>
+
+    <h3>Les bases NoSQL — quatre familles</h3>
+
+    <div class="defs">
+      <div class="def teal">
+        <div class="def-tag">Famille 1 · Document</div>
+        <div class="def-name">Bases document</div>
+        <div class="def-body">Stockent des documents JSON (ou BSON) avec schéma flexible. Idéal pour les données semi-structurées et évolutives. Leader&nbsp;: <strong>MongoDB</strong>. Alternatives&nbsp;: Couchbase, Amazon DocumentDB, Azure Cosmos DB.</div>
+      </div>
+
+      <div class="def teal">
+        <div class="def-tag">Famille 2 · Clé-valeur</div>
+        <div class="def-name">Key-value stores</div>
+        <div class="def-body">Simples mais ultra-rapides. Stockent une valeur associée à une clé. Usage&nbsp;: cache applicatif, session store, file d'attente simple, compteurs. Leader open source&nbsp;: <strong>Redis</strong> (et sa branche Valkey). Alternatives&nbsp;: Memcached, DynamoDB (AWS), Cassandra en mode simplifié.</div>
+      </div>
+
+      <div class="def teal">
+        <div class="def-tag">Famille 3 · Column-family</div>
+        <div class="def-name">Wide column</div>
+        <div class="def-body">Conçues pour des volumes gigantesques et des écritures massives. Issue du Bigtable de Google. Leader&nbsp;: <strong>Cassandra</strong> (open source). Autres&nbsp;: ScyllaDB (Cassandra compatible en C++), HBase, Bigtable, DynamoDB.</div>
+      </div>
+
+      <div class="def teal">
+        <div class="def-tag">Famille 4 · Graph</div>
+        <div class="def-name">Bases graphes</div>
+        <div class="def-body">Stockent nœuds et relations. Excellentes pour les réseaux sociaux, détection de fraude, recommandation, knowledge graphs. Leader&nbsp;: <strong>Neo4j</strong>. Autres&nbsp;: Amazon Neptune, ArangoDB, JanusGraph.</div>
+      </div>
+    </div>
+
+    <h3>Les bases spécialisées</h3>
+
+    <div class="eco">
+      <div class="eco-card">
+        <div class="cat">Séries temporelles</div>
+        <div class="name">TSDB</div>
+        <div class="desc">Optimisées pour les données horodatées&nbsp;: métriques, télémétrie IoT, finance. <em>InfluxDB, TimescaleDB, VictoriaMetrics, Prometheus</em>. Le Volume 2 en parlait pour la supervision.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Recherche</div>
+        <div class="name">Moteurs de recherche</div>
+        <div class="desc">Indexation plein texte, recherche pertinente, agrégations analytiques. <em>Elasticsearch / OpenSearch, Meilisearch, Typesense, Algolia</em> (SaaS).</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Vectoriel (IA)</div>
+        <div class="name">Vector databases</div>
+        <div class="desc">Indexent des <em>embeddings</em> pour la recherche sémantique et le RAG. Essentielles dans les architectures IA. <em>Pinecone, Weaviate, Qdrant, Milvus, pgvector</em> (extension PostgreSQL).</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Analytiques</div>
+        <div class="name">Entrepôts de données</div>
+        <div class="desc">OLAP — optimisées pour les requêtes analytiques sur des volumes massifs. <em>Snowflake, Databricks, BigQuery, Redshift, ClickHouse</em> (open source, montée fulgurante).</div>
+      </div>
+    </div>
+
+    <div class="callout teal">
+      <span class="callout-label">OLTP vs OLAP — vocabulaire clé</span>
+      <p>Deux mondes différents. <strong>OLTP</strong> (Online Transaction Processing) &nbsp;: beaucoup de petites transactions (lire/écrire une ligne). Optimisé par les bases classiques (PostgreSQL, MySQL). <strong>OLAP</strong> (Online Analytical Processing) &nbsp;: peu de requêtes, mais énormes (agrégation sur des milliards de lignes). Optimisé par les entrepôts (Snowflake, BigQuery, ClickHouse). Les confondre coûte cher&nbsp;: un OLAP sur MySQL rampe, un OLTP sur Snowflake est hors de prix.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 06 MESSAGING ======================= -->
+<section id="messaging">
+  <div class="section-inner">
+    <div class="section-num">Section 06 — Flux asynchrones</div>
+    <h2>Messaging &amp; <em>streaming</em></h2>
+
+    <p>Quand les services deviennent nombreux, la communication synchrone directe (service A appelle service B par HTTP) devient rapidement un cauchemar&nbsp;: couplage fort, pannes en cascade, lenteurs qui se propagent. La réponse&nbsp;: des <strong>middlewares de messagerie</strong> qui permettent aux services de communiquer <em>de façon asynchrone</em>, via des files ou des flux.</p>
+
+    <h3>Deux grandes familles</h3>
+
+    <div class="defs">
+      <div class="def">
+        <div class="def-tag">Paradigme 1</div>
+        <div class="def-name">Message broker (queue)</div>
+        <div class="def-body"><strong>Les messages sont consommés puis disparaissent.</strong> Un consommateur prend un message dans la queue, le traite, puis il est supprimé. Idéal pour des tâches à exécuter une seule fois (envoyer un email, traiter un paiement). Leaders&nbsp;: <em>RabbitMQ</em>, <em>ActiveMQ</em>, <em>AWS SQS</em>.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Paradigme 2</div>
+        <div class="def-name">Event streaming</div>
+        <div class="def-body"><strong>Les messages sont conservés dans un log ordonné.</strong> Plusieurs consommateurs peuvent les lire indépendamment, à leur rythme. Les messages restent disponibles pour replay. Idéal pour l'analytique temps réel, l'event sourcing, l'alimentation de plusieurs systèmes. Leader&nbsp;: <strong>Kafka</strong>. Alternatives&nbsp;: <em>Apache Pulsar, AWS Kinesis, Redpanda</em> (Kafka compatible, plus rapide).</div>
+      </div>
+    </div>
+
+    <div class="diagram">
+      <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg">
+        <text x="400" y="28" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#8b8e98" letter-spacing="2">MESSAGE BROKER VS EVENT STREAMING</text>
+
+        <!-- Left: Queue (RabbitMQ) -->
+        <g>
+          <text x="200" y="65" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#c2410c" letter-spacing="1.5">QUEUE — RabbitMQ / SQS</text>
+
+          <!-- Producer -->
+          <rect x="60" y="90" width="80" height="45" fill="#faf7f0" stroke="#1a1d29" rx="3"/>
+          <text x="100" y="110" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="13" fill="#1a1d29">Service A</text>
+          <text x="100" y="126" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98">producer</text>
+
+          <!-- Queue -->
+          <g transform="translate(160, 90)">
+            <rect x="0" y="0" width="80" height="45" fill="#1a1d29" rx="3"/>
+            <rect x="8" y="10" width="15" height="25" fill="#f59e0b" opacity="0.3"/>
+            <rect x="26" y="10" width="15" height="25" fill="#f59e0b" opacity="0.3"/>
+            <rect x="44" y="10" width="15" height="25" fill="#f59e0b" opacity="0.3"/>
+            <text x="40" y="60" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#4a4d59" font-style="italic">queue</text>
+          </g>
+
+          <!-- Arrow from A to queue -->
+          <line x1="140" y1="112" x2="158" y2="112" stroke="#c2410c" stroke-width="1.5"/>
+          <polygon points="158,112 153,109 153,115" fill="#c2410c"/>
+
+          <!-- Consumer -->
+          <rect x="260" y="90" width="80" height="45" fill="#faf7f0" stroke="#1a1d29" rx="3"/>
+          <text x="300" y="110" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="13" fill="#1a1d29">Service B</text>
+          <text x="300" y="126" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98">consumer</text>
+
+          <!-- Arrow from queue to B (consuming) -->
+          <line x1="240" y1="112" x2="258" y2="112" stroke="#c2410c" stroke-width="1.5"/>
+          <polygon points="258,112 253,109 253,115" fill="#c2410c"/>
+
+          <!-- Caption -->
+          <text x="200" y="180" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">✓ message pris → supprimé</text>
+          <text x="200" y="200" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">✓ un seul consommateur par message</text>
+          <text x="200" y="220" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">✗ pas de replay</text>
+
+          <text x="200" y="260" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="12" fill="#c2410c">Idéal pour&nbsp;: tâches à exécuter</text>
+          <text x="200" y="276" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#8b8e98">e-mails, paiements, génération de rapports</text>
+        </g>
+
+        <!-- Separator -->
+        <line x1="400" y1="60" x2="400" y2="310" stroke="#d6d0c2" stroke-dasharray="3,3"/>
+
+        <!-- Right: Stream (Kafka) -->
+        <g>
+          <text x="600" y="65" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#0d766e" letter-spacing="1.5">STREAM — Kafka / Kinesis</text>
+
+          <!-- Producers -->
+          <rect x="440" y="90" width="80" height="40" fill="#faf7f0" stroke="#1a1d29" rx="3"/>
+          <text x="480" y="114" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#1a1d29">Producer 1</text>
+
+          <rect x="440" y="140" width="80" height="40" fill="#faf7f0" stroke="#1a1d29" rx="3"/>
+          <text x="480" y="164" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#1a1d29">Producer 2</text>
+
+          <!-- Topic (log) -->
+          <g transform="translate(540, 90)">
+            <rect x="0" y="0" width="120" height="90" fill="#0d766e" rx="3"/>
+            <text x="60" y="20" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#f5f1e8">topic / log</text>
+            <g font-family="JetBrains Mono, monospace" font-size="9" fill="#d1f0ed">
+              <rect x="8" y="28" width="14" height="14" fill="#f5f1e8" opacity="0.2"/>
+              <rect x="24" y="28" width="14" height="14" fill="#f5f1e8" opacity="0.2"/>
+              <rect x="40" y="28" width="14" height="14" fill="#f5f1e8" opacity="0.2"/>
+              <rect x="56" y="28" width="14" height="14" fill="#f5f1e8" opacity="0.2"/>
+              <rect x="72" y="28" width="14" height="14" fill="#f5f1e8" opacity="0.2"/>
+              <rect x="88" y="28" width="14" height="14" fill="#f5f1e8" opacity="0.2"/>
+              <rect x="8" y="46" width="14" height="14" fill="#f5f1e8" opacity="0.2"/>
+              <rect x="24" y="46" width="14" height="14" fill="#f5f1e8" opacity="0.2"/>
+              <rect x="40" y="46" width="14" height="14" fill="#f5f1e8" opacity="0.2"/>
+              <rect x="56" y="46" width="14" height="14" fill="#f5f1e8" opacity="0.2"/>
+            </g>
+            <text x="60" y="78" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#d1f0ed">conservé · ordonné · partitionné</text>
+          </g>
+
+          <!-- Consumers -->
+          <rect x="680" y="90" width="80" height="32" fill="#faf7f0" stroke="#1a1d29" rx="3"/>
+          <text x="720" y="110" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#1a1d29">Consumer 1</text>
+
+          <rect x="680" y="130" width="80" height="32" fill="#faf7f0" stroke="#1a1d29" rx="3"/>
+          <text x="720" y="150" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#1a1d29">Consumer 2</text>
+
+          <rect x="680" y="170" width="80" height="32" fill="#faf7f0" stroke="#1a1d29" rx="3"/>
+          <text x="720" y="190" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#1a1d29">Consumer 3</text>
+
+          <!-- Arrows producers to log -->
+          <line x1="520" y1="110" x2="538" y2="122" stroke="#0d766e" stroke-width="1.5"/>
+          <line x1="520" y1="160" x2="538" y2="148" stroke="#0d766e" stroke-width="1.5"/>
+
+          <!-- Arrows log to consumers -->
+          <line x1="662" y1="125" x2="678" y2="106" stroke="#0d766e" stroke-width="1.5"/>
+          <line x1="662" y1="135" x2="678" y2="146" stroke="#0d766e" stroke-width="1.5"/>
+          <line x1="662" y1="155" x2="678" y2="186" stroke="#0d766e" stroke-width="1.5"/>
+
+          <!-- Caption -->
+          <text x="600" y="225" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">✓ messages conservés (rétention)</text>
+          <text x="600" y="245" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">✓ plusieurs consommateurs indépendants</text>
+          <text x="600" y="265" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">✓ replay possible</text>
+
+          <text x="600" y="295" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="12" fill="#0d766e">Idéal pour&nbsp;: flux d'événements</text>
+          <text x="600" y="311" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#8b8e98">analytique temps réel, event sourcing, CDC</text>
+        </g>
+      </svg>
+      <div class="diagram-caption"><strong>Figure 5</strong>Queue vs Stream — le bon outil selon que tu traites des tâches ou des événements</div>
+    </div>
+
+    <h3>Dans l'univers cloud public</h3>
+
+    <p>Chaque hyperscaler propose ses services managés équivalents&nbsp;:</p>
+
+    <table class="compare">
+      <thead>
+        <tr><th>Besoin</th><th>AWS</th><th>GCP</th><th>Azure</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Queue simple</td>
+          <td>SQS</td>
+          <td>Cloud Tasks</td>
+          <td>Queue Storage</td>
+        </tr>
+        <tr>
+          <td>Pub/Sub</td>
+          <td>SNS</td>
+          <td>Pub/Sub</td>
+          <td>Event Grid</td>
+        </tr>
+        <tr>
+          <td>Streaming</td>
+          <td>Kinesis / MSK (Kafka managé)</td>
+          <td>Pub/Sub + Dataflow</td>
+          <td>Event Hubs</td>
+        </tr>
+        <tr>
+          <td>Bus événementiel</td>
+          <td>EventBridge</td>
+          <td>Eventarc</td>
+          <td>Service Bus</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <span class="callout-label">Le piège classique</span>
+      <p>Kafka est devenu presque un <em>buzz-word</em>. Beaucoup d'équipes le déploient sans réellement avoir besoin de ses caractéristiques (rétention longue, scaling horizontal, multi-consumer). Si tu as juste besoin d'envoyer des emails en asynchrone, RabbitMQ ou même AWS SQS est beaucoup plus simple à opérer qu'un cluster Kafka à 5 nœuds avec ZooKeeper (ou KRaft), registre de schémas et Schema Registry.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 07 CLOUD MODELS ======================= -->
+<section id="models">
+  <div class="section-inner">
+    <div class="section-num">Section 07 — Stratégies cloud</div>
+    <h2>Les modèles de <em>cloud</em></h2>
+
+    <p>Il n'existe pas <em>un</em> cloud. Il existe plusieurs stratégies de déploiement qui répondent à des contraintes différentes — souvent un compromis entre coût, agilité, souveraineté, conformité et autonomie.</p>
+
+    <div class="defs">
+      <div class="def">
+        <div class="def-tag">Le modèle phare</div>
+        <div class="def-name">Public cloud</div>
+        <div class="def-body">Infrastructure opérée par un tiers (AWS, Azure, GCP, OVH) mutualisée entre ses clients. Pay-as-you-go, scalabilité quasi-infinie. Le plus agile, le moins cher à petite échelle. Les hyperscalers dominent&nbsp;: <em>AWS (~30 % du marché), Azure (~25 %), GCP (~12 %)</em>.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Maîtrise totale</div>
+        <div class="def-name">Private cloud</div>
+        <div class="def-body">Infrastructure cloud-like (API, self-service, facturation) mais déployée sur les propres datacenters de l'organisation. OpenStack, VMware Cloud Foundation, Red Hat OpenShift, Azure Stack.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Le mariage</div>
+        <div class="def-name">Hybrid cloud</div>
+        <div class="def-body">Combinaison cohérente de public et privé, avec des workloads qui circulent entre les deux. Typiquement&nbsp;: les données sensibles sur private, les services utilisateurs sur public.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Diversification</div>
+        <div class="def-name">Multi-cloud</div>
+        <div class="def-body">Utilisation délibérée de plusieurs providers publics pour différentes raisons&nbsp;: éviter le vendor lock-in, optimiser les coûts, tirer parti des forces de chacun, ou satisfaire des contraintes règlementaires.</div>
+      </div>
+
+      <div class="def teal">
+        <div class="def-tag">Souveraineté</div>
+        <div class="def-name">Sovereign cloud</div>
+        <div class="def-body">Cloud opéré sous droit local (ex&nbsp;: européen), hors d'atteinte de lois extraterritoriales comme le CLOUD Act ou le Patriot Act américains. Particulièrement pertinent pour le secteur public, la santé, la défense. Initiatives en France&nbsp;: <em>Bleu</em> (Orange + Capgemini + Microsoft), <em>S3ns</em> (Thales + Google), <em>OVH SecNumCloud</em>.</div>
+      </div>
+
+      <div class="def teal">
+        <div class="def-tag">Proximité</div>
+        <div class="def-name">Edge cloud</div>
+        <div class="def-body">Déploiement de ressources cloud au plus près des utilisateurs et des objets connectés. Latence ultra-faible. Cas d'usage&nbsp;: 5G, véhicule autonome, IoT industriel, gaming. Orange et les télécoms sont naturellement bien placés pour l'edge grâce à leur maillage territorial.</div>
+      </div>
+    </div>
+
+    <h3>Le cas Gaia-X et la souveraineté européenne</h3>
+
+    <p><strong>Gaia-X</strong> est une initiative lancée en 2019 par la France et l'Allemagne visant à fédérer des offres cloud européennes autour de standards d'interopérabilité, de portabilité et de transparence. L'objectif n'est pas de créer un «&nbsp;cloud européen&nbsp;» mais un <em>cadre de labellisation</em> permettant aux entreprises européennes de choisir des fournisseurs conformes à certains critères de souveraineté.</p>
+
+    <p>Orange Business est l'un des membres fondateurs de Gaia-X. Les débats sur ce projet ont été nombreux — certains estiment qu'il a dilué ses ambitions en acceptant l'adhésion des hyperscalers américains. Le sujet reste en mouvement en 2026.</p>
+
+    <div class="callout">
+      <span class="callout-label">Le vrai coût du multi-cloud</span>
+      <p>Le multi-cloud sonne bien en réunion stratégique, mais il multiplie la complexité opérationnelle. Chaque provider a ses APIs, ses quirks, sa tarification, ses outils. Pour qu'il soit réellement rentable, il faut soit&nbsp;: (1) des workloads très découplés qu'on peut vraiment bouger, (2) une équipe platform engineering solide pour abstraire les différences, (3) une volonté délibérée de négocier les prix entre fournisseurs. Sinon, c'est souvent 2× les coûts pour 0 % de bénéfices.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 08 PLATFORM ======================= -->
+<section id="platform">
+  <div class="section-inner">
+    <div class="section-num">Section 08 — Abstraction pour les devs</div>
+    <h2>Platform <em>Engineering</em></h2>
+
+    <p>La tendance majeure des années 2023-2026 dans le monde des grandes organisations. Après que le DevOps a voulu que chaque équipe maîtrise sa pile complète, on a réalisé que la <em>charge cognitive</em> imposée aux développeurs devenait ingérable. La solution&nbsp;: une <strong>équipe plateforme</strong> qui construit et maintient une <em>plateforme interne pour développeurs</em> (Internal Developer Platform, IDP), consommée en self-service par les équipes produit.</p>
+
+    <h3>Le concept de golden path</h3>
+
+    <p>Au cœur de la platform engineering, l'idée de <strong>golden path</strong> (chemin doré)&nbsp;: un parcours pré-configuré, opinion-né, qui permet de passer de «&nbsp;j'ai une idée&nbsp;» à «&nbsp;mon service tourne en prod&nbsp;» en quelques clics. Pas le seul chemin possible, mais le plus confortable et celui qui coche toutes les cases (sécurité, conformité, observabilité, coût). Ceux qui sortent du chemin doré le font en connaissance de cause.</p>
+
+    <h3>Les composants d'une IDP</h3>
+
+    <div class="eco">
+      <div class="eco-card">
+        <div class="cat">Le portail</div>
+        <div class="name">Backstage</div>
+        <div class="desc">Créé par Spotify, open source CNCF. Portail unifié service catalog + templates + documentation + plugins. Le standard de fait des IDP DIY ambitieuses.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Portail commercial</div>
+        <div class="name">Port · Cortex · OpsLevel</div>
+        <div class="desc">Alternatives SaaS plus rapides à mettre en place que Backstage. Pensées pour les équipes plateforme qui n'ont pas la bande passante pour construire leur portail.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Orchestration</div>
+        <div class="name">Humanitec · Crossplane</div>
+        <div class="desc">Moteur qui interprète les demandes des développeurs et provisionne les ressources correspondantes dans le cloud. Crossplane est open source et très populaire en 2026.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Self-service infra</div>
+        <div class="name">Terraform Cloud · Atlantis</div>
+        <div class="desc">Exécution pilotée de Terraform depuis des pull requests ou depuis une interface web, avec approbation, politique de sécurité, inventaire.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Self-service déploiement</div>
+        <div class="name">ArgoCD · Flux</div>
+        <div class="desc">GitOps&nbsp;: les déploiements Kubernetes sont pilotés depuis un dépôt Git. L'équipe plateforme fournit les pipelines et les règles, les équipes produit fournissent leurs manifestes.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Observabilité unifiée</div>
+        <div class="name">Stack centralisée</div>
+        <div class="desc">Metrics, logs, traces unifiés dans un seul endroit (Grafana Cloud, Datadog, ou une stack LGTM managée par l'équipe plateforme). Les équipes produit consomment sans avoir à assembler leur stack.</div>
+      </div>
+    </div>
+
+    <div class="callout teal">
+      <span class="callout-label">La règle d'or</span>
+      <p>La platform engineering fonctionne quand l'équipe plateforme traite sa plateforme <strong>comme un produit</strong>, pas comme un service interne. Ça veut dire&nbsp;: des utilisateurs (les devs), un backlog, des sprints, du user research, des métriques de succès (time to first deploy, taux d'adoption des golden paths, NPS interne). Une plateforme imposée sans cet état d'esprit se fait contourner en quelques mois.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 09 FINOPS ======================= -->
+<section id="finops">
+  <div class="section-inner">
+    <div class="section-num">Section 09 — Coûts &amp; sobriété</div>
+    <h2>FinOps &amp; <em>Green IT</em></h2>
+
+    <p>Deux disciplines relativement récentes qui répondent à une prise de conscience tardive&nbsp;: les factures cloud grimpent vite, et le numérique consomme beaucoup d'énergie. Les deux se rejoignent&nbsp;: une infrastructure optimisée coûte moins cher <em>et</em> émet moins de CO₂.</p>
+
+    <h3>FinOps — la discipline du coût cloud</h3>
+
+    <p>Le <strong>FinOps</strong> (contraction de «&nbsp;Finance + DevOps&nbsp;») est une pratique qui vise à donner aux équipes techniques la visibilité et les outils pour optimiser leur consommation cloud en continu. Ses principes&nbsp;: <em>tout le monde est responsable du coût</em> (pas seulement la finance), <em>les décisions sont guidées par la donnée</em>, et <em>l'optimisation est un processus continu</em>.</p>
+
+    <div class="defs">
+      <div class="def">
+        <div class="def-tag">Étape 1 · Visibilité</div>
+        <div class="def-name">Tagging &amp; allocation</div>
+        <div class="def-body">Chaque ressource cloud doit être taguée (équipe, projet, environnement). Sans tags, impossible de savoir qui consomme quoi. C'est le prérequis de tout le FinOps.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Étape 2 · Optimisation</div>
+        <div class="def-name">Rightsizing &amp; cleanup</div>
+        <div class="def-body">Détecter les VMs surdimensionnées, les volumes non attachés, les snapshots oubliés, les environnements de dev qui tournent la nuit. Les outils automatisés (Kubecost pour K8s, Finout, Vantage, CloudHealth) identifient ces gaspillages.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Étape 3 · Engagement</div>
+        <div class="def-name">Reserved Instances &amp; Savings Plans</div>
+        <div class="def-body">Réduire le prix en s'engageant sur 1 ou 3 ans. Économies typiques de 30 à 60&nbsp;% sur les workloads stables. Piège&nbsp;: s'engager sur du capacity qu'on n'utilise finalement pas.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Étape 4 · Anticipation</div>
+        <div class="def-name">Shift-left cost</div>
+        <div class="def-body">Estimer le coût <em>avant</em> le déploiement, pas après. Outils&nbsp;: <em>Infracost</em> (intégré à Terraform dans les PR), <em>Cycloid</em>. Le dev voit combien sa PR va coûter avant de merger.</div>
+      </div>
+    </div>
+
+    <h3>Green IT — la sobriété numérique</h3>
+
+    <p>Le numérique représente environ 4&nbsp;% des émissions mondiales de gaz à effet de serre en 2026, et sa croissance continue. Réduire cette empreinte devient une exigence à la fois règlementaire (CSRD européen), économique (l'énergie coûte plus cher) et éthique.</p>
+
+    <div class="eco">
+      <div class="eco-card">
+        <div class="cat">Mesurer</div>
+        <div class="name">Carbon footprint tools</div>
+        <div class="desc">Les hyperscalers exposent les émissions par service&nbsp;: <em>AWS Customer Carbon Footprint Tool</em>, <em>Azure Sustainability Calculator</em>, <em>Google Cloud Carbon Footprint</em>. Précision variable, surtout utile pour suivre les tendances.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Développer sobre</div>
+        <div class="name">Green coding</div>
+        <div class="desc">Frugal en ressources dès la conception&nbsp;: images Docker minimales, cache agressif, code optimisé, requêtes SQL efficaces. <em>Green Software Foundation</em> propose un référentiel de pratiques.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Choisir sa région</div>
+        <div class="name">Region picking</div>
+        <div class="desc">Toutes les régions cloud n'ont pas le même mix énergétique. Une région avec beaucoup de nucléaire ou d'hydraulique émet beaucoup moins que du charbon. France et Suède sont typiquement les meilleures options en Europe.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Matériel</div>
+        <div class="name">Hardware reconditionné</div>
+        <div class="desc">Acheter du matériel d'occasion ou prolonger la vie de l'existant réduit l'empreinte de fabrication (très significative). Orange s'est donné l'objectif de 15&nbsp;% de matériel recyclé sur ses déploiements serveurs, selon leurs communications publiques.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 10 ORANGE ======================= -->
+<section id="orange" class="orange-focus">
+  <div class="section-inner">
+    <div class="section-num">Section 10 — Focus Orange</div>
+    <h2>L'infrastructure <em>Orange France</em></h2>
+
+    <p>À partir d'ici, on s'appuie <strong>uniquement sur des sources publiques</strong>&nbsp;: articles de presse spécialisée, site open source d'Orange, conférences techniques, communiqués Orange Business. Ta réalité interne peut différer.</p>
+
+    <h3>L'héritage OpenStack</h3>
+
+    <p>Orange est un des <strong>plus gros utilisateurs et contributeurs d'OpenStack dans le monde télécom</strong>. L'histoire commence en 2012 avec <em>Cloudwatt</em>, offre IaaS souveraine française montée dans le cadre du projet Andromède (Grand Emprunt), deuxième entreprise européenne à intégrer la Fondation OpenStack. Cloudwatt devient filiale d'Orange à 100&nbsp;% en 2015, fusionne avec Orange Business en 2016, puis ferme en janvier 2020, les clients étant invités à migrer vers Flexible Engine.</p>
+
+    <p><strong>Flexible Engine</strong>, l'offre IaaS publique d'Orange Business, est basée sur OpenStack et disponible en France et à l'international. Elle reste active en 2026.</p>
+
+    <p>Côté open source, Orange contribue activement&nbsp;: Orange dirige le projet OpenStack BGPVPN dans Neutron, facilitant l'interconnexion de réseaux Neutron à des IPVPN, et a porté le projet Moon, système de gestion de sécurité orientée utilisateur pour les services cloud OpenStack, accepté par le Technical Steering Committee d'OPNFV.</p>
+
+    <h3>Les SDN POPs</h3>
+
+    <p>Orange exploite un réseau mondial de <strong>points de présence SDN</strong> (Software Defined Networking Points of Presence) — environ une cinquantaine de localités tout autour du globe, avec un objectif de 75 d'ici à 2026. Ces datacenters font bien plus qu'interconnecter&nbsp;: ils exécutent plus d'une trentaine de services télécoms liés au routage, assurent la continuité et l'étanchéité de réseaux privés virtuels, maintiennent les connexions SD-WAN, IP/MPLS, FTTO, et exécutent toutes les couches de cybersécurité.</p>
+
+    <p>Historiquement, Orange, comme la plupart des télécoms, motorisait ses datacenters opérateur avec OpenStack, qui s'est particulièrement imposé chez les télécoms pour virtualiser sur des serveurs génériques des services (en particulier dans la téléphonie mobile) qui étaient auparavant livrés dans des boîtes noires par leurs fournisseurs.</p>
+
+    <h3>La modernisation OINIS 2023-2026</h3>
+
+    <p>C'est probablement le chantier infra le plus intéressant côté Orange ces dernières années. OINIS a lancé à l'été 2023 un appel d'offres pour moderniser ses infrastructures OpenStack, avec la capacité d'exécuter à la fois des VM (VNF, Virtual Network Functions) et des containers (CNF, Cloud-native Network Functions).</p>
+
+    <p>Parmi les dix candidats et les quatre finalistes, Red Hat a proposé une approche originale&nbsp;: alors que tous les autres fournisseurs proposaient un hyperviseur pour exécuter les VM, puis ajoutaient Kubernetes dans ces VM pour orchestrer les containers, Red Hat a inversé l'approche — traiter VM et containers au même niveau via Kubernetes. C'est <strong>KubeVirt</strong> — une extension qui permet à Kubernetes d'orchestrer directement des VMs comme si c'étaient des pods. Orange a retenu cette approche.</p>
+
+    <p>Autre contrainte marquante&nbsp;: un <strong>objectif de durabilité interne</strong>. D'après Bess Diop cité dans LeMagIT, «&nbsp;sur 100 serveurs déployés, 15 doivent être du matériel recyclé&nbsp;». Un KPI Green IT concret, directement contractualisé dans les appels d'offres.</p>
+
+    <div class="callout orange">
+      <span class="callout-label">Ce que ça veut dire concrètement</span>
+      <p>Orange est en train de refondre son backbone réseau sur une stack qui combine le meilleur des deux mondes&nbsp;: la maturité OpenStack pour la virtualisation télécom historique, et la flexibilité de Kubernetes pour les nouvelles fonctions cloud-native. C'est une approche techniquement à la pointe, rare dans l'industrie, et c'est un bon point de référence quand tu croises <em>VNF</em>, <em>CNF</em>, ou <em>KubeVirt</em> dans des documents internes.</p>
+    </div>
+
+    <h3>L'écosystème Orange Business</h3>
+
+    <p>Orange Business Services (qu'on croise maintenant souvent sous <em>Orange Business</em> tout court) opère l'offre cloud et services numériques pour les entreprises. D'après leur propre documentation publique, leur offre couvre&nbsp;:</p>
+
+    <ul>
+      <li>Flexible Engine — IaaS public souverain basé OpenStack</li>
+      <li>Des services managés pour Docker et Kubernetes, avec partenariats hyperscalers (AWS, Azure, GCP)</li>
+      <li>Du private cloud sur infrastructures dédiées</li>
+      <li>De la colocation dans leurs datacenters</li>
+      <li>Des offres verticales&nbsp;: Big Data / Data Lake, IoT, AI/ML, CNApps (cloud-native applications)</li>
+      <li>La chaîne outillée DevOps pour accompagner les clients dans leurs pratiques agiles</li>
+    </ul>
+
+    <h3>Les initiatives récentes qu'on a croisées</h3>
+
+    <div class="defs">
+      <div class="def orange">
+        <div class="def-tag">Souveraineté</div>
+        <div class="def-name">Bleu</div>
+        <div class="def-body">Co-entreprise Orange + Capgemini pour opérer des services Microsoft (Azure, M365) sous droit français avec une isolation stricte vis-à-vis des lois américaines. Cible les secteurs sensibles&nbsp;: administration, santé, défense.</div>
+      </div>
+
+      <div class="def orange">
+        <div class="def-tag">Branded Calling</div>
+        <div class="def-name">Solution anti-spam au MWC 2026</div>
+        <div class="def-body">Affichage du nom certifié de l'appelant sur le smartphone, intégré au réseau 4G/5G. S'appuie sur le MAN (Vol. 3) pour l'authentification, sur la base Orange Téléphone pour le filtrage, et sur un partenariat Real Networks pour la base des identités d'entreprise. Objectif annoncé par Guillaume Cayatte&nbsp;: un tiers des appels pourrait afficher une identité vérifiée d'ici 2030.</div>
+      </div>
+
+      <div class="def orange">
+        <div class="def-tag">Plateforme IA interne</div>
+        <div class="def-name">Live Intelligence Studio</div>
+        <div class="def-body">Plateforme interne Orange autour de l'IA générative et des agents, évoquée dans tes précédentes conversations. Couplée à Live Collaboration pour la communication interne. Détails publics limités — à confirmer via ton wiki interne.</div>
+      </div>
+
+      <div class="def orange">
+        <div class="def-tag">Open source</div>
+        <div class="def-name">opensource.orange.com</div>
+        <div class="def-body">Le site officiel d'Orange qui liste ses contributions et projets open source&nbsp;: contributions OpenStack (Neutron BGPVPN, Moon), participations à la CNCF et à la Linux Foundation, initiatives internes libérées. Bonne source pour savoir ce qui est publiquement partagé côté infra Orange.</div>
+      </div>
+    </div>
+
+    <div class="callout orange">
+      <span class="callout-label">Pour aller plus loin côté interne</span>
+      <p>Les sources publiques te donnent le <em>cadre</em>. Pour les spécificités de ton environnement — noms des plateformes internes, règles de la platform engineering Orange, configuration Kubernetes/OpenShift, politiques de sécurité, SDAN — c'est le wiki interne et ton équipe plateforme qui seront les bonnes portes d'entrée. Dès que tu trouves des documents ou schémas internes, je peux t'aider à les structurer ou t'expliquer un élément si tu me partages des extraits non confidentiels.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= GLOSSAIRE ======================= -->
+<section id="glossary">
+  <div class="section-inner">
+    <div class="section-num">Section 11 — Référence</div>
+    <h2>Glossaire <em>express</em></h2>
+
+    <div class="glossary">
+      <dl>
+        <dt>ACID</dt>
+        <dd><strong>Atomicity, Consistency, Isolation, Durability.</strong> Les quatre garanties des transactions dans une base relationnelle.</dd>
+
+        <dt>AZ</dt>
+        <dd><strong>Availability Zone.</strong> Un datacenter ou petit groupe de datacenters à l'intérieur d'une région cloud.</dd>
+
+        <dt>Backstage</dt>
+        <dd>Portail développeur open source créé par Spotify, devenu standard de fait pour les IDP.</dd>
+
+        <dt>Bleu</dt>
+        <dd>Co-entreprise Orange + Capgemini pour opérer des services Microsoft sous droit français.</dd>
+
+        <dt>CDN</dt>
+        <dd><strong>Content Delivery Network.</strong> Cache géo-distribué pour servir du contenu statique près des utilisateurs.</dd>
+
+        <dt>Cinder</dt>
+        <dd>Le service de stockage bloc d'OpenStack. Équivalent d'AWS EBS.</dd>
+
+        <dt>CNF</dt>
+        <dd><strong>Cloud-native Network Function.</strong> Version conteneurisée d'une fonction réseau télécom. Successeur du VNF.</dd>
+
+        <dt>Crossplane</dt>
+        <dd>Outil qui expose les ressources cloud (AWS, GCP, Azure) comme des objets Kubernetes. IaC via l'API K8s.</dd>
+
+        <dt>FaaS</dt>
+        <dd><strong>Function as a Service.</strong> Serverless — AWS Lambda, Cloud Functions.</dd>
+
+        <dt>FinOps</dt>
+        <dd>Discipline de pilotage et d'optimisation des coûts cloud.</dd>
+
+        <dt>Flexible Engine</dt>
+        <dd>L'offre IaaS public d'Orange Business Services, basée sur OpenStack.</dd>
+
+        <dt>Gaia-X</dt>
+        <dd>Initiative franco-allemande de cadre de labellisation des offres cloud européennes.</dd>
+
+        <dt>Golden path</dt>
+        <dd>Parcours pré-configuré et opinion-né proposé aux développeurs par l'équipe plateforme.</dd>
+
+        <dt>HSM</dt>
+        <dd><strong>Hardware Security Module.</strong> Équipement dédié au stockage sécurisé de clés cryptographiques.</dd>
+
+        <dt>Hyperviseur</dt>
+        <dd>Logiciel qui partage un serveur physique en plusieurs machines virtuelles isolées.</dd>
+
+        <dt>IDP</dt>
+        <dd><strong>Internal Developer Platform.</strong> Plateforme interne construite par l'équipe platform engineering pour les équipes produit.</dd>
+
+        <dt>IOPS</dt>
+        <dd><strong>Input/Output Operations Per Second.</strong> Mesure de performance d'un stockage bloc.</dd>
+
+        <dt>KubeVirt</dt>
+        <dd>Extension Kubernetes permettant d'orchestrer des VMs comme des pods. Choix de Red Hat pour Orange OINIS.</dd>
+
+        <dt>LB (L4/L7)</dt>
+        <dd>Load Balancer niveau 4 (TCP/UDP) ou niveau 7 (HTTP). Le L7 fait du routage par URL, cookie, header.</dd>
+
+        <dt>MinIO</dt>
+        <dd>Stockage objet open source compatible S3, très utilisé en on-premise.</dd>
+
+        <dt>NAT Gateway</dt>
+        <dd>Permet aux ressources d'un subnet privé d'accéder à Internet sans être directement exposées.</dd>
+
+        <dt>Neutron</dt>
+        <dd>Le service réseau d'OpenStack. Gère VPCs, subnets, routers, floating IPs.</dd>
+
+        <dt>Nova</dt>
+        <dd>Le service compute d'OpenStack. Orchestre les machines virtuelles. Équivalent d'AWS EC2.</dd>
+
+        <dt>OCI</dt>
+        <dd><strong>Open Container Initiative.</strong> Spécification ouverte du format et du runtime des containers.</dd>
+
+        <dt>OINIS</dt>
+        <dd>Entité d'Orange gérant l'infrastructure réseau (International Networks &amp; Infrastructure Services), à l'origine de la modernisation OpenStack+Kubernetes récente.</dd>
+
+        <dt>OLAP / OLTP</dt>
+        <dd>Analytical vs Transactional Processing. Deux modes d'utilisation des bases de données.</dd>
+
+        <dt>OpenShift</dt>
+        <dd>Distribution Kubernetes d'entreprise de Red Hat, très présente chez les opérateurs télécom.</dd>
+
+        <dt>OpenStack</dt>
+        <dd>Plateforme open source d'infrastructure cloud. Modulaire (Nova, Neutron, Cinder, Swift, Keystone…). Socle historique d'Orange.</dd>
+
+        <dt>PoP</dt>
+        <dd><strong>Point of Presence.</strong> Un site où un opérateur offre une connectivité réseau. Orange exploite plusieurs dizaines de SDN PoPs.</dd>
+
+        <dt>S3</dt>
+        <dd>Le service de stockage objet d'AWS, dont l'API est devenue le standard de fait partout.</dd>
+
+        <dt>SDN</dt>
+        <dd><strong>Software-Defined Networking.</strong> Réseau où la configuration et le contrôle sont logiciels, découplés du matériel.</dd>
+
+        <dt>SD-WAN</dt>
+        <dd><strong>Software-Defined Wide Area Network.</strong> Réseau étendu dont les politiques de routage sont pilotées par logiciel. Pilier des services Orange Business.</dd>
+
+        <dt>Serverless</dt>
+        <dd>Modèle où le provider gère tout le runtime et facture à l'exécution. FaaS ou conteneurs serverless.</dd>
+
+        <dt>Service mesh</dt>
+        <dd>Infrastructure de communication entre microservices. Istio, Linkerd.</dd>
+
+        <dt>Sovereign cloud</dt>
+        <dd>Cloud opéré sous droit local, hors juridiction étrangère (Patriot Act, CLOUD Act).</dd>
+
+        <dt>Subnet</dt>
+        <dd>Sous-réseau à l'intérieur d'un VPC, typiquement rattaché à une AZ.</dd>
+
+        <dt>Swift</dt>
+        <dd>Le service de stockage objet d'OpenStack. Équivalent d'AWS S3.</dd>
+
+        <dt>TSDB</dt>
+        <dd><strong>Time-Series Database.</strong> Base optimisée pour les données horodatées.</dd>
+
+        <dt>VNF</dt>
+        <dd><strong>Virtual Network Function.</strong> Version virtualisée d'une fonction réseau télécom (firewall, router, BRAS). Tourne dans une VM.</dd>
+
+        <dt>VPC</dt>
+        <dd><strong>Virtual Private Cloud.</strong> Réseau isolé dans un cloud public.</dd>
+      </dl>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">La collection est complète</span>
+      <p>Avec les quatre volumes — Terraform, Cloud &amp; DevOps, MAN/Ribbon STI, Infrastructure moderne — tu as désormais un panorama raisonnablement cohérent des concepts techniques qui traversent les conversations d'ingénierie chez un grand opérateur. Chaque volume peut être approfondi à l'infini, mais le cadre mental est posé.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Guide rédigé pour Max · Volume 4 · Édition 2026 · <span>Sous chaque appel, sous chaque clic, il y a une infrastructure</span></p>
+</footer>
+
+</body>
+</html>
