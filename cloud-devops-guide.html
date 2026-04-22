@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L'écosystème Cloud & DevOps — Guide visuel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=Inter+Tight:wght@300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f1e8;
+  --bg-paper: #faf7f0;
+  --ink: #1a1d29;
+  --ink-soft: #4a4d59;
+  --ink-muted: #8b8e98;
+  --accent: #c2410c;
+  --accent-2: #7c2d12;
+  --accent-soft: #fef3c7;
+  --accent-line: #f59e0b;
+  --teal: #0d766e;
+  --teal-soft: #d1f0ed;
+  --rule: #d6d0c2;
+  --rule-soft: #e8e2d2;
+  --code-bg: #1a1d29;
+  --code-text: #f5f1e8;
+  --code-comment: #8b8e98;
+  --code-keyword: #f59e0b;
+  --code-string: #a3e635;
+  --code-prop: #93c5fd;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter Tight', -apple-system, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+  font-feature-settings: 'ss01', 'cv11';
+  -webkit-font-smoothing: antialiased;
+}
+
+.container { max-width: 880px; margin: 0 auto; padding: 0 32px; }
+
+/* === HERO === */
+.hero {
+  padding: 88px 32px 72px;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 800px 400px at 80% 0%, rgba(245, 158, 11, 0.12), transparent 60%),
+    radial-gradient(ellipse 600px 300px at 0% 100%, rgba(13, 118, 110, 0.08), transparent 60%);
+  pointer-events: none;
+}
+.hero-inner { max-width: 880px; margin: 0 auto; position: relative; }
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: clamp(44px, 6.5vw, 80px);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  font-variation-settings: 'opsz' 144, 'SOFT' 50;
+  margin-bottom: 28px;
+}
+h1 em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--accent);
+  font-variation-settings: 'opsz' 144, 'SOFT' 100;
+}
+.lede {
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 640px;
+  font-weight: 300;
+}
+.meta {
+  margin-top: 48px;
+  display: flex;
+  gap: 32px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.meta span strong {
+  display: block;
+  color: var(--ink);
+  font-weight: 500;
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+/* === TOC === */
+.toc { padding: 48px 32px; border-bottom: 1px solid var(--rule); background: var(--bg-paper); }
+.toc-inner { max-width: 880px; margin: 0 auto; }
+.toc-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 20px;
+}
+.toc-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px 32px;
+}
+.toc-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 8px 0;
+  border-bottom: 1px dotted var(--rule);
+}
+.toc-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); min-width: 24px; }
+.toc-list a {
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 15px;
+  flex: 1;
+  transition: color 0.2s;
+}
+.toc-list a:hover { color: var(--accent); }
+
+/* === SECTIONS === */
+section { padding: 80px 32px; border-bottom: 1px solid var(--rule); }
+.section-inner { max-width: 880px; margin: 0 auto; }
+.section-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-num::before {
+  content: '§';
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 16px;
+}
+h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: clamp(34px, 5vw, 52px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-variation-settings: 'opsz' 96;
+  margin-bottom: 32px;
+  max-width: 720px;
+}
+h2 em { font-style: italic; color: var(--accent); font-weight: 300; }
+h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  margin: 40px 0 16px;
+}
+h4 {
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  margin: 28px 0 10px;
+  color: var(--ink);
+}
+p { margin-bottom: 18px; max-width: 700px; }
+p strong { color: var(--ink); font-weight: 600; }
+em { font-style: italic; }
+
+a.inline {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-line);
+  transition: background 0.2s;
+}
+a.inline:hover { background: var(--accent-soft); }
+
+.dropcap::first-letter {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-size: 5.5em;
+  line-height: 0.85;
+  float: left;
+  margin: 6px 12px -8px 0;
+  color: var(--accent);
+  font-variation-settings: 'opsz' 144;
+}
+
+/* === CALLOUT === */
+.callout {
+  margin: 32px 0;
+  padding: 24px 28px;
+  background: var(--bg-paper);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 4px 4px 0;
+}
+.callout.teal { border-left-color: var(--teal); }
+.callout-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+  display: block;
+}
+.callout.teal .callout-label { color: var(--teal); }
+.callout p { margin-bottom: 0; font-size: 15px; }
+
+/* === DIAGRAM CARD === */
+.diagram {
+  margin: 40px -16px;
+  padding: 40px 32px 28px;
+  background: var(--bg-paper);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+}
+.diagram.dark { background: var(--code-bg); border-color: #2d3040; }
+.diagram svg { width: 100%; height: auto; display: block; max-width: 100%; }
+.diagram-caption {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px dotted var(--rule);
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-family: 'Inter Tight', sans-serif;
+  text-align: center;
+  font-style: italic;
+}
+.diagram.dark .diagram-caption { color: #d4d0c2; border-color: #4a4d59; }
+.diagram-caption strong {
+  font-style: normal;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 4px;
+}
+.diagram.dark .diagram-caption strong { color: var(--accent-line); }
+
+code.inline {
+  background: var(--accent-soft);
+  color: var(--accent-2);
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.88em;
+}
+
+/* === DEFINITION GRID === */
+.defs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  margin: 32px 0;
+}
+.def { padding: 22px 0 0; border-top: 2px solid var(--ink); }
+.def.teal { border-top-color: var(--teal); }
+.def-name {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 20px;
+  font-style: italic;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.def.teal .def-name { color: var(--teal); }
+.def-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 10px;
+}
+.def-body { font-size: 14px; line-height: 1.55; color: var(--ink-soft); }
+.def-body code.inline { font-size: 0.85em; }
+
+/* === COMPARISON TABLE === */
+.compare { margin: 32px 0; width: 100%; border-collapse: collapse; font-size: 14px; }
+.compare th {
+  text-align: left;
+  padding: 14px 12px;
+  border-bottom: 2px solid var(--ink);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.compare td { padding: 16px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.compare td:first-child {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--accent);
+  font-weight: 500;
+  width: 28%;
+}
+
+/* === CARDS === */
+.eco { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin: 32px 0; }
+.eco-card {
+  padding: 24px;
+  background: var(--bg-paper);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+}
+.eco-card .cat {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.eco-card .name {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+.eco-card .desc { font-size: 13px; color: var(--ink-soft); line-height: 1.55; }
+
+/* === PILLARS (for observability) === */
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  margin: 32px 0;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.pillar { background: var(--bg-paper); padding: 28px 22px; }
+.pillar-num {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 32px;
+  color: var(--teal);
+  font-weight: 300;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.pillar-name {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+.pillar-q {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 6px;
+}
+.pillar-a { font-size: 14px; color: var(--ink-soft); line-height: 1.5; margin-bottom: 14px; }
+.pillar-tools {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--teal);
+  padding-top: 12px;
+  border-top: 1px dotted var(--rule);
+}
+@media (max-width: 720px) { .pillars { grid-template-columns: 1fr; } }
+
+/* === GLOSSARY === */
+.glossary { margin: 32px 0; }
+.glossary dl { display: grid; grid-template-columns: auto 1fr; gap: 0 24px; }
+.glossary dt {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  color: var(--accent);
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  min-width: 100px;
+}
+.glossary dd {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.glossary dd strong { color: var(--ink); font-weight: 500; }
+
+/* === FOOTER === */
+footer {
+  padding: 48px 32px 64px;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+footer span { color: var(--accent); }
+
+@media (max-width: 640px) {
+  .toc-list { grid-template-columns: 1fr; }
+  .meta { flex-direction: column; gap: 16px; }
+  .diagram { margin: 32px 0; padding: 24px 16px 20px; }
+  body { font-size: 16px; }
+  .glossary dl { grid-template-columns: 1fr; gap: 0; }
+  .glossary dt { border-bottom: none; padding-bottom: 2px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ======================= HERO ======================= -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Guide débutant — Volume 2 · 2026</div>
+    <h1>Cloud &amp; DevOps,<br>la <em>carte complète</em>.</h1>
+    <p class="lede">Un guide visuel de tous les acronymes, modèles et outils qui forment l'écosystème moderne du cloud : XaaS, CI/CD, containers, Kubernetes, observabilité. Pensé pour celles et ceux qui entendent ces mots au quotidien sans toujours savoir comment ils s'articulent.</p>
+    <div class="meta">
+      <span>Niveau<strong>Débutant</strong></span>
+      <span>Temps de lecture<strong>≈ 35 minutes</strong></span>
+      <span>Prérequis<strong>Volume 1 — Terraform</strong></span>
+    </div>
+  </div>
+</header>
+
+<!-- ======================= TOC ======================= -->
+<nav class="toc">
+  <div class="toc-inner">
+    <div class="toc-title">Sommaire</div>
+    <ol class="toc-list">
+      <li><span class="toc-num">01</span><a href="#context">Pourquoi tant d'acronymes&nbsp;?</a></li>
+      <li><span class="toc-num">02</span><a href="#xaas">Les modèles XaaS</a></li>
+      <li><span class="toc-num">03</span><a href="#devops">La boucle DevOps</a></li>
+      <li><span class="toc-num">04</span><a href="#cicd">CI, CD… et CD</a></li>
+      <li><span class="toc-num">05</span><a href="#iac">L'Infrastructure as Code</a></li>
+      <li><span class="toc-num">06</span><a href="#containers">Containers &amp; Kubernetes</a></li>
+      <li><span class="toc-num">07</span><a href="#obs">L'observabilité</a></li>
+      <li><span class="toc-num">08</span><a href="#secops">Sécurité &amp; DevSecOps</a></li>
+      <li><span class="toc-num">09</span><a href="#big-picture">Vue d'ensemble</a></li>
+      <li><span class="toc-num">10</span><a href="#glossary">Glossaire express</a></li>
+    </ol>
+  </div>
+</nav>
+
+<!-- ======================= 01 CONTEXTE ======================= -->
+<section id="context">
+  <div class="section-inner">
+    <div class="section-num">Section 01 — Le paysage</div>
+    <h2>Pourquoi tant <em>d'acronymes&nbsp;?</em></h2>
+
+    <p class="dropcap">Il y a vingt ans, créer un service en ligne impliquait d'acheter des serveurs physiques, de les brancher dans une salle climatisée, d'installer un système d'exploitation, de configurer un réseau, de déployer l'application à la main, et de surveiller tout ça avec des scripts bricolés. Les <em>développeurs</em> écrivaient le code, les <em>opérateurs</em> le faisaient tourner en production, et ces deux mondes ne se parlaient qu'en cas d'incident — généralement pour se rejeter la faute.</p>
+
+    <p>Deux révolutions ont fait voler cette organisation en éclats. Le <strong>cloud computing</strong> d'abord, qui a permis de louer l'infrastructure à la minute au lieu de l'acheter à l'année. Puis la culture <strong>DevOps</strong>, qui a réuni développement et opérations dans une même boucle de collaboration continue. En vingt ans, une forêt d'outils, de modèles et d'acronymes a poussé sur ce terrain fertile.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
+        <!-- LEFT: silo -->
+        <g>
+          <text x="180" y="30" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#8b8e98" letter-spacing="2">LE MONDE D'AVANT</text>
+
+          <!-- Dev wall -->
+          <rect x="40" y="60" width="130" height="160" fill="#faf7f0" stroke="#1a1d29" stroke-width="1.5" rx="4"/>
+          <text x="105" y="90" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="18" fill="#1a1d29">Dev</text>
+          <text x="105" y="115" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">Écrit le code</text>
+          <text x="105" y="133" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">"ça marche</text>
+          <text x="105" y="148" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">sur ma machine"</text>
+
+          <!-- Wall -->
+          <line x1="180" y1="60" x2="180" y2="220" stroke="#7c2d12" stroke-width="3" stroke-dasharray="5,3"/>
+          <text x="180" y="50" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#7c2d12" letter-spacing="1.5">MUR</text>
+
+          <!-- Ops wall -->
+          <rect x="190" y="60" width="130" height="160" fill="#faf7f0" stroke="#1a1d29" stroke-width="1.5" rx="4"/>
+          <text x="255" y="90" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="18" fill="#1a1d29">Ops</text>
+          <text x="255" y="115" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">Déploie &amp; maintient</text>
+          <text x="255" y="133" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">"ça casse sur</text>
+          <text x="255" y="148" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">la prod"</text>
+
+          <text x="180" y="250" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="12" fill="#7c2d12" font-style="italic">Silos · Conflits · Livraisons rares</text>
+        </g>
+
+        <!-- Arrow -->
+        <g transform="translate(360, 140)">
+          <line x1="0" y1="0" x2="60" y2="0" stroke="#c2410c" stroke-width="1.5"/>
+          <polygon points="60,0 52,-5 52,5" fill="#c2410c"/>
+        </g>
+
+        <!-- RIGHT: DevOps loop -->
+        <g>
+          <text x="590" y="30" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#c2410c" letter-spacing="2">LE MONDE DEVOPS</text>
+
+          <rect x="440" y="60" width="320" height="160" fill="#faf7f0" stroke="#c2410c" stroke-width="1.5" rx="4"/>
+
+          <!-- Infinity shape (simplified) -->
+          <path d="M 500 140 Q 500 110 530 110 Q 560 110 580 140 Q 600 170 620 170 Q 640 170 640 140 Q 640 110 620 110 Q 600 110 580 140 Q 560 170 530 170 Q 500 170 500 140 Z"
+                fill="none" stroke="#c2410c" stroke-width="2"/>
+          <circle cx="512" cy="140" r="4" fill="#c2410c"/>
+          <circle cx="640" cy="140" r="4" fill="#c2410c"/>
+          <text x="565" y="100" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="18" fill="#c2410c">Dev × Ops</text>
+          <text x="565" y="195" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#4a4d59">COLLABORATION CONTINUE</text>
+
+          <text x="600" y="250" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="12" fill="#c2410c" font-style="italic">Une équipe · Un cycle · Livraisons fréquentes</text>
+        </g>
+      </svg>
+      <div class="diagram-caption"><strong>Figure 1</strong>La bascule culturelle qui a tout déclenché — du mur entre Dev et Ops à la boucle infinie</div>
+    </div>
+
+    <p>Dans ce guide, on va parcourir méthodiquement les grandes <strong>familles</strong> de cet écosystème. À la fin, quand tu entendras quelqu'un dire <em>«&nbsp;on pousse en staging via une pipeline GitLab CI qui build un container Docker, le déploie sur notre cluster K8s, et l'observabilité passe par Prometheus/Grafana&nbsp;»</em>, tu sauras exactement ce que ça veut dire — et pourquoi c'est plutôt une bonne idée.</p>
+
+    <div class="callout">
+      <span class="callout-label">Repère mental</span>
+      <p>Le cloud et DevOps ne sont pas la même chose. Le <strong>cloud</strong>, c'est <em>où</em> ton code tourne. <strong>DevOps</strong>, c'est <em>comment</em> tu l'y amènes. Les deux se sont développés en parallèle et se renforcent mutuellement, mais ce sont des concepts distincts.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 02 XAAS ======================= -->
+<section id="xaas">
+  <div class="section-inner">
+    <div class="section-num">Section 02 — Modèles de service</div>
+    <h2>Les modèles <em>XaaS</em></h2>
+
+    <p>Le suffixe <strong>aaS</strong> signifie <em>as a Service</em> — « en tant que service ». Derrière ces acronymes se cache une question simple : <strong>qu'est-ce que tu gères toi-même, et qu'est-ce que le fournisseur gère pour toi&nbsp;?</strong> Plus tu montes dans l'abstraction, moins tu as de travail — et moins tu as de contrôle.</p>
+
+    <p>Les trois modèles historiques sont <strong>IaaS</strong>, <strong>PaaS</strong> et <strong>SaaS</strong>. D'autres variantes (FaaS, DBaaS, BaaS…) sont venues compléter la famille au fur et à mesure que l'écosystème se spécialisait.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 800 520" xmlns="http://www.w3.org/2000/svg">
+        <!-- Column headers -->
+        <text x="100" y="30" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b8e98" letter-spacing="2">ON-PREMISE</text>
+        <text x="260" y="30" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#c2410c" letter-spacing="2">IaaS</text>
+        <text x="420" y="30" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#c2410c" letter-spacing="2">PaaS</text>
+        <text x="580" y="30" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#c2410c" letter-spacing="2">SaaS</text>
+        <text x="720" y="30" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#0d766e" letter-spacing="2">FaaS</text>
+
+        <!-- Examples row -->
+        <text x="100" y="50" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98" font-style="italic">ton datacenter</text>
+        <text x="260" y="50" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98" font-style="italic">AWS EC2, OVH</text>
+        <text x="420" y="50" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98" font-style="italic">Heroku, Vercel</text>
+        <text x="580" y="50" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98" font-style="italic">Gmail, Notion</text>
+        <text x="720" y="50" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98" font-style="italic">Lambda</text>
+
+        <!-- Layers (from top = app, to bottom = hardware) -->
+        <!-- Row labels on left -->
+        <g font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59" text-anchor="end">
+          <text x="25" y="83">Application</text>
+          <text x="25" y="123">Data</text>
+          <text x="25" y="163">Runtime</text>
+          <text x="25" y="203">Middleware</text>
+          <text x="25" y="243">OS</text>
+          <text x="25" y="283">Virtualisation</text>
+          <text x="25" y="323">Serveurs</text>
+          <text x="25" y="363">Stockage</text>
+          <text x="25" y="403">Réseau</text>
+        </g>
+
+        <!-- Layer rectangles — 5 columns × 9 rows -->
+        <!-- Fill rules: ink = you manage, accent = provider manages -->
+        <g>
+          <!-- Column 1: On-premise (all ink) -->
+          <rect x="50" y="70" width="100" height="25" fill="#1a1d29"/>
+          <rect x="50" y="110" width="100" height="25" fill="#1a1d29"/>
+          <rect x="50" y="150" width="100" height="25" fill="#1a1d29"/>
+          <rect x="50" y="190" width="100" height="25" fill="#1a1d29"/>
+          <rect x="50" y="230" width="100" height="25" fill="#1a1d29"/>
+          <rect x="50" y="270" width="100" height="25" fill="#1a1d29"/>
+          <rect x="50" y="310" width="100" height="25" fill="#1a1d29"/>
+          <rect x="50" y="350" width="100" height="25" fill="#1a1d29"/>
+          <rect x="50" y="390" width="100" height="25" fill="#1a1d29"/>
+
+          <!-- Column 2: IaaS (top 4 ink, bottom 5 accent) -->
+          <rect x="210" y="70" width="100" height="25" fill="#1a1d29"/>
+          <rect x="210" y="110" width="100" height="25" fill="#1a1d29"/>
+          <rect x="210" y="150" width="100" height="25" fill="#1a1d29"/>
+          <rect x="210" y="190" width="100" height="25" fill="#1a1d29"/>
+          <rect x="210" y="230" width="100" height="25" fill="#1a1d29"/>
+          <rect x="210" y="270" width="100" height="25" fill="#c2410c"/>
+          <rect x="210" y="310" width="100" height="25" fill="#c2410c"/>
+          <rect x="210" y="350" width="100" height="25" fill="#c2410c"/>
+          <rect x="210" y="390" width="100" height="25" fill="#c2410c"/>
+
+          <!-- Column 3: PaaS (top 2 ink, bottom 7 accent) -->
+          <rect x="370" y="70" width="100" height="25" fill="#1a1d29"/>
+          <rect x="370" y="110" width="100" height="25" fill="#1a1d29"/>
+          <rect x="370" y="150" width="100" height="25" fill="#c2410c"/>
+          <rect x="370" y="190" width="100" height="25" fill="#c2410c"/>
+          <rect x="370" y="230" width="100" height="25" fill="#c2410c"/>
+          <rect x="370" y="270" width="100" height="25" fill="#c2410c"/>
+          <rect x="370" y="310" width="100" height="25" fill="#c2410c"/>
+          <rect x="370" y="350" width="100" height="25" fill="#c2410c"/>
+          <rect x="370" y="390" width="100" height="25" fill="#c2410c"/>
+
+          <!-- Column 4: SaaS (all accent) -->
+          <rect x="530" y="70" width="100" height="25" fill="#c2410c"/>
+          <rect x="530" y="110" width="100" height="25" fill="#c2410c"/>
+          <rect x="530" y="150" width="100" height="25" fill="#c2410c"/>
+          <rect x="530" y="190" width="100" height="25" fill="#c2410c"/>
+          <rect x="530" y="230" width="100" height="25" fill="#c2410c"/>
+          <rect x="530" y="270" width="100" height="25" fill="#c2410c"/>
+          <rect x="530" y="310" width="100" height="25" fill="#c2410c"/>
+          <rect x="530" y="350" width="100" height="25" fill="#c2410c"/>
+          <rect x="530" y="390" width="100" height="25" fill="#c2410c"/>
+
+          <!-- Column 5: FaaS (top 1 ink = code only, rest teal) -->
+          <rect x="670" y="70" width="100" height="25" fill="#1a1d29"/>
+          <rect x="670" y="110" width="100" height="25" fill="#0d766e"/>
+          <rect x="670" y="150" width="100" height="25" fill="#0d766e"/>
+          <rect x="670" y="190" width="100" height="25" fill="#0d766e"/>
+          <rect x="670" y="230" width="100" height="25" fill="#0d766e"/>
+          <rect x="670" y="270" width="100" height="25" fill="#0d766e"/>
+          <rect x="670" y="310" width="100" height="25" fill="#0d766e"/>
+          <rect x="670" y="350" width="100" height="25" fill="#0d766e"/>
+          <rect x="670" y="390" width="100" height="25" fill="#0d766e"/>
+        </g>
+
+        <!-- Legend -->
+        <g transform="translate(50, 450)">
+          <rect x="0" y="0" width="14" height="14" fill="#1a1d29"/>
+          <text x="22" y="11" font-family="Inter Tight, sans-serif" font-size="12" fill="#4a4d59">Tu gères toi-même</text>
+
+          <rect x="180" y="0" width="14" height="14" fill="#c2410c"/>
+          <text x="202" y="11" font-family="Inter Tight, sans-serif" font-size="12" fill="#4a4d59">Le fournisseur gère</text>
+
+          <rect x="360" y="0" width="14" height="14" fill="#0d766e"/>
+          <text x="382" y="11" font-family="Inter Tight, sans-serif" font-size="12" fill="#4a4d59">Serverless — facturé à l'usage</text>
+        </g>
+
+        <!-- Right axis arrow -->
+        <g transform="translate(770, 70)">
+          <line x1="0" y1="0" x2="0" y2="340" stroke="#8b8e98" stroke-width="1"/>
+          <polygon points="0,340 -4,332 4,332" fill="#8b8e98"/>
+          <text x="-5" y="170" font-family="JetBrains Mono, monospace" font-size="9" fill="#8b8e98" transform="rotate(-90 -5 170)" text-anchor="middle">ABSTRACTION CROISSANTE</text>
+        </g>
+      </svg>
+      <div class="diagram-caption"><strong>Figure 2</strong>La pyramide XaaS — qui gère quoi selon le modèle</div>
+    </div>
+
+    <h3>Les modèles en détail</h3>
+
+    <div class="defs">
+      <div class="def">
+        <div class="def-tag">Le plus bas niveau</div>
+        <div class="def-name">IaaS</div>
+        <div class="def-body"><strong>Infrastructure as a Service.</strong> Le fournisseur te loue des briques d'infrastructure nue — machines virtuelles, réseau, stockage, bases de données — et tu fais tout le reste. Exemples : <em>AWS EC2, Azure VMs, Google Compute Engine, OVH Cloud, Scaleway</em>. C'est ce que tu provisionnes avec Terraform.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Niveau intermédiaire</div>
+        <div class="def-name">PaaS</div>
+        <div class="def-body"><strong>Platform as a Service.</strong> Le fournisseur gère aussi l'OS, le runtime, les outils de déploiement. Tu pousses ton code, la plateforme le fait tourner. Exemples : <em>Heroku, Vercel, Netlify, AWS Elastic Beanstalk, Google App Engine, Clever Cloud</em>. Idéal pour les petites équipes qui ne veulent pas gérer d'infra.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Le plus haut niveau</div>
+        <div class="def-name">SaaS</div>
+        <div class="def-body"><strong>Software as a Service.</strong> Une application prête à l'emploi que tu consommes par le navigateur. Tu ne gères rien, tu payes un abonnement. Exemples : <em>Gmail, Slack, Notion, Salesforce, GitHub, Figma</em>. 90 % des logiciels d'entreprise sont désormais SaaS.</div>
+      </div>
+
+      <div class="def teal">
+        <div class="def-tag">Spécialisé · serverless</div>
+        <div class="def-name">FaaS</div>
+        <div class="def-body"><strong>Function as a Service.</strong> Tu écris une simple fonction (quelques dizaines de lignes), le fournisseur l'exécute à la demande et te facture à la milliseconde. Aucun serveur à gérer. Exemples : <em>AWS Lambda, Azure Functions, Google Cloud Functions, Cloudflare Workers</em>.</div>
+      </div>
+
+      <div class="def teal">
+        <div class="def-tag">Spécialisé · data</div>
+        <div class="def-name">DBaaS</div>
+        <div class="def-body"><strong>Database as a Service.</strong> Une base de données managée : le fournisseur s'occupe des sauvegardes, du chiffrement, de la réplication, des montées de version. Exemples : <em>AWS RDS, MongoDB Atlas, Azure Cosmos DB, Supabase, PlanetScale</em>.</div>
+      </div>
+
+      <div class="def teal">
+        <div class="def-tag">Spécialisé · sécurité</div>
+        <div class="def-name">SECaaS</div>
+        <div class="def-body"><strong>Security as a Service.</strong> Pare-feu, anti-DDoS, détection d'intrusion, gestion des secrets — le tout livré en mode cloud. Exemples : <em>Cloudflare, Crowdstrike, Zscaler, HashiCorp Vault Cloud, Okta</em>. À ne pas confondre avec un <em>SOC-as-a-Service</em> (centre opérationnel de sécurité externalisé).</div>
+      </div>
+
+      <div class="def teal">
+        <div class="def-tag">Spécialisé · identité</div>
+        <div class="def-name">IDaaS</div>
+        <div class="def-body"><strong>Identity as a Service.</strong> Gestion des utilisateurs, authentification, SSO (single sign-on), MFA (double facteur). Exemples : <em>Okta, Auth0, Azure AD (désormais Entra ID), Keycloak (open source)</em>.</div>
+      </div>
+
+      <div class="def teal">
+        <div class="def-tag">Spécialisé · monitoring</div>
+        <div class="def-name">Monitoring-as-a-Service</div>
+        <div class="def-body">Collecte de métriques, logs, traces et alertes — managés par un tiers. Exemples : <em>Datadog, New Relic, Grafana Cloud, Dynatrace</em>. On en reparle en détail à la section 7.</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">À retenir</span>
+      <p>Plus tu montes dans le niveau d'abstraction, plus tu gagnes en <strong>vitesse</strong> et tu perds en <strong>contrôle</strong>. Un site vitrine peut vivre très bien sur un PaaS. Une banque a souvent besoin d'IaaS pour garder la main sur tout. Il n'y a pas de bon modèle dans l'absolu — seulement un bon modèle pour ton besoin.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 03 DEVOPS LOOP ======================= -->
+<section id="devops">
+  <div class="section-inner">
+    <div class="section-num">Section 03 — Cycle</div>
+    <h2>La boucle <em>DevOps</em></h2>
+
+    <p>DevOps n'est pas un outil ni un métier, c'est une <strong>culture</strong> et un <strong>ensemble de pratiques</strong> qui visent à livrer du logiciel plus vite, plus sûrement, et plus souvent. Elle se représente traditionnellement par une boucle infinie en forme de ∞, où huit phases s'enchaînent sans fin — car un produit n'est jamais «&nbsp;terminé&nbsp;».</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+        <!-- Infinity loop shape -->
+        <defs>
+          <path id="infloop" d="M 200,200 C 200,120 290,120 340,200 C 390,280 490,280 540,200 C 590,120 680,120 680,200 C 680,280 590,280 540,200 C 490,120 390,120 340,200 C 290,280 200,280 200,200 Z"/>
+        </defs>
+        <use href="#infloop" fill="none" stroke="#c2410c" stroke-width="2.5"/>
+
+        <!-- Dev side label -->
+        <text x="270" y="45" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#1a1d29" letter-spacing="2">CÔTÉ DEV</text>
+        <line x1="200" y1="60" x2="340" y2="60" stroke="#1a1d29" stroke-width="1"/>
+
+        <!-- Ops side label -->
+        <text x="610" y="45" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#1a1d29" letter-spacing="2">CÔTÉ OPS</text>
+        <line x1="540" y1="60" x2="680" y2="60" stroke="#1a1d29" stroke-width="1"/>
+
+        <!-- Phase nodes (8 phases, 4 each side) -->
+        <!-- DEV SIDE -->
+        <!-- 1. Plan -->
+        <g>
+          <circle cx="200" cy="200" r="16" fill="#faf7f0" stroke="#c2410c" stroke-width="2"/>
+          <text x="200" y="205" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#c2410c" font-weight="500">1</text>
+          <text x="195" y="165" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="16" fill="#1a1d29">Plan</text>
+          <text x="195" y="147" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98">Jira · Linear</text>
+        </g>
+        <!-- 2. Code -->
+        <g>
+          <circle cx="260" cy="138" r="16" fill="#faf7f0" stroke="#c2410c" stroke-width="2"/>
+          <text x="260" y="143" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#c2410c" font-weight="500">2</text>
+          <text x="260" y="110" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="16" fill="#1a1d29">Code</text>
+          <text x="260" y="94" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98">Git · VS Code</text>
+        </g>
+        <!-- 3. Build -->
+        <g>
+          <circle cx="340" cy="200" r="16" fill="#faf7f0" stroke="#c2410c" stroke-width="2"/>
+          <text x="340" y="205" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#c2410c" font-weight="500">3</text>
+          <text x="340" y="245" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="16" fill="#1a1d29">Build</text>
+          <text x="340" y="262" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98">Maven · Webpack</text>
+        </g>
+        <!-- 4. Test -->
+        <g>
+          <circle cx="280" cy="262" r="16" fill="#faf7f0" stroke="#c2410c" stroke-width="2"/>
+          <text x="280" y="267" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#c2410c" font-weight="500">4</text>
+          <text x="270" y="305" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="16" fill="#1a1d29">Test</text>
+          <text x="270" y="322" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98">Jest · Pytest · Selenium</text>
+        </g>
+
+        <!-- OPS SIDE -->
+        <!-- 5. Release -->
+        <g>
+          <circle cx="540" cy="200" r="16" fill="#faf7f0" stroke="#c2410c" stroke-width="2"/>
+          <text x="540" y="205" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#c2410c" font-weight="500">5</text>
+          <text x="540" y="165" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="16" fill="#1a1d29">Release</text>
+          <text x="540" y="147" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98">GitHub Actions · Jenkins</text>
+        </g>
+        <!-- 6. Deploy -->
+        <g>
+          <circle cx="610" cy="138" r="16" fill="#faf7f0" stroke="#c2410c" stroke-width="2"/>
+          <text x="610" y="143" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#c2410c" font-weight="500">6</text>
+          <text x="610" y="110" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="16" fill="#1a1d29">Deploy</text>
+          <text x="610" y="94" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98">Terraform · ArgoCD</text>
+        </g>
+        <!-- 7. Operate -->
+        <g>
+          <circle cx="680" cy="200" r="16" fill="#faf7f0" stroke="#c2410c" stroke-width="2"/>
+          <text x="680" y="205" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#c2410c" font-weight="500">7</text>
+          <text x="680" y="245" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="16" fill="#1a1d29">Operate</text>
+          <text x="680" y="262" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98">Kubernetes · Ansible</text>
+        </g>
+        <!-- 8. Monitor -->
+        <g>
+          <circle cx="610" cy="262" r="16" fill="#faf7f0" stroke="#c2410c" stroke-width="2"/>
+          <text x="610" y="267" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#c2410c" font-weight="500">8</text>
+          <text x="620" y="305" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="16" fill="#1a1d29">Monitor</text>
+          <text x="620" y="322" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98">Prometheus · Grafana</text>
+        </g>
+
+        <!-- Center label -->
+        <text x="440" y="195" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="24" fill="#c2410c" opacity="0.4">∞</text>
+
+        <!-- Bottom caption -->
+        <text x="440" y="370" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="13" fill="#7c2d12" font-style="italic">Les retours de Monitor (8) alimentent le prochain Plan (1). La boucle ne s'arrête jamais.</text>
+      </svg>
+      <div class="diagram-caption"><strong>Figure 3</strong>La boucle infinie DevOps — 8 phases, 2 hémisphères, un cycle continu</div>
+    </div>
+
+    <h3>Les huit phases</h3>
+
+    <p>Chaque phase a ses outils dédiés, mais le vrai propos de DevOps est que ces phases ne sont plus cloisonnées. Un développeur <em>plan</em> avec les ops ; un ops <em>déploie</em> sans avoir à tout reconfigurer à la main ; tout le monde regarde les mêmes dashboards de <em>monitoring</em>.</p>
+
+    <table class="compare">
+      <thead>
+        <tr><th>Phase</th><th>Ce qu'elle fait</th><th>Outils typiques</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1 · Plan</td>
+          <td>Définir ce qu'on va construire, prioriser, découper en tickets.</td>
+          <td>Jira, Linear, GitHub Projects, Notion</td>
+        </tr>
+        <tr>
+          <td>2 · Code</td>
+          <td>Écrire le code, le versionner, le faire relire.</td>
+          <td>Git, GitHub, GitLab, VS Code, IntelliJ</td>
+        </tr>
+        <tr>
+          <td>3 · Build</td>
+          <td>Compiler, packager, transformer le code en artefact déployable.</td>
+          <td>Maven, Gradle, Webpack, Vite, Docker</td>
+        </tr>
+        <tr>
+          <td>4 · Test</td>
+          <td>Lancer tests unitaires, d'intégration, end-to-end, de charge.</td>
+          <td>Jest, Pytest, Playwright, Selenium, k6</td>
+        </tr>
+        <tr>
+          <td>5 · Release</td>
+          <td>Déclencher la mise à disposition d'une nouvelle version — la pipeline CI/CD.</td>
+          <td>GitHub Actions, GitLab CI, Jenkins, CircleCI</td>
+        </tr>
+        <tr>
+          <td>6 · Deploy</td>
+          <td>Pousser la nouvelle version sur les environnements cibles.</td>
+          <td>Terraform, Ansible, ArgoCD, Helm, Spinnaker</td>
+        </tr>
+        <tr>
+          <td>7 · Operate</td>
+          <td>Faire tourner l'infrastructure au jour le jour, gérer les incidents.</td>
+          <td>Kubernetes, PagerDuty, OpsGenie, Ansible</td>
+        </tr>
+        <tr>
+          <td>8 · Monitor</td>
+          <td>Observer comment le système se comporte, détecter les anomalies.</td>
+          <td>Prometheus, Grafana, Datadog, New Relic, ELK</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <span class="callout-label">Variantes qu'on croise souvent</span>
+      <p>Le sigle DevOps a généré une famille d'extensions : <strong>DevSecOps</strong> (ajoute la sécurité intégrée dès le code), <strong>GitOps</strong> (utilise Git comme source de vérité pour déclencher les déploiements), <strong>MLOps</strong> (adapte les principes au machine learning), <strong>FinOps</strong> (gestion des coûts cloud), <strong>DataOps</strong> (pour les pipelines de données). Même philosophie, différents domaines d'application.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 04 CI/CD ======================= -->
+<section id="cicd">
+  <div class="section-inner">
+    <div class="section-num">Section 04 — Automatisation</div>
+    <h2>CI, CD… <em>et CD</em></h2>
+
+    <p>Trois acronymes, trois concepts qui s'empilent, souvent confondus. Les comprendre dans l'ordre est la manière la plus simple de les retenir.</p>
+
+    <div class="defs">
+      <div class="def">
+        <div class="def-tag">Étape 1 de la maturité</div>
+        <div class="def-name">CI — Continuous Integration</div>
+        <div class="def-body"><strong>Intégration continue.</strong> Chaque fois qu'un développeur pousse du code sur Git, une série d'étapes automatiques se lance : compilation, tests, scans de sécurité, analyse de qualité. Objectif : détecter vite les régressions, éviter l'effet «&nbsp;merge l'enfer&nbsp;» des gros branchements.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Étape 2 de la maturité</div>
+        <div class="def-name">CD — Continuous Delivery</div>
+        <div class="def-body"><strong>Livraison continue.</strong> Le code qui a passé la CI est automatiquement transformé en artefact prêt à déployer (image Docker, binaire, package). Il suffit d'<em>un clic humain</em> pour pousser en production. La prod reste sous contrôle humain, mais elle est toujours à portée de main.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Étape 3 de la maturité</div>
+        <div class="def-name">CD — Continuous Deployment</div>
+        <div class="def-body"><strong>Déploiement continu.</strong> Même chose, mais sans le clic humain. Si tous les tests passent, le code arrive en production automatiquement, parfois plusieurs dizaines de fois par jour. Pratiqué par Netflix, Amazon, Spotify. Exige une très forte culture de tests et de monitoring.</div>
+      </div>
+    </div>
+
+    <h3>L'anatomie d'une pipeline</h3>
+
+    <p>Une <em>pipeline</em> CI/CD est une suite d'étapes qui s'enchaînent, avec à chaque étape un verdict pass/fail. Voici la forme canonique qu'on trouve dans 80&nbsp;% des projets&nbsp;:</p>
+
+    <div class="diagram dark">
+      <svg viewBox="0 0 800 340" xmlns="http://www.w3.org/2000/svg">
+        <!-- Trigger -->
+        <g>
+          <rect x="20" y="60" width="90" height="60" fill="#0f1419" stroke="#f59e0b" stroke-width="1" rx="3"/>
+          <text x="65" y="85" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="14" fill="#f59e0b">git push</text>
+          <text x="65" y="104" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98">déclencheur</text>
+        </g>
+
+        <!-- Arrow -->
+        <g transform="translate(115, 90)"><line x1="0" y1="0" x2="15" y2="0" stroke="#f59e0b"/><polygon points="15,0 10,-3 10,3" fill="#f59e0b"/></g>
+
+        <!-- CI zone bracket -->
+        <rect x="135" y="40" width="345" height="110" fill="none" stroke="#a3e635" stroke-width="1" stroke-dasharray="4,3" rx="4"/>
+        <text x="140" y="32" font-family="JetBrains Mono, monospace" font-size="10" fill="#a3e635" letter-spacing="2">CONTINUOUS INTEGRATION</text>
+
+        <!-- Step 1: Checkout -->
+        <g>
+          <rect x="145" y="60" width="75" height="60" fill="#1a1d29" stroke="#a3e635" stroke-width="1" rx="3"/>
+          <text x="182" y="82" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#f5f1e8" font-weight="500">Checkout</text>
+          <text x="182" y="100" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#8b8e98">récupère</text>
+          <text x="182" y="112" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#8b8e98">le code</text>
+        </g>
+        <g transform="translate(225, 90)"><line x1="0" y1="0" x2="10" y2="0" stroke="#a3e635"/><polygon points="10,0 6,-3 6,3" fill="#a3e635"/></g>
+
+        <!-- Step 2: Lint -->
+        <g>
+          <rect x="240" y="60" width="70" height="60" fill="#1a1d29" stroke="#a3e635" stroke-width="1" rx="3"/>
+          <text x="275" y="82" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#f5f1e8" font-weight="500">Lint</text>
+          <text x="275" y="100" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#8b8e98">style &amp;</text>
+          <text x="275" y="112" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#8b8e98">qualité</text>
+        </g>
+        <g transform="translate(315, 90)"><line x1="0" y1="0" x2="10" y2="0" stroke="#a3e635"/><polygon points="10,0 6,-3 6,3" fill="#a3e635"/></g>
+
+        <!-- Step 3: Test -->
+        <g>
+          <rect x="330" y="60" width="70" height="60" fill="#1a1d29" stroke="#a3e635" stroke-width="1" rx="3"/>
+          <text x="365" y="82" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#f5f1e8" font-weight="500">Test</text>
+          <text x="365" y="100" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#8b8e98">unitaires &amp;</text>
+          <text x="365" y="112" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#8b8e98">intégration</text>
+        </g>
+        <g transform="translate(405, 90)"><line x1="0" y1="0" x2="10" y2="0" stroke="#a3e635"/><polygon points="10,0 6,-3 6,3" fill="#a3e635"/></g>
+
+        <!-- Step 4: Build -->
+        <g>
+          <rect x="420" y="60" width="70" height="60" fill="#1a1d29" stroke="#a3e635" stroke-width="1" rx="3"/>
+          <text x="455" y="82" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#f5f1e8" font-weight="500">Build</text>
+          <text x="455" y="100" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#8b8e98">image</text>
+          <text x="455" y="112" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#8b8e98">Docker</text>
+        </g>
+
+        <!-- Arrow to CD -->
+        <g transform="translate(495, 90)"><line x1="0" y1="0" x2="15" y2="0" stroke="#f59e0b"/><polygon points="15,0 10,-3 10,3" fill="#f59e0b"/></g>
+
+        <!-- CD zone -->
+        <rect x="520" y="40" width="260" height="260" fill="none" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4,3" rx="4"/>
+        <text x="525" y="32" font-family="JetBrains Mono, monospace" font-size="10" fill="#f59e0b" letter-spacing="2">CONTINUOUS DELIVERY / DEPLOYMENT</text>
+
+        <!-- Step 5: Push registry -->
+        <g>
+          <rect x="535" y="60" width="90" height="60" fill="#1a1d29" stroke="#f59e0b" stroke-width="1" rx="3"/>
+          <text x="580" y="82" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#f5f1e8" font-weight="500">Registry</text>
+          <text x="580" y="100" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#8b8e98">publie</text>
+          <text x="580" y="112" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#8b8e98">l'artefact</text>
+        </g>
+        <g transform="translate(630, 90)"><line x1="0" y1="0" x2="10" y2="0" stroke="#f59e0b"/><polygon points="10,0 6,-3 6,3" fill="#f59e0b"/></g>
+
+        <!-- Step 6: Deploy staging -->
+        <g>
+          <rect x="645" y="60" width="120" height="60" fill="#1a1d29" stroke="#f59e0b" stroke-width="1" rx="3"/>
+          <text x="705" y="82" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#f5f1e8" font-weight="500">Deploy staging</text>
+          <text x="705" y="100" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#8b8e98">env de pré-prod</text>
+          <text x="705" y="112" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#8b8e98">auto</text>
+        </g>
+
+        <!-- Down arrow -->
+        <g transform="translate(650, 125)"><line x1="0" y1="0" x2="0" y2="25" stroke="#f59e0b"/><polygon points="0,25 -3,20 3,20" fill="#f59e0b"/></g>
+
+        <!-- Step 7: E2E -->
+        <g>
+          <rect x="595" y="155" width="120" height="50" fill="#1a1d29" stroke="#f59e0b" stroke-width="1" rx="3"/>
+          <text x="655" y="175" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#f5f1e8" font-weight="500">Tests E2E</text>
+          <text x="655" y="192" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#8b8e98">valide sur staging</text>
+        </g>
+        <g transform="translate(655, 210)"><line x1="0" y1="0" x2="0" y2="20" stroke="#f59e0b"/><polygon points="0,20 -3,15 3,15" fill="#f59e0b"/></g>
+
+        <!-- Gate / decision -->
+        <g>
+          <polygon points="655,235 695,265 655,295 615,265" fill="#c2410c" stroke="#f59e0b" stroke-width="1"/>
+          <text x="655" y="262" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f5f1e8" font-weight="500">validation</text>
+          <text x="655" y="275" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f5f1e8" font-weight="500">humaine</text>
+        </g>
+        <text x="585" y="270" font-family="JetBrains Mono, monospace" font-size="9" fill="#8b8e98">= Delivery</text>
+        <text x="700" y="270" font-family="JetBrains Mono, monospace" font-size="9" fill="#8b8e98">vs</text>
+        <text x="540" y="290" font-family="JetBrains Mono, monospace" font-size="9" fill="#8b8e98">auto = Deployment</text>
+
+        <!-- Down arrow to prod -->
+        <g transform="translate(380, 265)">
+          <line x1="275" y1="0" x2="275" y2="20" stroke="#f59e0b"/>
+          <line x1="275" y1="20" x2="0" y2="20" stroke="#f59e0b"/>
+          <line x1="0" y1="20" x2="0" y2="5" stroke="#f59e0b"/>
+          <polygon points="0,5 -3,10 3,10" fill="#f59e0b"/>
+        </g>
+
+        <!-- Step 8: Prod -->
+        <g>
+          <rect x="340" y="240" width="90" height="50" fill="#c2410c" stroke="#f59e0b" stroke-width="1.5" rx="3"/>
+          <text x="385" y="262" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="14" fill="#f5f1e8">Production</text>
+          <text x="385" y="278" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#f5f1e8" opacity="0.8">🚀 utilisateurs finaux</text>
+        </g>
+      </svg>
+      <div class="diagram-caption"><strong>Figure 4</strong>Une pipeline CI/CD classique — de <code>git push</code> à la mise en production</div>
+    </div>
+
+    <h3>Les outils du marché</h3>
+
+    <div class="eco">
+      <div class="eco-card">
+        <div class="cat">Le standard actuel</div>
+        <div class="name">GitHub Actions</div>
+        <div class="desc">CI/CD intégré directement à GitHub. Pipelines en YAML dans le dossier <code class="inline">.github/workflows/</code>. Gratuit généreusement pour les projets publics. Le choix par défaut pour la plupart des nouveaux projets.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Le standard entreprise</div>
+        <div class="name">GitLab CI/CD</div>
+        <div class="desc">Équivalent chez GitLab. Config dans <code class="inline">.gitlab-ci.yml</code>. Très répandu dans les grandes entreprises et en self-hosted (souvent le cas chez Orange). Couvre le cycle DevOps complet dans une seule plateforme.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Le vétéran</div>
+        <div class="name">Jenkins</div>
+        <div class="desc">Le plus ancien (2011), le plus flexible, le plus… vieillissant. Pipelines en Groovy ou YAML. Gigantesque écosystème de plugins. On le trouve encore massivement dans les grandes entreprises par inertie technique.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Alternative cloud</div>
+        <div class="name">CircleCI</div>
+        <div class="desc">CI/CD SaaS, indépendant des forges Git. Interface soignée, bonnes performances. Populaire dans l'écosystème startup US.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Dans l'orbite cloud</div>
+        <div class="name">Azure DevOps · AWS CodePipeline · GCP Cloud Build</div>
+        <div class="desc">Les solutions natives des trois grands clouds. Intégrées à leurs services, facturées à l'usage. Utiles si tu es déjà 100 % dans un écosystème.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">GitOps moderne</div>
+        <div class="name">ArgoCD · Flux</div>
+        <div class="desc">Plus que de la CI/CD : des outils spécialisés dans le <em>déploiement continu sur Kubernetes</em>. Surveillent un dépôt Git et appliquent automatiquement les changements sur le cluster.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 05 IAC ======================= -->
+<section id="iac">
+  <div class="section-inner">
+    <div class="section-num">Section 05 — Infrastructure</div>
+    <h2>L'Infrastructure <em>as Code</em></h2>
+
+    <p>Tu connais déjà Terraform (cf. <em>Volume 1</em>). Replaçons-le dans le paysage général : l'<strong>IaC</strong> est la réponse DevOps au problème du provisioning d'infrastructure. Plutôt que de cliquer dans une console ou de lancer des scripts bash à la main, on décrit l'infra souhaitée dans des fichiers texte, versionnés dans Git, et un outil se charge de matérialiser.</p>
+
+    <p>Il y a deux grandes familles d'outils IaC, qu'on confond souvent et qui sont en réalité complémentaires&nbsp;:</p>
+
+    <table class="compare">
+      <thead>
+        <tr><th>Famille</th><th>Rôle</th><th>Outils phares</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Provisioning</td>
+          <td>Créer/détruire des ressources (VMs, réseaux, DNS, bases…). Approche déclarative. On décrit l'<em>état souhaité</em>.</td>
+          <td><strong>Terraform</strong>, OpenTofu, Pulumi, AWS CloudFormation, Crossplane</td>
+        </tr>
+        <tr>
+          <td>Configuration</td>
+          <td>Configurer une machine déjà existante : installer des paquets, déployer des fichiers, lancer des services. Approche procédurale ou déclarative.</td>
+          <td><strong>Ansible</strong>, Chef, Puppet, SaltStack</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>En pratique, on combine souvent les deux : Terraform provisionne les machines, Ansible configure leur contenu. Avec l'avènement des containers et de Kubernetes, le besoin en configuration management a beaucoup diminué (on reconstruit un container plutôt que de le modifier), mais Ansible reste omniprésent pour les environnements legacy et les configs réseau.</p>
+
+    <div class="callout teal">
+      <span class="callout-label">Le terme «&nbsp;IaaS manager&nbsp;»</span>
+      <p>Ce que tu appelles <em>IaaS manager</em> désigne généralement les outils de la colonne de gauche : ceux qui <strong>gèrent ton IaaS</strong>. Terraform est de loin le plus répandu aujourd'hui. CloudFormation pour AWS exclusif. Pulumi pour ceux qui veulent écrire leur infra en TypeScript ou Python. Crossplane pour ceux qui veulent tout faire depuis Kubernetes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 06 CONTAINERS ======================= -->
+<section id="containers">
+  <div class="section-inner">
+    <div class="section-num">Section 06 — Exécution</div>
+    <h2>Containers &amp; <em>Kubernetes</em></h2>
+
+    <p>Pendant que DevOps transformait la collaboration entre équipes, une autre révolution transformait la manière dont le code s'exécute. En 2013, Docker popularise les <strong>containers</strong> — une façon légère et portable d'empaqueter une application avec tout ce dont elle a besoin pour tourner. En 2014, Google libère <strong>Kubernetes</strong>, le système qui permet d'orchestrer des milliers de ces containers. En dix ans, ce duo est devenu le standard de fait du déploiement en production.</p>
+
+    <h3>Le container, en une minute</h3>
+
+    <p>Un container, c'est un package qui contient : ton application, ses dépendances (bibliothèques, runtime), et sa configuration. L'ensemble tourne <em>isolé</em> mais <em>partage le noyau</em> de la machine hôte — ce qui le rend beaucoup plus léger qu'une machine virtuelle complète. Résultat : <strong>«&nbsp;ça marche sur ma machine&nbsp;»</strong> devient enfin <strong>«&nbsp;ça marche partout&nbsp;»</strong>.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 800 360" xmlns="http://www.w3.org/2000/svg">
+        <!-- LEFT: VM approach -->
+        <g>
+          <text x="180" y="30" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b8e98" letter-spacing="2">MACHINES VIRTUELLES</text>
+
+          <!-- Hardware -->
+          <rect x="60" y="260" width="240" height="40" fill="#1a1d29"/>
+          <text x="180" y="285" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#f5f1e8">Serveur physique</text>
+
+          <!-- Hypervisor -->
+          <rect x="60" y="220" width="240" height="35" fill="#4a4d59"/>
+          <text x="180" y="243" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#f5f1e8">Hyperviseur</text>
+
+          <!-- 3 VMs -->
+          <g>
+            <rect x="70" y="60" width="70" height="155" fill="#faf7f0" stroke="#1a1d29"/>
+            <rect x="75" y="65" width="60" height="45" fill="#c2410c" opacity="0.3"/>
+            <text x="105" y="85" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#1a1d29">OS</text>
+            <text x="105" y="99" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#4a4d59">complet</text>
+            <rect x="75" y="115" width="60" height="50" fill="#e8e2d2"/>
+            <text x="105" y="135" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#4a4d59">bins/libs</text>
+            <rect x="75" y="170" width="60" height="40" fill="#1a1d29"/>
+            <text x="105" y="193" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f59e0b">App</text>
+          </g>
+
+          <g>
+            <rect x="145" y="60" width="70" height="155" fill="#faf7f0" stroke="#1a1d29"/>
+            <rect x="150" y="65" width="60" height="45" fill="#c2410c" opacity="0.3"/>
+            <text x="180" y="85" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#1a1d29">OS</text>
+            <text x="180" y="99" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#4a4d59">complet</text>
+            <rect x="150" y="115" width="60" height="50" fill="#e8e2d2"/>
+            <text x="180" y="135" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#4a4d59">bins/libs</text>
+            <rect x="150" y="170" width="60" height="40" fill="#1a1d29"/>
+            <text x="180" y="193" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f59e0b">App</text>
+          </g>
+
+          <g>
+            <rect x="220" y="60" width="70" height="155" fill="#faf7f0" stroke="#1a1d29"/>
+            <rect x="225" y="65" width="60" height="45" fill="#c2410c" opacity="0.3"/>
+            <text x="255" y="85" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#1a1d29">OS</text>
+            <text x="255" y="99" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#4a4d59">complet</text>
+            <rect x="225" y="115" width="60" height="50" fill="#e8e2d2"/>
+            <text x="255" y="135" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#4a4d59">bins/libs</text>
+            <rect x="225" y="170" width="60" height="40" fill="#1a1d29"/>
+            <text x="255" y="193" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f59e0b">App</text>
+          </g>
+
+          <text x="180" y="330" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="12" fill="#4a4d59" font-style="italic">Lourd · chaque VM = un OS complet</text>
+        </g>
+
+        <!-- Arrow -->
+        <text x="400" y="170" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="32" fill="#c2410c" opacity="0.5">→</text>
+
+        <!-- RIGHT: containers -->
+        <g>
+          <text x="610" y="30" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#c2410c" letter-spacing="2">CONTAINERS</text>
+
+          <!-- Hardware -->
+          <rect x="490" y="260" width="240" height="40" fill="#1a1d29"/>
+          <text x="610" y="285" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#f5f1e8">Serveur physique</text>
+
+          <!-- Host OS -->
+          <rect x="490" y="220" width="240" height="35" fill="#4a4d59"/>
+          <text x="610" y="243" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#f5f1e8">OS hôte unique</text>
+
+          <!-- Container runtime -->
+          <rect x="490" y="180" width="240" height="35" fill="#c2410c"/>
+          <text x="610" y="203" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#f5f1e8">Docker Engine (container runtime)</text>
+
+          <!-- Containers -->
+          <g>
+            <rect x="500" y="90" width="70" height="85" fill="#faf7f0" stroke="#c2410c" stroke-width="1.5"/>
+            <rect x="505" y="95" width="60" height="40" fill="#e8e2d2"/>
+            <text x="535" y="115" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#4a4d59">bins/libs</text>
+            <rect x="505" y="140" width="60" height="30" fill="#1a1d29"/>
+            <text x="535" y="160" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f59e0b">App A</text>
+          </g>
+
+          <g>
+            <rect x="575" y="90" width="70" height="85" fill="#faf7f0" stroke="#c2410c" stroke-width="1.5"/>
+            <rect x="580" y="95" width="60" height="40" fill="#e8e2d2"/>
+            <text x="610" y="115" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#4a4d59">bins/libs</text>
+            <rect x="580" y="140" width="60" height="30" fill="#1a1d29"/>
+            <text x="610" y="160" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f59e0b">App B</text>
+          </g>
+
+          <g>
+            <rect x="650" y="90" width="70" height="85" fill="#faf7f0" stroke="#c2410c" stroke-width="1.5"/>
+            <rect x="655" y="95" width="60" height="40" fill="#e8e2d2"/>
+            <text x="685" y="115" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#4a4d59">bins/libs</text>
+            <rect x="655" y="140" width="60" height="30" fill="#1a1d29"/>
+            <text x="685" y="160" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#f59e0b">App C</text>
+          </g>
+
+          <text x="610" y="330" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="12" fill="#c2410c" font-style="italic">Léger · OS partagé · démarrage en ms</text>
+        </g>
+      </svg>
+      <div class="diagram-caption"><strong>Figure 5</strong>VM vs Container — pourquoi les containers ont tout changé</div>
+    </div>
+
+    <h3>Kubernetes, l'orchestrateur</h3>
+
+    <p>Un container tout seul, c'est bien. Mille containers répartis sur cent serveurs qui doivent communiquer entre eux, se mettre à jour sans downtime, redémarrer automatiquement en cas de crash, et monter en charge quand le trafic grimpe — c'est un autre problème. C'est celui que résout <strong>Kubernetes</strong> (souvent abrégé <strong>K8s</strong>, avec les 8 lettres entre K et s).</p>
+
+    <p>Kubernetes est un <em>orchestrateur de containers</em>. Tu lui décris ce que tu veux («&nbsp;je veux 5 instances de mon API, répliquées sur différents serveurs, accessibles via ce nom de domaine&nbsp;»), et il se charge de faire en sorte que ça soit toujours vrai — quoi qu'il arrive au matériel.</p>
+
+    <div class="defs">
+      <div class="def">
+        <div class="def-tag">Brique élémentaire</div>
+        <div class="def-name">Pod</div>
+        <div class="def-body">La plus petite unité déployable. Contient un ou plusieurs containers qui partagent réseau et stockage. En général : un pod = une instance d'application.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Scaling</div>
+        <div class="def-name">Deployment</div>
+        <div class="def-body">Un manifeste qui dit «&nbsp;je veux N pods de cette image, toujours&nbsp;». Kubernetes s'arrange pour respecter la promesse. Gère aussi les mises à jour progressives.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Réseau</div>
+        <div class="def-name">Service</div>
+        <div class="def-body">Un point d'entrée réseau stable qui route le trafic vers les pods, même quand ils sont recréés. Évite de courir après les IPs changeantes.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Exposition externe</div>
+        <div class="def-name">Ingress</div>
+        <div class="def-body">La porte d'entrée HTTP/HTTPS du cluster depuis l'extérieur. Gère les noms de domaine, les certificats TLS, le routing.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Configuration</div>
+        <div class="def-name">ConfigMap &amp; Secret</div>
+        <div class="def-body">Deux types d'objets pour injecter configuration et données sensibles dans les pods. Le Secret est (légèrement) chiffré ; la ConfigMap est en clair.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Organisation</div>
+        <div class="def-name">Namespace</div>
+        <div class="def-body">Un cloisonnement logique dans le cluster. Sépare les environnements (dev/prod), les équipes, les applications. Ne bloque pas tout mais structure.</div>
+      </div>
+    </div>
+
+    <h3>L'écosystème Kubernetes</h3>
+
+    <div class="eco">
+      <div class="eco-card">
+        <div class="cat">Packaging</div>
+        <div class="name">Helm</div>
+        <div class="desc">Le «&nbsp;gestionnaire de paquets&nbsp;» de Kubernetes. Encapsule les manifestes YAML d'une application dans un <em>chart</em> réutilisable. Indispensable pour déployer des applis complexes (Prometheus, GitLab, PostgreSQL…) en une commande.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">GitOps</div>
+        <div class="name">ArgoCD · Flux</div>
+        <div class="desc">Surveillent un dépôt Git et appliquent automatiquement tout changement sur le cluster. La prod = ce qui est écrit dans Git. Le nirvana du déploiement continu.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Kubernetes managé</div>
+        <div class="name">EKS · GKE · AKS</div>
+        <div class="desc">Les clusters Kubernetes managés d'AWS, Google et Azure. Plus besoin de gérer les serveurs du control plane, tu te concentres sur tes workloads. Le choix raisonnable pour 90 % des projets.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Kubernetes léger</div>
+        <div class="name">K3s · Minikube · Kind</div>
+        <div class="desc">Des versions allégées pour développer localement ou tourner sur du petit matériel (Raspberry Pi, edge computing).</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Service mesh</div>
+        <div class="name">Istio · Linkerd</div>
+        <div class="desc">Ajoute du tissu connectif entre tes services : traffic management avancé, chiffrement mutuel (mTLS), observabilité fine. Puissant mais complexe — à n'adopter qu'avec un vrai besoin.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Gouvernance</div>
+        <div class="name">OPA · Kyverno</div>
+        <div class="desc">Policy as Code pour Kubernetes. Refuse les pods privilégiés, impose les labels, vérifie les images. OPA (Open Policy Agent) est le standard CNCF.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 07 OBSERVABILITÉ ======================= -->
+<section id="obs">
+  <div class="section-inner">
+    <div class="section-num">Section 07 — Visibilité</div>
+    <h2>L'<em>observabilité</em></h2>
+
+    <p>Une fois ton code en production, deux questions vont te hanter toutes les semaines : <strong>«&nbsp;est-ce que ça marche bien ?&nbsp;»</strong> et <strong>«&nbsp;pourquoi ça ne marche plus ?&nbsp;»</strong>. L'<em>observabilité</em> est la discipline qui instrumente ton système pour que tu puisses répondre à ces questions <em>sans avoir à modifier le code</em> à chaque fois qu'un incident survient.</p>
+
+    <h3>Monitoring vs Observabilité</h3>
+
+    <p>Ces deux termes sont souvent employés comme synonymes. La distinction fine&nbsp;:</p>
+
+    <ul style="margin: 16px 0 24px; padding-left: 24px;">
+      <li><strong>Monitoring</strong> : répond à des questions <em>connues d'avance</em> («&nbsp;mon CPU dépasse-t-il 80 %&nbsp;?&nbsp;», «&nbsp;l'app est-elle UP ?&nbsp;»). Tu définis des métriques et des seuils à l'avance.</li>
+      <li><strong>Observabilité</strong> : te permet de répondre à des questions <em>que tu ne t'étais pas posées</em> («&nbsp;pourquoi les utilisateurs allemands ont-ils des latences trois fois plus hautes le mercredi matin&nbsp;?&nbsp;»). Basée sur des données riches et explorables.</li>
+    </ul>
+
+    <h3>Les trois piliers</h3>
+
+    <p>Toute stack d'observabilité moderne repose sur trois types de données complémentaires&nbsp;:</p>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-num">01</div>
+        <div class="pillar-name">Metrics</div>
+        <div class="pillar-q">Répond à</div>
+        <div class="pillar-a">«&nbsp;Combien ?&nbsp;» — des valeurs numériques agrégées sur le temps : latence moyenne, nombre de requêtes par seconde, utilisation CPU/RAM…</div>
+        <div class="pillar-tools">Prometheus · Mimir · InfluxDB</div>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-num">02</div>
+        <div class="pillar-name">Logs</div>
+        <div class="pillar-q">Répond à</div>
+        <div class="pillar-a">«&nbsp;Que s'est-il passé ?&nbsp;» — des événements texte horodatés : erreurs applicatives, requêtes reçues, actions utilisateur…</div>
+        <div class="pillar-tools">Elasticsearch · Loki · Splunk</div>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-num">03</div>
+        <div class="pillar-name">Traces</div>
+        <div class="pillar-q">Répond à</div>
+        <div class="pillar-a">«&nbsp;Par où est passée cette requête ?&nbsp;» — le chemin d'une requête à travers plusieurs services, avec le temps passé à chaque étape.</div>
+        <div class="pillar-tools">Jaeger · Tempo · Zipkin</div>
+      </div>
+    </div>
+
+    <h3>Prometheus et Grafana, le couple roi</h3>
+
+    <p>Dans l'univers open source cloud-native, deux outils dominent largement&nbsp;:</p>
+
+    <p><strong>Prometheus</strong> est un système de collecte et de stockage de <em>métriques</em>. Créé chez SoundCloud, donné à la <a class="inline" href="https://www.cncf.io">CNCF</a> (Cloud Native Computing Foundation), il est devenu le standard de fait dans l'écosystème Kubernetes. Son modèle est original : au lieu que les applications <em>poussent</em> leurs métriques, c'est Prometheus qui va <em>les chercher</em> (modèle dit <em>pull</em>) en requêtant des endpoints HTTP exposés par chaque service. Il stocke tout dans une base de données temporelle (TSDB) et offre un langage de requête dédié, <strong>PromQL</strong>.</p>
+
+    <p><strong>Grafana</strong>, lui, ne stocke rien. C'est un <em>moteur de visualisation</em> qui se branche sur Prometheus — ou n'importe quelle autre source de données — pour afficher des dashboards interactifs. C'est la fenêtre par laquelle tu regardes ton système.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg">
+        <!-- Apps at top -->
+        <g>
+          <text x="400" y="30" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b8e98" letter-spacing="2">TES APPLICATIONS</text>
+          <rect x="140" y="50" width="90" height="50" fill="#faf7f0" stroke="#1a1d29" stroke-width="1" rx="3"/>
+          <text x="185" y="72" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="12" fill="#1a1d29" font-weight="500">App A</text>
+          <text x="185" y="88" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#c2410c">/metrics</text>
+
+          <rect x="250" y="50" width="90" height="50" fill="#faf7f0" stroke="#1a1d29" stroke-width="1" rx="3"/>
+          <text x="295" y="72" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="12" fill="#1a1d29" font-weight="500">App B</text>
+          <text x="295" y="88" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#c2410c">/metrics</text>
+
+          <rect x="360" y="50" width="90" height="50" fill="#faf7f0" stroke="#1a1d29" stroke-width="1" rx="3"/>
+          <text x="405" y="72" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="12" fill="#1a1d29" font-weight="500">Node exporter</text>
+          <text x="405" y="88" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#c2410c">/metrics</text>
+
+          <rect x="470" y="50" width="90" height="50" fill="#faf7f0" stroke="#1a1d29" stroke-width="1" rx="3"/>
+          <text x="515" y="72" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="12" fill="#1a1d29" font-weight="500">Kubernetes</text>
+          <text x="515" y="88" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#c2410c">/metrics</text>
+
+          <rect x="580" y="50" width="90" height="50" fill="#faf7f0" stroke="#1a1d29" stroke-width="1" rx="3"/>
+          <text x="625" y="72" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="12" fill="#1a1d29" font-weight="500">Redis, PG…</text>
+          <text x="625" y="88" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#c2410c">/metrics</text>
+        </g>
+
+        <!-- Pull arrows -->
+        <g stroke="#c2410c" stroke-width="1.5" fill="none">
+          <line x1="185" y1="100" x2="340" y2="175"/>
+          <line x1="295" y1="100" x2="360" y2="175"/>
+          <line x1="405" y1="100" x2="400" y2="175"/>
+          <line x1="515" y1="100" x2="440" y2="175"/>
+          <line x1="625" y1="100" x2="460" y2="175"/>
+          <polygon points="340,175 340,168 347,173" fill="#c2410c"/>
+          <polygon points="360,175 358,168 367,173" fill="#c2410c"/>
+          <polygon points="400,175 396,168 404,168" fill="#c2410c"/>
+          <polygon points="440,175 442,168 433,173" fill="#c2410c"/>
+          <polygon points="460,175 462,168 453,173" fill="#c2410c"/>
+        </g>
+        <text x="220" y="145" font-family="JetBrains Mono, monospace" font-size="10" fill="#c2410c" font-style="italic">scrape toutes les 15s</text>
+
+        <!-- Prometheus -->
+        <g>
+          <rect x="310" y="180" width="180" height="80" fill="#1a1d29" stroke="#c2410c" stroke-width="2" rx="4"/>
+          <text x="400" y="210" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="20" fill="#f59e0b">Prometheus</text>
+          <text x="400" y="230" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#d4d0c2">Collecte · Stockage (TSDB)</text>
+          <text x="400" y="246" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#d4d0c2">Alerting · PromQL</text>
+        </g>
+
+        <!-- Alertmanager (side branch) -->
+        <g>
+          <line x1="490" y1="220" x2="560" y2="220" stroke="#8b8e98" stroke-width="1"/>
+          <polygon points="560,220 553,216 553,224" fill="#8b8e98"/>
+          <rect x="560" y="200" width="130" height="45" fill="#faf7f0" stroke="#8b8e98" stroke-width="1" rx="3"/>
+          <text x="625" y="220" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="12" fill="#1a1d29">Alertmanager</text>
+          <text x="625" y="236" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#8b8e98">Slack · PagerDuty</text>
+        </g>
+
+        <!-- Arrow to Grafana -->
+        <g>
+          <line x1="400" y1="262" x2="400" y2="290" stroke="#c2410c" stroke-width="1.5"/>
+          <polygon points="400,290 396,283 404,283" fill="#c2410c"/>
+          <text x="420" y="280" font-family="JetBrains Mono, monospace" font-size="10" fill="#c2410c" font-style="italic">query PromQL</text>
+        </g>
+
+        <!-- Grafana -->
+        <g>
+          <rect x="260" y="295" width="280" height="65" fill="#faf7f0" stroke="#c2410c" stroke-width="2" rx="4"/>
+          <text x="400" y="322" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="20" fill="#c2410c">Grafana</text>
+          <text x="400" y="342" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#4a4d59">Dashboards interactifs · Exploration visuelle</text>
+        </g>
+
+        <!-- Human -->
+        <g transform="translate(70, 315)">
+          <circle cx="0" cy="0" r="12" fill="none" stroke="#1a1d29" stroke-width="1.5"/>
+          <path d="M -12 28 Q 0 10 12 28" fill="none" stroke="#1a1d29" stroke-width="1.5"/>
+          <line x1="30" y1="18" x2="245" y2="18" stroke="#1a1d29" stroke-width="1" stroke-dasharray="2,3"/>
+          <polygon points="245,18 238,14 238,22" fill="#1a1d29"/>
+          <text x="110" y="10" font-family="Fraunces, serif" font-style="italic" font-size="12" fill="#1a1d29">toi qui regardes</text>
+        </g>
+      </svg>
+      <div class="diagram-caption"><strong>Figure 6</strong>L'architecture Prometheus / Grafana — collecte par pull, stockage, visualisation</div>
+    </div>
+
+    <h3>La famille étendue — le stack LGTM</h3>
+
+    <p>Les créateurs de Grafana (société <em>Grafana Labs</em>) ont progressivement construit une suite complète d'outils d'observabilité, connue sous l'acronyme <strong>LGTM</strong>. Un nom à connaître&nbsp;: il apparaît de plus en plus dans les architectures modernes, en alternative à Datadog ou ELK.</p>
+
+    <div class="eco">
+      <div class="eco-card">
+        <div class="cat">L</div>
+        <div class="name">Loki</div>
+        <div class="desc">Le «&nbsp;Prometheus des logs&nbsp;». Système de stockage de logs léger, indexé par labels (pas par contenu). Beaucoup moins cher qu'Elasticsearch pour de gros volumes.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">G</div>
+        <div class="name">Grafana</div>
+        <div class="desc">La couche de visualisation unifiée. Se branche sur Loki, Prometheus, Tempo, et des centaines d'autres sources.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">T</div>
+        <div class="name">Tempo</div>
+        <div class="desc">Stockage distribué de traces, compatible OpenTelemetry. Remplace avantageusement Jaeger sur gros volume.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">M</div>
+        <div class="name">Mimir</div>
+        <div class="desc">Version scalable de Prometheus. Permet de gérer des milliards de séries de métriques sur plusieurs années, multi-tenant. Pour les très grandes infrastructures.</div>
+      </div>
+    </div>
+
+    <h3>La concurrence ELK</h3>
+
+    <p>Avant l'émergence de Loki, le standard des logs était le <strong>stack ELK</strong>&nbsp;:</p>
+
+    <ul style="margin: 16px 0 24px; padding-left: 24px;">
+      <li><strong>E</strong>lasticsearch — le moteur de recherche et de stockage</li>
+      <li><strong>L</strong>ogstash — l'agent de collecte et de transformation des logs</li>
+      <li><strong>K</strong>ibana — l'interface de visualisation</li>
+    </ul>
+
+    <p>Très puissant, très cher en ressources. On parle aujourd'hui souvent du stack <em>Elastic</em> tout court, la société éditrice ayant élargi son offre. C'est encore très présent dans les grandes entreprises.</p>
+
+    <h3>Les SaaS du domaine</h3>
+
+    <p>Si tu n'as pas envie d'héberger tout ça toi-même, plusieurs acteurs SaaS dominent le marché de l'observabilité&nbsp;:</p>
+
+    <p><strong>Datadog</strong> est le leader mondial — tout-en-un, excellent produit, prix qui grimpe vite. <strong>New Relic</strong> joue la même carte avec un modèle de pricing différent. <strong>Grafana Cloud</strong> propose la stack LGTM en mode managé avec un tier gratuit généreux. <strong>Dynatrace</strong> cible plutôt les très grosses entreprises avec une approche AIOps (intelligence artificielle appliquée aux incidents). <strong>Sentry</strong> est spécialisé sur les erreurs applicatives — indispensable pour les équipes produit.</p>
+
+    <h3>Les vocabulaires essentiels — SLI, SLO, SLA</h3>
+
+    <p>Pour piloter la qualité de service, trois acronymes reviennent partout&nbsp;:</p>
+
+    <div class="defs">
+      <div class="def teal">
+        <div class="def-tag">Indicateur</div>
+        <div class="def-name">SLI</div>
+        <div class="def-body"><strong>Service Level Indicator.</strong> Une mesure technique concrète : latence moyenne, taux d'erreur, disponibilité. C'est la donnée brute que tu calcules à partir de tes métriques.</div>
+      </div>
+
+      <div class="def teal">
+        <div class="def-tag">Objectif interne</div>
+        <div class="def-name">SLO</div>
+        <div class="def-body"><strong>Service Level Objective.</strong> L'objectif que tu te fixes en interne : «&nbsp;on veut 99,9 % de disponibilité sur 30 jours glissants&nbsp;». Plus strict que le SLA, il te laisse de la marge.</div>
+      </div>
+
+      <div class="def teal">
+        <div class="def-tag">Contrat client</div>
+        <div class="def-name">SLA</div>
+        <div class="def-body"><strong>Service Level Agreement.</strong> Le contrat formel avec le client : si tu descends sous 99,5 %, il a droit à un dédommagement. Généralement plus laxiste que le SLO pour éviter les pénalités.</div>
+      </div>
+    </div>
+
+    <div class="callout teal">
+      <span class="callout-label">Règle de bon sens</span>
+      <p>Le SLO doit toujours être <em>plus strict</em> que le SLA. Si ton SLA est à 99,5 %, vise un SLO interne à 99,9 % — ça te laisse une marge pour réagir avant que le client ne remarque quoi que ce soit.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 08 SEC ======================= -->
+<section id="secops">
+  <div class="section-inner">
+    <div class="section-num">Section 08 — Sécurité</div>
+    <h2>Sécurité &amp; <em>DevSecOps</em></h2>
+
+    <p>Historiquement, la sécurité arrivait en fin de cycle — une équipe externe faisait un audit avant mise en prod et renvoyait une liste de corrections à faire. Cette approche est aujourd'hui considérée comme dépassée&nbsp;: trop lente, trop tardive, trop coûteuse. Le <strong>DevSecOps</strong> propose d'intégrer la sécurité <em>à chaque étape</em> de la boucle DevOps. On parle de <strong>shift-left security</strong>&nbsp;: déplacer les contrôles le plus tôt possible, dès le poste du développeur.</p>
+
+    <h3>Les catégories d'outils</h3>
+
+    <div class="eco">
+      <div class="eco-card">
+        <div class="cat">SAST</div>
+        <div class="name">Analyse statique</div>
+        <div class="desc"><strong>Static Application Security Testing.</strong> Scanne le code source sans l'exécuter, cherche des patterns dangereux. Ex&nbsp;: <em>SonarQube, Semgrep, CodeQL, Snyk Code</em>.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">DAST</div>
+        <div class="name">Analyse dynamique</div>
+        <div class="desc"><strong>Dynamic Application Security Testing.</strong> Teste l'application en fonctionnement, simule des attaques. Ex&nbsp;: <em>OWASP ZAP, Burp Suite, Netsparker</em>.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">SCA</div>
+        <div class="name">Scan des dépendances</div>
+        <div class="desc"><strong>Software Composition Analysis.</strong> Identifie les vulnérabilités connues dans les bibliothèques que tu utilises. Ex&nbsp;: <em>Snyk, Dependabot, Renovate, Trivy</em>.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">IaC scan</div>
+        <div class="name">Scan d'infrastructure</div>
+        <div class="desc">Inspecte tes fichiers Terraform, Kubernetes, Dockerfiles à la recherche de mauvaises configs. Ex&nbsp;: <em>Checkov, Trivy, tfsec, kics</em>. Tu les connais déjà du Volume 1.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Secrets</div>
+        <div class="name">Gestion des secrets</div>
+        <div class="desc">Pour éviter les clés d'API en dur dans Git. Coffres-forts dédiés. Ex&nbsp;: <em>HashiCorp Vault, AWS Secrets Manager, Doppler, 1Password Secrets Automation</em>.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Policy as Code</div>
+        <div class="name">OPA &amp; compagnie</div>
+        <div class="desc"><strong>Open Policy Agent</strong>&nbsp;: un moteur général de règles qui s'applique partout (Kubernetes, Terraform, CI/CD). Permet de dire «&nbsp;ce type de bucket est interdit dans notre SI&nbsp;».</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Runtime protection</div>
+        <div class="name">Falco · Aqua · Sysdig</div>
+        <div class="desc">Détection d'intrusion et de comportement anormal sur des containers en fonctionnement. Un EDR pour conteneurs.</div>
+      </div>
+
+      <div class="eco-card">
+        <div class="cat">Posture globale</div>
+        <div class="name">CSPM</div>
+        <div class="desc"><strong>Cloud Security Posture Management.</strong> Scanne en continu tout ton cloud à la recherche de configs risquées. Ex&nbsp;: <em>Wiz, Prisma Cloud, Orca</em>.</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">La règle qui change tout</span>
+      <p>Un secret qui est dans Git est un secret compromis, point. Même si tu le supprimes ensuite, il est dans l'historique. La première discipline à acquérir, avant même toutes ces catégories d'outils, est de <strong>ne jamais commit un secret</strong>. Les outils comme <em>git-secrets</em> ou <em>pre-commit</em> hooks t'aident à construire ce réflexe.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 09 BIG PICTURE ======================= -->
+<section id="big-picture">
+  <div class="section-inner">
+    <div class="section-num">Section 09 — Synthèse</div>
+    <h2>La vue <em>d'ensemble</em></h2>
+
+    <p>Maintenant que chaque morceau est posé, voici comment tout s'articule dans une architecture moderne typique. C'est beaucoup d'un coup, mais tu reconnaîtras tous les éléments vus précédemment — c'est le même paysage, assemblé.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 820 640" xmlns="http://www.w3.org/2000/svg">
+        <!-- DEV ZONE -->
+        <rect x="20" y="20" width="780" height="130" fill="#faf7f0" stroke="#1a1d29" stroke-width="1" rx="4"/>
+        <text x="30" y="40" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b8e98" letter-spacing="2">DÉVELOPPEMENT</text>
+
+        <!-- Developer -->
+        <g transform="translate(60, 80)">
+          <circle cx="0" cy="0" r="14" fill="none" stroke="#1a1d29" stroke-width="1.5"/>
+          <path d="M -14 26 Q 0 10 14 26" fill="none" stroke="#1a1d29" stroke-width="1.5"/>
+          <text x="0" y="55" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#1a1d29">Dev</text>
+        </g>
+
+        <!-- IDE -->
+        <rect x="120" y="70" width="80" height="50" fill="white" stroke="#d6d0c2" rx="3"/>
+        <text x="160" y="90" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#1a1d29" font-weight="500">VS Code</text>
+        <text x="160" y="105" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#8b8e98">IntelliJ, etc.</text>
+
+        <line x1="90" y1="80" x2="118" y2="95" stroke="#1a1d29" stroke-width="1"/>
+
+        <!-- Arrow to Git -->
+        <line x1="200" y1="95" x2="245" y2="95" stroke="#c2410c" stroke-width="1.5"/>
+        <polygon points="245,95 238,91 238,99" fill="#c2410c"/>
+        <text x="220" y="85" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#c2410c">push</text>
+
+        <!-- Git -->
+        <rect x="250" y="70" width="110" height="50" fill="#1a1d29" rx="3"/>
+        <text x="305" y="92" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="14" fill="#f59e0b">GitHub / GitLab</text>
+        <text x="305" y="107" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#d4d0c2">source control</text>
+
+        <!-- Arrow to CI/CD -->
+        <line x1="360" y1="95" x2="405" y2="95" stroke="#c2410c" stroke-width="1.5"/>
+        <polygon points="405,95 398,91 398,99" fill="#c2410c"/>
+        <text x="380" y="85" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#c2410c">trigger</text>
+
+        <!-- CI/CD -->
+        <rect x="410" y="70" width="130" height="50" fill="#c2410c" rx="3"/>
+        <text x="475" y="92" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="14" fill="#f5f1e8">CI/CD Pipeline</text>
+        <text x="475" y="107" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#fef3c7">GitHub Actions, GitLab CI</text>
+
+        <!-- Security scans -->
+        <g>
+          <line x1="475" y1="120" x2="475" y2="135" stroke="#7c2d12" stroke-width="1" stroke-dasharray="2,2"/>
+          <rect x="425" y="135" width="100" height="18" fill="#fef3c7" stroke="#7c2d12" stroke-width="1" rx="2"/>
+          <text x="475" y="147" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#7c2d12">SAST · SCA · IaC scan</text>
+        </g>
+
+        <!-- Arrow to registry -->
+        <line x1="540" y1="95" x2="585" y2="95" stroke="#c2410c" stroke-width="1.5"/>
+        <polygon points="585,95 578,91 578,99" fill="#c2410c"/>
+
+        <!-- Registry -->
+        <rect x="590" y="70" width="120" height="50" fill="#faf7f0" stroke="#1a1d29" rx="3"/>
+        <text x="650" y="92" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="12" fill="#1a1d29" font-weight="500">Registry</text>
+        <text x="650" y="107" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#8b8e98">images Docker</text>
+
+        <!-- ============ DEPLOY ARROW ============ -->
+        <g>
+          <line x1="475" y1="153" x2="475" y2="185" stroke="#c2410c" stroke-width="2"/>
+          <polygon points="475,185 470,178 480,178" fill="#c2410c"/>
+          <text x="485" y="172" font-family="JetBrains Mono, monospace" font-size="9" fill="#c2410c">deploy</text>
+        </g>
+
+        <!-- ============ IaC / PROVISIONING ============ -->
+        <rect x="20" y="190" width="780" height="90" fill="#faf7f0" stroke="#0d766e" stroke-width="1" rx="4"/>
+        <text x="30" y="210" font-family="JetBrains Mono, monospace" font-size="10" fill="#0d766e" letter-spacing="2">INFRASTRUCTURE AS CODE — provisionne tout ce qui suit</text>
+
+        <rect x="120" y="225" width="130" height="40" fill="#0d766e" rx="3"/>
+        <text x="185" y="248" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="14" fill="#f5f1e8">Terraform</text>
+
+        <rect x="270" y="225" width="130" height="40" fill="white" stroke="#0d766e" rx="3"/>
+        <text x="335" y="240" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#0d766e" font-weight="500">Ansible</text>
+        <text x="335" y="255" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#8b8e98">configuration</text>
+
+        <rect x="420" y="225" width="160" height="40" fill="white" stroke="#0d766e" rx="3"/>
+        <text x="500" y="240" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#0d766e" font-weight="500">ArgoCD / Flux</text>
+        <text x="500" y="255" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#8b8e98">GitOps K8s</text>
+
+        <rect x="600" y="225" width="160" height="40" fill="white" stroke="#0d766e" rx="3"/>
+        <text x="680" y="240" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#0d766e" font-weight="500">Helm</text>
+        <text x="680" y="255" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#8b8e98">packaging apps</text>
+
+        <!-- Arrow down to runtime -->
+        <line x1="410" y1="280" x2="410" y2="310" stroke="#c2410c" stroke-width="1.5"/>
+        <polygon points="410,310 406,303 414,303" fill="#c2410c"/>
+
+        <!-- ============ RUNTIME ============ -->
+        <rect x="20" y="315" width="780" height="170" fill="#faf7f0" stroke="#1a1d29" stroke-width="1" rx="4"/>
+        <text x="30" y="335" font-family="JetBrains Mono, monospace" font-size="10" fill="#8b8e98" letter-spacing="2">RUNTIME — le code en exécution</text>
+
+        <!-- Kubernetes cluster -->
+        <rect x="60" y="350" width="500" height="120" fill="white" stroke="#1a1d29" stroke-width="1.5" rx="4"/>
+        <text x="310" y="370" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="16" fill="#1a1d29">Cluster Kubernetes</text>
+
+        <!-- Pods -->
+        <g>
+          <rect x="80" y="385" width="90" height="70" fill="#faf7f0" stroke="#c2410c" rx="3"/>
+          <text x="125" y="405" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#c2410c">POD</text>
+          <rect x="90" y="415" width="70" height="32" fill="#1a1d29"/>
+          <text x="125" y="427" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#f59e0b">container</text>
+          <text x="125" y="440" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#f5f1e8">App A</text>
+        </g>
+        <g>
+          <rect x="180" y="385" width="90" height="70" fill="#faf7f0" stroke="#c2410c" rx="3"/>
+          <text x="225" y="405" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#c2410c">POD</text>
+          <rect x="190" y="415" width="70" height="32" fill="#1a1d29"/>
+          <text x="225" y="427" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#f59e0b">container</text>
+          <text x="225" y="440" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#f5f1e8">App B</text>
+        </g>
+        <g>
+          <rect x="280" y="385" width="90" height="70" fill="#faf7f0" stroke="#c2410c" rx="3"/>
+          <text x="325" y="405" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#c2410c">POD</text>
+          <rect x="290" y="415" width="70" height="32" fill="#1a1d29"/>
+          <text x="325" y="427" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#f59e0b">container</text>
+          <text x="325" y="440" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#f5f1e8">App C</text>
+        </g>
+        <g>
+          <rect x="380" y="385" width="90" height="70" fill="#faf7f0" stroke="#c2410c" rx="3"/>
+          <text x="425" y="405" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#c2410c">POD</text>
+          <rect x="390" y="415" width="70" height="32" fill="#1a1d29"/>
+          <text x="425" y="427" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#f59e0b">container</text>
+          <text x="425" y="440" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#f5f1e8">API</text>
+        </g>
+        <g>
+          <rect x="480" y="385" width="70" height="70" fill="white" stroke="#8b8e98" stroke-dasharray="3,2" rx="3"/>
+          <text x="515" y="420" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="11" fill="#8b8e98">+ N pods</text>
+          <text x="515" y="435" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#8b8e98">scaling auto</text>
+        </g>
+
+        <!-- Cloud provider below -->
+        <g>
+          <rect x="580" y="350" width="200" height="120" fill="white" stroke="#1a1d29" stroke-width="1" rx="4"/>
+          <text x="680" y="370" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="14" fill="#1a1d29">Cloud provider (IaaS)</text>
+          <text x="680" y="390" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#8b8e98">AWS · Azure · GCP · OVH</text>
+
+          <rect x="600" y="402" width="75" height="25" fill="#faf7f0" stroke="#d6d0c2"/>
+          <text x="637" y="418" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#4a4d59">VMs</text>
+
+          <rect x="685" y="402" width="75" height="25" fill="#faf7f0" stroke="#d6d0c2"/>
+          <text x="722" y="418" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#4a4d59">Réseau</text>
+
+          <rect x="600" y="432" width="75" height="25" fill="#faf7f0" stroke="#d6d0c2"/>
+          <text x="637" y="448" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#4a4d59">Stockage</text>
+
+          <rect x="685" y="432" width="75" height="25" fill="#faf7f0" stroke="#d6d0c2"/>
+          <text x="722" y="448" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="10" fill="#4a4d59">DB managées</text>
+        </g>
+
+        <!-- Arrow down to observability -->
+        <line x1="410" y1="485" x2="410" y2="510" stroke="#c2410c" stroke-width="1.5"/>
+        <polygon points="410,510 406,503 414,503" fill="#c2410c"/>
+        <text x="435" y="502" font-family="JetBrains Mono, monospace" font-size="9" fill="#c2410c">metrics/logs/traces</text>
+
+        <!-- ============ OBSERVABILITY ============ -->
+        <rect x="20" y="515" width="780" height="95" fill="#faf7f0" stroke="#7c2d12" stroke-width="1" rx="4"/>
+        <text x="30" y="535" font-family="JetBrains Mono, monospace" font-size="10" fill="#7c2d12" letter-spacing="2">OBSERVABILITÉ</text>
+
+        <rect x="120" y="550" width="130" height="45" fill="#1a1d29" rx="3"/>
+        <text x="185" y="570" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="14" fill="#f59e0b">Prometheus</text>
+        <text x="185" y="585" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#d4d0c2">metrics</text>
+
+        <rect x="265" y="550" width="110" height="45" fill="#1a1d29" rx="3"/>
+        <text x="320" y="570" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="14" fill="#f59e0b">Loki</text>
+        <text x="320" y="585" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#d4d0c2">logs</text>
+
+        <rect x="390" y="550" width="110" height="45" fill="#1a1d29" rx="3"/>
+        <text x="445" y="570" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="14" fill="#f59e0b">Tempo</text>
+        <text x="445" y="585" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#d4d0c2">traces</text>
+
+        <line x1="500" y1="572" x2="530" y2="572" stroke="#c2410c" stroke-width="1.5"/>
+        <polygon points="530,572 523,568 523,576" fill="#c2410c"/>
+
+        <rect x="535" y="550" width="160" height="45" fill="#c2410c" rx="3"/>
+        <text x="615" y="570" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="14" fill="#f5f1e8">Grafana</text>
+        <text x="615" y="585" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#fef3c7">visualisation unifiée</text>
+
+        <!-- Loop back arrow -->
+        <g>
+          <path d="M 615 520 Q 780 520 780 80 Q 780 45 90 45" fill="none" stroke="#8b8e98" stroke-width="1" stroke-dasharray="3,3"/>
+          <polygon points="90,45 97,41 97,49" fill="#8b8e98"/>
+          <text x="795" y="300" font-family="Inter Tight, sans-serif" font-size="11" fill="#8b8e98" font-style="italic" transform="rotate(90 795 300)">feedback loop</text>
+        </g>
+
+        <!-- Connection from runtime to observability (indirect via the arrow above) already shown -->
+      </svg>
+      <div class="diagram-caption"><strong>Figure 7</strong>Une architecture moderne typique — toutes les pièces assemblées dans leur flux</div>
+    </div>
+
+    <p>Tout ce que tu vois ici, tu l'as désormais rencontré. Une <em>modification de code</em> part d'un IDE, est poussée sur Git, déclenche une pipeline CI/CD qui la teste, la scanne pour la sécurité, la packe en image Docker, la pousse dans un registry. L'<em>IaC</em> (Terraform, Helm, ArgoCD) orchestre alors son déploiement sur un cluster Kubernetes qui tourne lui-même sur des ressources IaaS d'un cloud public. Une fois en production, le code émet des <em>metrics, logs et traces</em> qui sont collectés et visualisés via Grafana. Les observations nourrissent les prochaines itérations — la boucle.</p>
+
+    <div class="callout">
+      <span class="callout-label">Bonne nouvelle</span>
+      <p>Personne ne maîtrise <em>tout</em> ce paysage. Les profils spécialisés (<em>SRE, platform engineer, DevSecOps engineer, cloud architect</em>) se concentrent chacun sur un ou deux domaines. La carte mentale que tu viens d'acquérir te servira toute ta carrière, même si tu ne touches qu'à un tiers de ces outils au quotidien.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 10 GLOSSAIRE ======================= -->
+<section id="glossary">
+  <div class="section-inner">
+    <div class="section-num">Section 10 — Référence</div>
+    <h2>Glossaire <em>express</em></h2>
+
+    <p>Tous les acronymes croisés dans ce guide, dans l'ordre alphabétique. À garder sous la main pour le premier mois.</p>
+
+    <div class="glossary">
+      <dl>
+        <dt>AIOps</dt>
+        <dd><strong>Artificial Intelligence for IT Operations.</strong> Utilisation du ML pour détecter anomalies et corréler incidents.</dd>
+
+        <dt>BaaS</dt>
+        <dd><strong>Backend as a Service.</strong> Un backend clé-en-main (auth, DB, API). Exemples : Firebase, Supabase.</dd>
+
+        <dt>CI/CD</dt>
+        <dd><strong>Continuous Integration / Delivery / Deployment.</strong> Voir section 4.</dd>
+
+        <dt>CNCF</dt>
+        <dd><strong>Cloud Native Computing Foundation.</strong> Fondation qui héberge Kubernetes, Prometheus, Helm, Envoy, et la plupart des projets cloud-native majeurs.</dd>
+
+        <dt>CSPM</dt>
+        <dd><strong>Cloud Security Posture Management.</strong> Outils d'audit continu de la config cloud.</dd>
+
+        <dt>DAST</dt>
+        <dd><strong>Dynamic Application Security Testing.</strong> Tests de sécurité sur app en fonctionnement.</dd>
+
+        <dt>DBaaS</dt>
+        <dd><strong>Database as a Service.</strong> Bases managées. Exemples : RDS, Atlas.</dd>
+
+        <dt>DevOps</dt>
+        <dd>Culture et pratiques réunissant développement et opérations. Voir section 3.</dd>
+
+        <dt>DevSecOps</dt>
+        <dd>DevOps + sécurité intégrée dès le code.</dd>
+
+        <dt>ELK</dt>
+        <dd><strong>Elasticsearch · Logstash · Kibana.</strong> Stack historique de gestion des logs.</dd>
+
+        <dt>FaaS</dt>
+        <dd><strong>Function as a Service.</strong> Serverless, facturation à la milliseconde. Ex : AWS Lambda.</dd>
+
+        <dt>FinOps</dt>
+        <dd>Pratiques de gestion et d'optimisation des coûts cloud.</dd>
+
+        <dt>GitOps</dt>
+        <dd>Utiliser Git comme source de vérité unique pour orchestrer les déploiements.</dd>
+
+        <dt>HCL</dt>
+        <dd><strong>HashiCorp Configuration Language.</strong> Le langage de Terraform (voir Volume 1).</dd>
+
+        <dt>IaaS</dt>
+        <dd><strong>Infrastructure as a Service.</strong> Niveau bas : VMs, réseau, stockage.</dd>
+
+        <dt>IaC</dt>
+        <dd><strong>Infrastructure as Code.</strong> Gérer l'infra via des fichiers texte versionnés.</dd>
+
+        <dt>IDaaS</dt>
+        <dd><strong>Identity as a Service.</strong> Gestion d'identités managée. Ex : Okta, Auth0.</dd>
+
+        <dt>K8s</dt>
+        <dd><strong>Kubernetes.</strong> Les «&nbsp;8&nbsp;» remplacent les 8 lettres entre K et s.</dd>
+
+        <dt>LGTM</dt>
+        <dd><strong>Loki · Grafana · Tempo · Mimir.</strong> Stack d'observabilité de Grafana Labs.</dd>
+
+        <dt>MLOps</dt>
+        <dd>DevOps appliqué au cycle de vie des modèles de machine learning.</dd>
+
+        <dt>mTLS</dt>
+        <dd><strong>Mutual TLS.</strong> Chiffrement + authentification des deux côtés.</dd>
+
+        <dt>OPA</dt>
+        <dd><strong>Open Policy Agent.</strong> Moteur de Policy as Code transversal.</dd>
+
+        <dt>PaaS</dt>
+        <dd><strong>Platform as a Service.</strong> Niveau intermédiaire : tu pousses du code, la plateforme le fait tourner.</dd>
+
+        <dt>PromQL</dt>
+        <dd>Le langage de requête de Prometheus.</dd>
+
+        <dt>SaaS</dt>
+        <dd><strong>Software as a Service.</strong> Application prête à l'emploi. Ex : Gmail.</dd>
+
+        <dt>SAST</dt>
+        <dd><strong>Static Application Security Testing.</strong> Analyse statique de code.</dd>
+
+        <dt>SCA</dt>
+        <dd><strong>Software Composition Analysis.</strong> Scan des vulnérabilités dans les dépendances.</dd>
+
+        <dt>SECaaS</dt>
+        <dd><strong>Security as a Service.</strong> Sécurité en mode cloud.</dd>
+
+        <dt>SLA</dt>
+        <dd><strong>Service Level Agreement.</strong> Engagement contractuel avec le client.</dd>
+
+        <dt>SLI</dt>
+        <dd><strong>Service Level Indicator.</strong> Mesure technique (latence, dispo…).</dd>
+
+        <dt>SLO</dt>
+        <dd><strong>Service Level Objective.</strong> Objectif interne, plus strict que le SLA.</dd>
+
+        <dt>SOC</dt>
+        <dd><strong>Security Operations Center.</strong> Équipe qui surveille et répond aux incidents sécurité.</dd>
+
+        <dt>SRE</dt>
+        <dd><strong>Site Reliability Engineering.</strong> Pratique Google d'ingénierie de la fiabilité — cousine du DevOps orientée production.</dd>
+
+        <dt>SSO</dt>
+        <dd><strong>Single Sign-On.</strong> Une seule authentification pour tous les outils.</dd>
+
+        <dt>TSDB</dt>
+        <dd><strong>Time-Series Database.</strong> Base optimisée pour les données horodatées. Ex : Prometheus, InfluxDB.</dd>
+
+        <dt>VPC</dt>
+        <dd><strong>Virtual Private Cloud.</strong> Un réseau isolé dans un cloud public.</dd>
+
+        <dt>XaaS</dt>
+        <dd><strong>anything as a Service.</strong> Formule générique pour tous les modèles en <em>…aaS</em>.</dd>
+      </dl>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">Tu en sais assez</span>
+      <p>Ces deux guides — <em>Terraform</em> et <em>Cloud &amp; DevOps</em> — couvrent l'essentiel de ce qu'un·e débutant·e doit connaître pour tenir une conversation d'équipe plateforme. Le reste se construit avec le temps, les projets, les incidents, et la curiosité. Ne cherche pas à tout mémoriser d'un coup&nbsp;: reviens sur cette page régulièrement, elle se sédimentera toute seule dans ta tête.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Guide rédigé pour Max · Volume 2 · Édition 2026 · <span>La carte, pas le territoire</span></p>
+</footer>
+
+</body>
+</html>
