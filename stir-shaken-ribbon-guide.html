@@ -385,6 +385,30 @@ pre .kw { color: #f59e0b; }
 .att.b .att-when { color: var(--accent-line); }
 .att.c .att-when { color: var(--ink-muted); }
 
+/* === STEP LIST (numbered cards) === */
+.steps { margin: 32px 0; counter-reset: step; }
+.step {
+  display: flex;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px dotted var(--rule);
+  align-items: flex-start;
+}
+.step:last-child { border-bottom: none; }
+.step-n {
+  flex: 0 0 auto;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 34px;
+  line-height: 1;
+  color: var(--accent);
+  min-width: 40px;
+}
+.step-body { font-size: 15px; }
+.step-body h4 { margin: 0 0 4px; }
+.step-body p { margin: 0; font-size: 14px; color: var(--ink-soft); }
+
 /* === COMPARISON TABLE === */
 .compare { margin: 32px 0; width: 100%; border-collapse: collapse; font-size: 14px; }
 .compare th {
@@ -486,8 +510,8 @@ footer span { color: var(--accent); }
     <p class="lede">Comment la France a décidé d'authentifier les appels téléphoniques pour lutter contre l'usurpation de numéro, et comment Ribbon fournit la brique technique qui signe et vérifie chaque appel. Un guide pour comprendre STIR/SHAKEN, le Mécanisme d'Authentification des Numéros, et la solution Secure Telephone Identity.</p>
     <div class="meta">
       <span>Niveau<strong>Débutant</strong></span>
-      <span>Temps de lecture<strong>≈ 25 minutes</strong></span>
-      <span>Base<strong>Docs publiques Ribbon, ARCEP, IETF</strong></span>
+      <span>Temps de lecture<strong>≈ 30 minutes</strong></span>
+      <span>Base<strong>Docs publiques Ribbon, ARCEP, APNF, IETF</strong></span>
     </div>
   </div>
 </header>
@@ -497,7 +521,7 @@ footer span { color: var(--accent); }
   <div class="source-banner-inner">
     <span class="source-banner-icon">⚐</span>
     <div>
-      <strong>Sur quoi ce guide est basé.</strong> Documentation publique Ribbon Communications (solution brief STIR/SHAKEN France, fiches SBC SWe/5400/7000), publications ARCEP et APNF (code de procédures MAN, glossaire MAN, fiches pratiques opérateurs), standards IETF (RFC 8224 à 8588) et ATIS. <strong>Pas</strong> sur la configuration réelle du réseau Orange, à laquelle je n'ai pas accès. Les détails d'implémentation interne peuvent différer.
+      <strong>Sur quoi ce guide est basé.</strong> Documentation publique Ribbon Communications (solution brief STIR/SHAKEN France, fiches SBC SWe/5400/7000), publications ARCEP et APNF (code de procédures MAN, glossaire MAN, fiches pratiques opérateurs), standards IETF (RFC 8224 à 8588, et RFC 9060 pour la délégation de certificats) et ATIS. <strong>Pas</strong> sur la configuration réelle du réseau Orange, à laquelle je n'ai pas accès. Les détails d'implémentation interne peuvent différer.
     </div>
   </div>
 </div>
@@ -511,11 +535,12 @@ footer span { color: var(--accent); }
       <li><span class="toc-num">02</span><a href="#principe">Le principe STIR/SHAKEN</a></li>
       <li><span class="toc-num">03</span><a href="#man">Le MAN français</a></li>
       <li><span class="toc-num">04</span><a href="#attestations">Les attestations A, B, C</a></li>
-      <li><span class="toc-num">05</span><a href="#sip">L'en-tête SIP Identity</a></li>
-      <li><span class="toc-num">06</span><a href="#ribbon">La solution Ribbon STI</a></li>
-      <li><span class="toc-num">07</span><a href="#flow">Le flux complet d'un appel</a></li>
-      <li><span class="toc-num">08</span><a href="#ecosysteme">L'écosystème Ribbon Call Trust</a></li>
-      <li><span class="toc-num">09</span><a href="#glossary">Glossaire</a></li>
+      <li><span class="toc-num">05</span><a href="#delegation">La délégation d'affichage</a></li>
+      <li><span class="toc-num">06</span><a href="#sip">L'en-tête SIP Identity</a></li>
+      <li><span class="toc-num">07</span><a href="#ribbon">La solution Ribbon STI</a></li>
+      <li><span class="toc-num">08</span><a href="#flow">Le flux complet d'un appel</a></li>
+      <li><span class="toc-num">09</span><a href="#ecosysteme">L'écosystème Ribbon Call Trust</a></li>
+      <li><span class="toc-num">10</span><a href="#glossary">Glossaire</a></li>
     </ol>
   </div>
 </nav>
@@ -690,9 +715,14 @@ footer span { color: var(--accent); }
         <div class="tl-desc">Date fixée pour la mise en œuvre d'un mécanisme interopérable entre opérateurs. La mise en conformité effective s'est étalée sur plusieurs trimestres supplémentaires.</div>
       </div>
       <div class="tl-item">
-        <div class="tl-date">2024 — 2026</div>
-        <div class="tl-title">Déploiement et Branded Calling</div>
-        <div class="tl-desc">Montée en charge progressive du MAN. Orange présente au MWC 2026 sa solution <em>Branded Calling</em>, qui s'appuie sur le plus haut niveau d'attestation du MAN pour afficher le nom vérifié des entreprises appelantes.</div>
+        <div class="tl-date">Octobre 2024</div>
+        <div class="tl-title">Coupure des appels non authentifiés</div>
+        <div class="tl-desc">Le MAN passe en phase de coupure&nbsp;: les appels sans information d'authentification valide commencent à être interrompus, et non plus seulement tracés.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2025 — 2026</div>
+        <div class="tl-title">Délégation d'affichage et Branded Calling</div>
+        <div class="tl-desc">Montée en charge de la délégation de présentation de numéro&nbsp;: début 2026, les clients sont invités à déclarer eux-mêmes, depuis leur espace client, les entités autorisées à présenter leurs numéros. Orange présente au MWC 2026 sa solution <em>Branded Calling</em>, qui s'appuie sur le plus haut niveau d'attestation du MAN.</div>
       </div>
     </div>
 
@@ -864,17 +894,188 @@ footer span { color: var(--accent); }
 
     <div class="callout">
       <span class="callout-label">La règle de terminaison</span>
-      <p>Côté opérateur de terminaison, le traitement diffère selon l'attestation et le type de numéro. Pour un <strong>numéro fixe français</strong>, les règles ARCEP sont strictes&nbsp;: si l'authentification n'est pas suffisante (C ou absence), l'appel doit être <em>coupé</em>, pas relayé. Pour les mobiles, le numéro peut être masqué. Les niveaux B et C sont appelés à disparaître progressivement, avec l'objectif à terme d'une attestation A quasi-systématique grâce à la délégation d'affichage.</p>
+      <p>Côté opérateur de terminaison, le traitement diffère selon l'attestation et le type de numéro. Pour un <strong>numéro fixe français</strong>, les règles ARCEP sont strictes&nbsp;: si l'authentification n'est pas suffisante (C ou absence), l'appel doit être <em>coupé</em>, pas relayé. Pour les mobiles, le numéro peut être masqué. Les niveaux B et C sont appelés à disparaître progressivement, avec l'objectif à terme d'une attestation A quasi-systématique grâce à la délégation d'affichage — détaillée à la section suivante.</p>
     </div>
 
     <p>Cette logique est la pierre angulaire du dispositif Branded Calling d'Orange présenté au Mobile World Congress 2026&nbsp;: <em>seuls les appels avec attestation A</em> du MAN sont éligibles pour afficher le nom vérifié de l'entreprise sur l'écran du destinataire. C'est un exemple concret de l'intérêt commercial de l'attestation A au-delà de la simple conformité règlementaire.</p>
   </div>
 </section>
 
-<!-- ======================= 05 SIP ======================= -->
+<!-- ======================= 05 DELEGATION ======================= -->
+<section id="delegation">
+  <div class="section-inner">
+    <div class="section-num">Section 05 — Présenter le numéro d'un tiers</div>
+    <h2>La délégation <em>d'affichage</em></h2>
+
+    <p>Jusqu'ici, le modèle était simple&nbsp;: un opérateur signe en A les appels de <em>ses</em> clients utilisant <em>leurs</em> numéros. Mais la réalité du marché est plus tordue. Une marque confie ses campagnes d'appels à un centre de contact externe&nbsp;; une entreprise multi-sites veut présenter un numéro d'accueil unique&nbsp;; un éditeur SaaS de téléphonie émet pour le compte de centaines de clients. Dans tous ces cas, <strong>l'entité qui émet techniquement l'appel n'est pas le titulaire du numéro affiché</strong>. Sans cadre, ces appels parfaitement légitimes retombent en attestation B — et donc, à terme, dans la zone grise vouée à disparaître.</p>
+
+    <p>La <strong>délégation d'affichage</strong> (on parle aussi de <em>délégation de présentation de numéro</em>) est la réponse du MAN à ce problème. Elle permet à un tiers — autre opérateur, prestataire, centre d'appels — de présenter le numéro d'un client <em>en conservant le niveau d'attestation A</em>, à condition qu'une chaîne d'autorisation explicite et vérifiable relie le titulaire du numéro à l'entité émettrice.</p>
+
+    <div class="callout">
+      <span class="callout-label">L'idée en une phrase</span>
+      <p>La délégation d'affichage, c'est le mécanisme qui dit&nbsp;: «&nbsp;ce n'est pas moi qui possède ce numéro, mais j'ai une autorisation cryptographiquement vérifiable de celui qui le possède&nbsp;» — exactement comme un certificat web intermédiaire signé par une autorité racine.</p>
+    </div>
+
+    <h3>Les deux faces de la délégation</h3>
+
+    <p>Il faut distinguer le <em>cadre réglementaire</em> (qui a le droit de déléguer à qui, et comment c'est déclaré) du <em>mécanisme technique</em> (comment la cryptographie porte cette autorisation). Les deux se répondent.</p>
+
+    <div class="defs">
+      <div class="def">
+        <div class="def-tag">Face réglementaire — MAN / APNF</div>
+        <div class="def-name">L'autorisation déclarée</div>
+        <div class="def-body">Le titulaire du numéro doit avoir formellement autorisé le tiers. Dans le MAN, cette autorisation se matérialise à partir de début 2026 par une <strong>déclaration du client lui-même</strong>, depuis son espace client opérateur, des entités habilitées à présenter ses numéros. Les modalités inter-opérateurs sont pilotées par l'<strong>APNF</strong>.</div>
+      </div>
+
+      <div class="def">
+        <div class="def-tag">Face technique — STIR / IETF</div>
+        <div class="def-name">Le certificat délégué</div>
+        <div class="def-body">La <a class="inline" href="https://datatracker.ietf.org/doc/html/rfc9060">RFC 9060</a> définit les <strong>certificats délégués STIR</strong>&nbsp;: un certificat parent (qui atteste l'autorité sur une plage de numéros) signe un certificat enfant pour le délégataire. L'enfant ne peut couvrir qu'un périmètre <em>égal ou inférieur</em> à celui du parent.</div>
+      </div>
+    </div>
+
+    <h3>Le périmètre «&nbsp;encompassed&nbsp;»</h3>
+
+    <p>C'est le cœur de la sûreté du dispositif. Un certificat délégué n'autorise jamais <em>plus</em> que son parent. Le périmètre d'autorité — la liste ou la plage de numéros, portée par l'objet <code class="inline">TNAuthList</code> du certificat — doit être <strong>égal ou un sous-ensemble</strong> de celui du parent. Impossible, donc, de se voir déléguer un numéro et d'en signer un autre&nbsp;: la vérification échouerait.</p>
+
+    <div class="callout teal">
+      <span class="callout-label">Exemple concret de réduction de périmètre</span>
+      <p>Un certificat parent atteste l'autorité sur la plage <code class="inline">+33 1 53 44 00 00</code> → <code class="inline">…99 99</code>. Il peut émettre un certificat enfant pour un seul numéro (<code class="inline">+33 1 53 44 12 34</code>), ou pour une sous-plage (<code class="inline">…12 00</code> → <code class="inline">…12 99</code>). Jamais pour un numéro <em>hors</em> de sa propre plage. Chaque maillon de la chaîne ne peut que <em>restreindre</em>, jamais élargir.</p>
+    </div>
+
+    <p>Un certificat délégué peut lui-même être autorisé à signer des sous-délégués (champ <code class="inline">cA = true</code> dans les <em>basic constraints</em>), ce qui permet des chaînes à plusieurs niveaux&nbsp;: opérateur → prestataire → sous-traitant. Mais seul un certificat <em>end-entity</em> (en bout de chaîne) peut réellement signer un PASSporT d'appel. Chaque certificat délégué pointe vers son parent via l'extension standard <em>Authority Key Identifier</em>, ce qui permet au vérificateur de remonter toute la chaîne jusqu'à la racine.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 800 470" xmlns="http://www.w3.org/2000/svg">
+        <text x="400" y="28" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#c2410c" letter-spacing="2">DÉLÉGATION D'AFFICHAGE — CHAÎNE DE CERTIFICATS</text>
+
+        <!-- Root / titulaire -->
+        <g>
+          <rect x="280" y="50" width="240" height="74" fill="#faf7f0" stroke="#c2410c" stroke-width="2" rx="4"/>
+          <text x="400" y="74" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#c2410c" letter-spacing="1.5">CERTIFICAT PARENT</text>
+          <text x="400" y="93" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="15" fill="#1a1d29">Opérateur titulaire du numéro</text>
+          <text x="400" y="112" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#7c2d12">TNAuthList : +33 1 53 44 00 00 → 99 99</text>
+        </g>
+
+        <!-- arrow down with "signe" -->
+        <line x1="400" y1="124" x2="400" y2="168" stroke="#c2410c" stroke-width="1.5"/>
+        <polygon points="400,168 396,160 404,160" fill="#c2410c"/>
+        <text x="412" y="150" font-family="Inter Tight, sans-serif" font-size="11" fill="#c2410c" font-style="italic">signe (délègue)</text>
+
+        <!-- Delegate level 1 -->
+        <g>
+          <rect x="250" y="170" width="300" height="80" fill="#fef3c7" stroke="#c2410c" stroke-width="1.5" rx="4"/>
+          <text x="400" y="193" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#c2410c" letter-spacing="1.5">CERTIFICAT DÉLÉGUÉ · cA = true</text>
+          <text x="400" y="212" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="14" fill="#1a1d29">Prestataire / opérateur tiers</text>
+          <text x="400" y="230" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#7c2d12">TNAuthList ⊆ parent : 53 44 12 00 → 12 99</text>
+          <text x="400" y="244" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#4a4d59" font-style="italic">peut sous-déléguer, mais ne peut pas signer d'appel</text>
+        </g>
+
+        <line x1="400" y1="250" x2="400" y2="294" stroke="#c2410c" stroke-width="1.5"/>
+        <polygon points="400,294 396,286 404,286" fill="#c2410c"/>
+        <text x="412" y="276" font-family="Inter Tight, sans-serif" font-size="11" fill="#c2410c" font-style="italic">sous-délègue</text>
+
+        <!-- End entity -->
+        <g>
+          <rect x="250" y="296" width="300" height="80" fill="#faf7f0" stroke="#0d766e" stroke-width="2" rx="4"/>
+          <text x="400" y="319" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#0d766e" letter-spacing="1.5">CERTIFICAT END-ENTITY · cA = false</text>
+          <text x="400" y="338" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="14" fill="#1a1d29">Centre d'appels émetteur</text>
+          <text x="400" y="356" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#0d766e">TNAuthList ⊆ parent : 53 44 12 34</text>
+          <text x="400" y="370" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="9" fill="#0d766e" font-style="italic">signe réellement le PASSporT de l'appel</text>
+        </g>
+
+        <!-- AKI back-pointers -->
+        <g stroke="#8b8e98" stroke-width="1" stroke-dasharray="2,3" fill="none">
+          <path d="M 250,210 Q 150,210 150,140 Q 150,90 278,87"/>
+          <path d="M 250,336 Q 130,336 130,210 Q 130,150 150,140"/>
+        </g>
+        <text x="95" y="240" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#8b8e98" transform="rotate(-90 95 240)">Authority Key Identifier — remontée vers le parent</text>
+
+        <!-- Encompassed note -->
+        <g>
+          <rect x="585" y="170" width="190" height="206" fill="#faf7f0" stroke="#d6d0c2" stroke-width="1" rx="4"/>
+          <text x="680" y="194" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#c2410c" letter-spacing="1">RÈGLE « ENCOMPASSED »</text>
+          <line x1="600" y1="204" x2="760" y2="204" stroke="#d6d0c2"/>
+          <text x="600" y="226" font-family="Inter Tight, sans-serif" font-size="10" fill="#4a4d59">À chaque niveau,</text>
+          <text x="600" y="241" font-family="Inter Tight, sans-serif" font-size="10" fill="#4a4d59">le périmètre ne peut</text>
+          <text x="600" y="256" font-family="Inter Tight, sans-serif" font-size="10" fill="#4a4d59">que rétrécir&nbsp;:</text>
+
+          <text x="600" y="284" font-family="JetBrains Mono, monospace" font-size="11" fill="#c2410c">parent ⊇ enfant</text>
+          <text x="600" y="304" font-family="JetBrains Mono, monospace" font-size="11" fill="#c2410c">⊇ petit-enfant</text>
+
+          <text x="600" y="334" font-family="Inter Tight, sans-serif" font-size="10" fill="#7c2d12" font-style="italic">Un numéro hors plage</text>
+          <text x="600" y="349" font-family="Inter Tight, sans-serif" font-size="10" fill="#7c2d12" font-style="italic">→ vérification</text>
+          <text x="600" y="364" font-family="Inter Tight, sans-serif" font-size="10" fill="#7c2d12" font-style="italic">échoue.</text>
+        </g>
+
+        <!-- Outcome -->
+        <line x1="400" y1="376" x2="400" y2="412" stroke="#0d766e" stroke-width="1.5"/>
+        <polygon points="400,412 396,404 404,404" fill="#0d766e"/>
+        <g>
+          <rect x="285" y="414" width="230" height="40" fill="#d1f0ed" stroke="#0d766e" stroke-width="1.5" rx="4"/>
+          <text x="400" y="439" text-anchor="middle" font-family="Inter Tight, sans-serif" font-size="12" fill="#0d766e">Appel signé en <tspan font-family="Fraunces, serif" font-style="italic" font-weight="600">attestation A</tspan> — numéro d'un tiers</text>
+        </g>
+      </svg>
+      <div class="diagram-caption"><strong>Figure 3</strong>La chaîne de certificats délégués — chaque niveau ne peut que restreindre le périmètre de numéros</div>
+    </div>
+
+    <h3>Qui délègue à qui&nbsp;: les cas d'usage</h3>
+
+    <p>Concrètement, la délégation d'affichage couvre plusieurs configurations que tu rencontreras côté Orange comme côté marché&nbsp;:</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">A</div>
+        <div class="step-body">
+          <h4>Opérateur → entreprise cliente</h4>
+          <p>Orange détient un bloc de numéros, en délègue un sous-ensemble à une entreprise cliente qui émet ses propres appels via son IPBX. L'entreprise signe en A ses appels sur ses numéros délégués.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">B</div>
+        <div class="step-body">
+          <h4>Titulaire → centre d'appels / opérateur tiers</h4>
+          <p>Une marque cliente autorise un centre de contact externe (potentiellement raccordé à un autre opérateur) à présenter son numéro d'accueil pour des campagnes sortantes. C'est le cas «&nbsp;vers un opérateur tiers&nbsp;» le plus fréquent.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">C</div>
+        <div class="step-body">
+          <h4>Chaîne multi-niveaux</h4>
+          <p>Opérateur → agrégateur/éditeur SaaS → client final. Chaque maillon détient un certificat <code class="inline">cA = true</code> et ne transmet qu'un périmètre réduit. Seul le dernier maillon signe l'appel.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Ce que le vérificateur contrôle à l'arrivée</h3>
+
+    <p>Quand l'opérateur de terminaison reçoit un appel signé via délégation, son STI-VS ne se contente plus de vérifier une signature unique. Il valide <strong>toute la chaîne</strong>&nbsp;:</p>
+
+    <ul>
+      <li>la signature de l'end-entity est cryptographiquement valide&nbsp;;</li>
+      <li>le numéro appelant (<code class="inline">orig.tn</code> du PASSporT) est bien <em>dans</em> le <code class="inline">TNAuthList</code> du certificat signataire&nbsp;;</li>
+      <li>chaque certificat de la chaîne est «&nbsp;encompassed&nbsp;» par son parent, jusqu'à une racine de confiance reconnue (en France, l'ancrage APNF)&nbsp;;</li>
+      <li>aucun certificat de la chaîne n'est expiré ni révoqué.</li>
+    </ul>
+
+    <p>Si l'un de ces contrôles échoue — typiquement, un délégataire qui tente de présenter un numéro hors de son périmètre concédé — la vérification tombe et l'appel est traité comme non authentifié.</p>
+
+    <div class="callout">
+      <span class="callout-label">Le lien avec le PASSporT « rcd » et Branded Calling</span>
+      <p>La délégation d'affichage est aussi le socle qui rend crédible l'affichage de marque&nbsp;: une fois qu'un tiers est légitimement autorisé à présenter un numéro en A, on peut empiler par-dessus un PASSporT enrichi (type <em>Rich Call Data</em>) portant le nom et le logo vérifiés de l'entreprise. Pas de délégation propre &rArr; pas d'attestation A fiable &rArr; pas de Branded Calling.</p>
+    </div>
+
+    <div class="callout teal">
+      <span class="callout-label">Note d'honnêteté</span>
+      <p>Cette section décrit le cadre <em>public</em>&nbsp;: le mécanisme MAN de délégation de présentation tel que documenté par l'ARCEP et l'APNF, et la mécanique de certificats délégués de la RFC 9060 qui le sous-tend. La façon précise dont Orange câble ses propres chaînes de délégation en interne (entités, périmètres, outillage) relève de doc interne à laquelle je n'ai pas accès — je ne l'invente pas ici.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 06 SIP ======================= -->
 <section id="sip">
   <div class="section-inner">
-    <div class="section-num">Section 05 — Signalisation</div>
+    <div class="section-num">Section 06 — Signalisation</div>
     <h2>L'en-tête <em>SIP Identity</em></h2>
 
     <p>Concrètement, toute cette mécanique se joue dans <strong>un en-tête ajouté à la requête SIP INVITE</strong> — le message qui initie un appel en voix sur IP. Cet en-tête s'appelle <code class="inline">Identity</code>. Il contient un <strong>PASSporT</strong> (<em>Personal ASSertion Token</em>) — un jeton JWT signé cryptographiquement par l'opérateur d'origine.</p>
@@ -918,15 +1119,15 @@ MEUCIQDh...signature_ECDSA...w==</pre>
 
     <div class="callout teal">
       <span class="callout-label">Ce qui voyage concrètement</span>
-      <p>L'en-tête <code class="inline">Identity</code> contient <strong>tout</strong> ce dont l'opérateur de terminaison a besoin pour vérifier l'appel&nbsp;: le PASSporT signé (qui inclut l'attestation A/B/C, le numéro appelant, le numéro appelé, l'horodatage), l'URL où récupérer le certificat public de l'opérateur émetteur, et l'algorithme utilisé. La vérification est <em>cryptographique</em> — si le contenu est modifié, la signature ne correspond plus.</p>
+      <p>L'en-tête <code class="inline">Identity</code> contient <strong>tout</strong> ce dont l'opérateur de terminaison a besoin pour vérifier l'appel&nbsp;: le PASSporT signé (qui inclut l'attestation A/B/C, le numéro appelant, le numéro appelé, l'horodatage), l'URL où récupérer le certificat public de l'opérateur émetteur, et l'algorithme utilisé. En cas de délégation, le certificat pointé par <code class="inline">x5u</code> est un certificat délégué dont la chaîne remonte jusqu'à la racine APNF. La vérification est <em>cryptographique</em> — si le contenu est modifié, la signature ne correspond plus.</p>
     </div>
   </div>
 </section>
 
-<!-- ======================= 06 RIBBON ======================= -->
+<!-- ======================= 07 RIBBON ======================= -->
 <section id="ribbon">
   <div class="section-inner">
-    <div class="section-num">Section 06 — L'offre vendeur</div>
+    <div class="section-num">Section 07 — L'offre vendeur</div>
     <h2>La solution <em>Ribbon STI</em></h2>
 
     <p><a class="inline" href="https://ribboncommunications.com">Ribbon Communications</a> est un équipementier télécom américain spécialisé dans la voix sur IP et les Session Border Controllers (SBC). C'est l'un des fournisseurs de référence pour le MAN en France, aux côtés d'Oracle/Acme Packet et d'AudioCodes. Sa gamme d'outils STI — <em>Secure Telephone Identity</em> — implémente à la fois le côté signature et le côté vérification.</p>
@@ -943,7 +1144,7 @@ MEUCIQDh...signature_ECDSA...w==</pre>
       <div class="def">
         <div class="def-tag">Vérification côté terminaison</div>
         <div class="def-name">STI-VS</div>
-        <div class="def-body"><strong>Secure Telephone Identity – Verification Service.</strong> Reçoit un en-tête <code class="inline">Identity</code> à vérifier, récupère le certificat public correspondant (via la copie locale de la BCO ou en ligne), vérifie la signature et l'intégrité, et retourne un <em>verstat</em> au SBC pour décider du traitement.</div>
+        <div class="def-body"><strong>Secure Telephone Identity – Verification Service.</strong> Reçoit un en-tête <code class="inline">Identity</code> à vérifier, récupère le certificat public correspondant (via la copie locale de la BCO ou en ligne), vérifie la signature et l'intégrité — y compris, en cas de délégation, toute la chaîne de certificats — et retourne un <em>verstat</em> au SBC pour décider du traitement.</div>
       </div>
 
       <div class="def">
@@ -955,7 +1156,7 @@ MEUCIQDh...signature_ECDSA...w==</pre>
       <div class="def">
         <div class="def-tag">Gestion des clés/certificats</div>
         <div class="def-name">SP-KMS</div>
-        <div class="def-body"><strong>Service Provider Key Management Service.</strong> Gère le cycle de vie des certificats opérateur&nbsp;: demande de certificat auprès de l'autorité (APNF en France), renouvellement, rotation, révocation. Interagit avec la BCO pour déposer les certificats publics.</div>
+        <div class="def-body"><strong>Service Provider Key Management Service.</strong> Gère le cycle de vie des certificats opérateur&nbsp;: demande de certificat auprès de l'autorité (APNF en France), renouvellement, rotation, révocation, et émission des certificats délégués. Interagit avec la BCO pour déposer les certificats publics.</div>
       </div>
 
       <div class="def">
@@ -1095,7 +1296,7 @@ MEUCIQDh...signature_ECDSA...w==</pre>
 
         <text x="500" y="80" font-family="JetBrains Mono, monospace" font-size="9" fill="#c2410c">SIP INVITE + en-tête Identity signé</text>
       </svg>
-      <div class="diagram-caption"><strong>Figure 3</strong>Les composants Ribbon STI et leur articulation avec le SBC, le PSX et la BCO</div>
+      <div class="diagram-caption"><strong>Figure 4</strong>Les composants Ribbon STI et leur articulation avec le SBC, le PSX et la BCO</div>
     </div>
 
     <h3>Deux modèles de déploiement</h3>
@@ -1120,10 +1321,10 @@ MEUCIQDh...signature_ECDSA...w==</pre>
   </div>
 </section>
 
-<!-- ======================= 07 FLOW ======================= -->
+<!-- ======================= 08 FLOW ======================= -->
 <section id="flow">
   <div class="section-inner">
-    <div class="section-num">Section 07 — Le parcours d'un appel</div>
+    <div class="section-num">Section 08 — Le parcours d'un appel</div>
     <h2>Le flux <em>complet</em></h2>
 
     <p>Maintenant, reprenons l'ensemble en suivant un appel concret, de bout en bout. Imagine qu'un client Orange (<code class="inline">+33&nbsp;6&nbsp;00&nbsp;11&nbsp;22&nbsp;33</code>) appelle un abonné SFR (<code class="inline">+33&nbsp;1&nbsp;44&nbsp;55&nbsp;12&nbsp;34</code>). Voici les étapes, telles qu'elles se dérouleraient sur une stack Ribbon côté Orange&nbsp;:</p>
@@ -1209,7 +1410,7 @@ MEUCIQDh...signature_ECDSA...w==</pre>
         <polygon points="740,490 733,487 733,493" fill="#a3e635"/>
         <text x="630" y="483" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#a3e635">9. INVITE (verstat OK → routage normal)</text>
       </svg>
-      <div class="diagram-caption"><strong>Figure 4</strong>Le parcours SIP d'un appel authentifié avec la stack Ribbon</div>
+      <div class="diagram-caption"><strong>Figure 5</strong>Le parcours SIP d'un appel authentifié avec la stack Ribbon</div>
     </div>
 
     <p>Décomposé en mots&nbsp;:</p>
@@ -1228,15 +1429,15 @@ MEUCIQDh...signature_ECDSA...w==</pre>
 
     <div class="callout">
       <span class="callout-label">En cas d'échec de vérification</span>
-      <p>Si le STI-VS retourne un verstat négatif — par exemple parce que la signature est invalide, le certificat a expiré, ou l'attestation est de niveau C sur un numéro fixe français — le SBC terminaison applique la politique&nbsp;: bloquer l'appel, le marquer «&nbsp;suspect&nbsp;», ou l'acheminer avec une indication au destinataire. La politique précise est définie par le PSX selon les règles MAN et les règles métier de l'opérateur.</p>
+      <p>Si le STI-VS retourne un verstat négatif — par exemple parce que la signature est invalide, le certificat a expiré, l'attestation est de niveau C sur un numéro fixe français, ou la chaîne de délégation n'est pas «&nbsp;encompassed&nbsp;» — le SBC terminaison applique la politique&nbsp;: bloquer l'appel, le marquer «&nbsp;suspect&nbsp;», ou l'acheminer avec une indication au destinataire. La politique précise est définie par le PSX selon les règles MAN et les règles métier de l'opérateur.</p>
     </div>
   </div>
 </section>
 
-<!-- ======================= 08 ECOSYSTEME ======================= -->
+<!-- ======================= 09 ECOSYSTEME ======================= -->
 <section id="ecosysteme">
   <div class="section-inner">
-    <div class="section-num">Section 08 — Au-delà du MAN</div>
+    <div class="section-num">Section 09 — Au-delà du MAN</div>
     <h2>L'écosystème <em>Call Trust</em></h2>
 
     <p>Ribbon positionne sa solution STI dans un cadre produit plus large appelé <strong>Ribbon Call Trust®</strong>. L'idée&nbsp;: STIR/SHAKEN répond à l'usurpation, mais pas à tout le problème. Il faut aussi des outils pour <em>qualifier</em> les appels au-delà de leur simple authenticité — détecter les robocalls, mesurer la réputation des numéros, enrichir l'identité affichée.</p>
@@ -1257,7 +1458,7 @@ MEUCIQDh...signature_ECDSA...w==</pre>
       <div class="def teal">
         <div class="def-tag">Identification de marque</div>
         <div class="def-name">Branded Calling</div>
-        <div class="def-body">Affichage du nom vérifié de l'entreprise appelante sur l'écran du destinataire. Orange a présenté sa solution au MWC 2026. Repose sur l'attestation A du MAN comme prérequis.</div>
+        <div class="def-body">Affichage du nom vérifié de l'entreprise appelante sur l'écran du destinataire. Orange a présenté sa solution au MWC 2026. Repose sur l'attestation A du MAN — souvent obtenue <em>via délégation d'affichage</em> — comme prérequis.</div>
       </div>
 
       <div class="def teal">
@@ -1269,21 +1470,21 @@ MEUCIQDh...signature_ECDSA...w==</pre>
 
     <div class="callout teal">
       <span class="callout-label">Pour mémoire</span>
-      <p>Le MAN résout un problème spécifique&nbsp;: prouver cryptographiquement que le numéro affiché a bien été autorisé par son opérateur légitime. Il ne dit rien sur la <em>nature</em> de l'appel (utile, indésirable, frauduleux au-delà du spoofing). D'où l'intérêt des couches complémentaires — scoring, analytics, branded calling — qui construisent par-dessus une vraie expérience de confiance pour l'utilisateur final.</p>
+      <p>Le MAN résout un problème spécifique&nbsp;: prouver cryptographiquement que le numéro affiché a bien été autorisé par son opérateur légitime — ou par une chaîne de délégation valide. Il ne dit rien sur la <em>nature</em> de l'appel (utile, indésirable, frauduleux au-delà du spoofing). D'où l'intérêt des couches complémentaires — scoring, analytics, branded calling — qui construisent par-dessus une vraie expérience de confiance pour l'utilisateur final.</p>
     </div>
   </div>
 </section>
 
-<!-- ======================= 09 GLOSSARY ======================= -->
+<!-- ======================= 10 GLOSSARY ======================= -->
 <section id="glossary">
   <div class="section-inner">
-    <div class="section-num">Section 09 — Référence</div>
+    <div class="section-num">Section 10 — Référence</div>
     <h2>Glossaire <em>express</em></h2>
 
     <div class="glossary">
       <dl>
         <dt>APNF</dt>
-        <dd><strong>Association Française pour l'attribution et la gestion des Numéros de téléphone.</strong> Administrateur unique du MAN en France, missionné par l'ARCEP. Joue le rôle d'autorité de certification STI.</dd>
+        <dd><strong>Association Française pour l'attribution et la gestion des Numéros de téléphone.</strong> Administrateur unique du MAN en France, missionné par l'ARCEP. Joue le rôle d'autorité de certification STI et pilote le cadre de délégation d'affichage.</dd>
 
         <dt>ARCEP</dt>
         <dd><strong>Autorité de Régulation des Communications Électroniques, des Postes et de la distribution de la presse.</strong> Régulateur français des télécommunications.</dd>
@@ -1312,6 +1513,15 @@ MEUCIQDh...signature_ECDSA...w==</pre>
         <dt>CDR</dt>
         <dd><strong>Call Detail Record.</strong> Enregistrement détaillé d'un appel émis par un élément réseau (SBC, softswitch). Source d'analyse et de facturation.</dd>
 
+        <dt>Délégation d'affichage</dt>
+        <dd>Mécanisme du MAN permettant à un tiers (autre opérateur, prestataire, centre d'appels) de présenter le numéro d'un client en conservant l'attestation A, sur la base d'une autorisation explicite déclarée par le titulaire. Aussi appelée <em>délégation de présentation de numéro</em>.</dd>
+
+        <dt>Certificat délégué</dt>
+        <dd>Certificat STI signé par un certificat parent qui détient l'autorité sur une plage de numéros (RFC 9060). Son périmètre (<code class="inline">TNAuthList</code>) doit être égal ou inférieur à celui du parent.</dd>
+
+        <dt>Encompassed</dt>
+        <dd>Règle de la RFC 9060&nbsp;: le périmètre de numéros d'un certificat délégué doit être <em>compris dans</em> (égal ou sous-ensemble de) celui de son parent. Chaque maillon ne peut que restreindre.</dd>
+
         <dt>FCC</dt>
         <dd><strong>Federal Communications Commission.</strong> Régulateur américain des télécoms — équivalent US de l'ARCEP.</dd>
 
@@ -1337,7 +1547,10 @@ MEUCIQDh...signature_ECDSA...w==</pre>
         <dd><strong>Policy &amp; Routing Server de Ribbon.</strong> Moteur de politique et de routage qui pilote les SBC et arbitre les règles métier sur les appels.</dd>
 
         <dt>RFC 8224</dt>
-        <dd RFC de l'IETF définissant l'en-tête SIP <code class="inline">Identity</code> pour le transport de la signature STIR. Complétée par les RFC 8225 (PASSporT), 8226 (certificats), 8443 (extension SHAKEN), 8588 (attestation et OrigId).</dd>
+        <dd>RFC de l'IETF définissant l'en-tête SIP <code class="inline">Identity</code> pour le transport de la signature STIR. Complétée par les RFC 8225 (PASSporT), 8226 (certificats), 8443 (extension SHAKEN), 8588 (attestation et OrigId).</dd>
+
+        <dt>RFC 9060</dt>
+        <dd>RFC de l'IETF définissant la <strong>délégation de certificats STIR</strong>&nbsp;: comment une autorité sur des numéros se transmet d'un certificat parent à un certificat enfant. Socle technique de la délégation d'affichage.</dd>
 
         <dt>SBC</dt>
         <dd><strong>Session Border Controller.</strong> Équipement de bordure qui protège, régule et sécurise les flux voix SIP entre réseaux. Les gammes Ribbon SBC SWe, 5400 et 7000 portent l'intégration STIR/SHAKEN.</dd>
@@ -1352,7 +1565,7 @@ MEUCIQDh...signature_ECDSA...w==</pre>
         <dd><strong>Secure Key Store.</strong> Composant Ribbon qui stocke en sécurité les clés privées de signature. Adossé à un HSM.</dd>
 
         <dt>SP-KMS</dt>
-        <dd><strong>Service Provider Key Management Service.</strong> Composant Ribbon qui gère le cycle de vie des certificats opérateur (demande, renouvellement, rotation, révocation).</dd>
+        <dd><strong>Service Provider Key Management Service.</strong> Composant Ribbon qui gère le cycle de vie des certificats opérateur (demande, renouvellement, rotation, révocation, émission des certificats délégués).</dd>
 
         <dt>S/SaaS</dt>
         <dd>Déclinaison SaaS de la solution STIR/SHAKEN de Ribbon, hébergée dans le cloud de Ribbon.</dd>
@@ -1378,6 +1591,9 @@ MEUCIQDh...signature_ECDSA...w==</pre>
         <dt>STIR</dt>
         <dd><strong>Secure Telephony Identity Revisited.</strong> L'ensemble des normes IETF (RFC 8224, 8225, 8226…) qui définissent la cryptographie de STIR/SHAKEN.</dd>
 
+        <dt>TNAuthList</dt>
+        <dd>Objet porté par un certificat STI qui décrit le <strong>périmètre d'autorité</strong> sur des numéros&nbsp;: liste ou plages de numéros (par valeur) ou pointeur vers une liste dynamique (par référence). Pivot du contrôle de délégation.</dd>
+
         <dt>TRACED Act</dt>
         <dd><strong>Pallone-Thune Telephone Robocall Abuse Criminal Enforcement and Deterrence Act.</strong> Loi américaine de 2019 qui a rendu obligatoire STIR/SHAKEN aux États-Unis.</dd>
 
@@ -1388,7 +1604,7 @@ MEUCIQDh...signature_ECDSA...w==</pre>
 
     <div class="callout">
       <span class="callout-label">Et maintenant</span>
-      <p>Avec ce volume, tu as les clés pour comprendre 95&nbsp;% des conversations autour de STIR/SHAKEN, du MAN, et de la solution Ribbon. Le reste — les détails d'intégration spécifiques à Orange, les particularités de ton SDAN, les choix de politique dans ton PSX — relève de la documentation interne à laquelle je n'ai pas accès. N'hésite pas à me revenir dessus avec des captures ou des extraits publics, et je ferai un volume 3.1 ciblé.</p>
+      <p>Avec ce volume — désormais complété de la délégation d'affichage — tu as les clés pour comprendre l'essentiel des conversations autour de STIR/SHAKEN, du MAN, et de la solution Ribbon. Le reste — les détails d'intégration spécifiques à Orange, la façon dont le groupe câble ses propres chaînes de délégation, les choix de politique dans ton PSX — relève de la documentation interne à laquelle je n'ai pas accès. N'hésite pas à me revenir dessus avec des captures ou des extraits publics, et je ferai un volume 3.2 ciblé.</p>
     </div>
   </div>
 </section>
